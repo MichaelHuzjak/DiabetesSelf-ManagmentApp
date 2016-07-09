@@ -126,11 +126,13 @@
     </LinearLayout>
 
     <LinearLayout
+        android:layout_marginTop="5dp"
+        android:id="@+id/linearLayoutRow1"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/linearLayout"
-        android:weightSum="3"
+        android:weightSum="4"
         >
         <LinearLayout
             android:orientation="vertical"
@@ -138,8 +140,31 @@
             android:layout_weight="2"
             android:layout_height="wrap_content"
             android:gravity="end">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <SeekBar
+            <EditText
+                android:layout_gravity="center_horizontal"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:ems="10"
+                android:text="300"
+                android:gravity="center_horizontal"
+                android:id="@+id/editTextMean" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Mean"
+                android:paddingTop="35dp"
+                android:layout_gravity="center_horizontal"
+                android:textColor="#ff0000"
+                android:id="@+id/textViewMean"
+                android:visibility="visible"/>
+
+            <SeekBar
             android:layout_marginTop="30dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -147,6 +172,28 @@
             android:visibility="invisible"
             android:max="350"
             />
+        </FrameLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:paddingRight="10dp"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <Button
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/bgl"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Log stuff"
+                android:id="@+id/textViewLogs"
+                />
         </LinearLayout>
         <LinearLayout
             android:orientation="vertical"
@@ -166,7 +213,92 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="Add New BGL"
-                android:id="@+id/textView9"
+                android:id="@+id/textViewAddBGL"
+                />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="5dp"
+        android:id="@+id/linearLayoutRow2"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linearLayoutRow1"
+        android:weightSum="4"
+        >
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:gravity="end">
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <EditText
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:ems="10"
+                    android:text="300"
+                    android:gravity="center_horizontal"
+                    android:id="@+id/editTextVariant" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="Variant"
+                    android:paddingTop="35dp"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="#ff0000"
+                    android:id="@+id/textViewVariant"
+                    android:visibility="visible"/>
+
+            </FrameLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:paddingRight="10dp"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <Button
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/bgl"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Graphs"
+                android:id="@+id/textViewGraph"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:paddingRight="10dp"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <Button
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/bgl"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Query"
+                android:id="@+id/textViewAddQuery"
                 />
         </LinearLayout>
     </LinearLayout>
