@@ -77,14 +77,21 @@ public class MainActivity extends AppCompatActivity {
     public void AddNewBGL(View v){
 
         SeekBar bglSelector = (SeekBar)findViewById(R.id.seekBar);
-        TextView txt = (TextView)findViewById(R.id.textView9);
+        TextView addBGLTextView = (TextView)findViewById(R.id.textViewAddBGL);
+        EditText meanEditText = (EditText)findViewById(R.id.editTextMean);
+        TextView meanTextView = (TextView)findViewById(R.id.textViewMean);
 
         if(bglSelector.getVisibility()==v.INVISIBLE) {
+            arc =(ArcProgress)findViewById(R.id.arc_progress);
+
+
+            addBGLTextView.setText("Set New BGL");
+            meanEditText.setVisibility(meanEditText.INVISIBLE);
+            meanTextView.setVisibility(meanTextView.INVISIBLE);
             bglSelector.setVisibility(v.VISIBLE);
             bglSelector.setProgress(0);
-            txt.setText("Set New BGL");
-            arc =(ArcProgress)findViewById(R.id.arc_progress);
             arc.setProgress(0);
+
             bglSelector.setOnSeekBarChangeListener(
                     new SeekBar.OnSeekBarChangeListener() {
 
@@ -110,12 +117,14 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             TextView time = (TextView)findViewById(R.id.textViewLastEnteredTime);
-            txt.setText("Add New BGL");
+            String date = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
+
+            addBGLTextView.setText("Add New BGL");
             arc.setProgress(bglSelector.getProgress());
             bglSelector.setVisibility(v.INVISIBLE);
-
-            String mydate = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
-            time.setText(mydate);
+            meanEditText.setVisibility(meanEditText.VISIBLE);
+            meanTextView.setVisibility(meanTextView.VISIBLE);
+            time.setText(date);
         }
     }
 }
