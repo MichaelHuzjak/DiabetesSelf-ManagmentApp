@@ -137,7 +137,7 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="0dp"
-            android:layout_weight="2"
+            android:layout_weight="1.8"
             android:layout_height="wrap_content"
             android:gravity="end">
         <FrameLayout
@@ -152,6 +152,7 @@
                 android:ems="10"
                 android:text="300"
                 android:gravity="center_horizontal"
+                android:enabled="false"
                 android:id="@+id/editTextMean" />
             <TextView
                 android:layout_width="wrap_content"
@@ -230,7 +231,7 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="0dp"
-            android:layout_weight="2"
+            android:layout_weight="1.8"
             android:layout_height="wrap_content"
             android:gravity="end">
             <FrameLayout
@@ -245,6 +246,7 @@
                     android:ems="10"
                     android:text="300"
                     android:gravity="center_horizontal"
+                    android:enabled="false"
                     android:id="@+id/editTextVariant" />
                 <TextView
                     android:layout_width="wrap_content"
