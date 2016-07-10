@@ -1,3 +1,28 @@
 <resources>
-    <string name="app_name">NewApp3</string>
+    <string name="app_name">Diabetes Self-Management</string>
+    <string name="menuSettingString">Settings</string>
+    <string name="menuAboutString">About</string>
+    <string name="dietString">Diet</string>
+    <string name="exerString">Exercise</string>
+    <string name="medsString">Medication</string>
+    <string name="logEventString">Log Event</string>
+    <string name="enterDietString">Enter Diet</string>
+    <string name="enterExerString">Enter Exercise</string>
+    <string name="enterMedsString">Enter Medications</string>
+    <string name="normalRangeString">Normal.\nThis is an\nIdeal Range</string>
+    <string name="possiblyLowString">Possibly low.\nGet sugar if\nyou feel weak.</string>
+    <string name="tooLowString">Too low!\nGet sugar\nimmediately</string>
+    <string name="lastEnteredString">Last Entered BGL</string>
+    <string name="tooHighString">Too high!\nwork on bringing\nit down.</string>
+    <string name="veryHighString">Very high!\ndiabetes is\nout of control.</string>
+    <string name="callDoctorString">Danger!\nCall your doctor\nimmediately.</string>
+    <string name="addNewBglString">Add New BGL</string>
+    <string name="meanDefaultString">0</string>
+    <string name="meanString">Mean</string>
+    <string name="varDefaultString">0</string>
+    <string name="varianceString">Variance</string>
+    <string name="action_save">Save</string>
+    <string name="graphsString">Graphs</string>
+    <string name="queryString">Query</string>
+    <string name="setNewBglString">Set New BGL</string>
 </resources>
