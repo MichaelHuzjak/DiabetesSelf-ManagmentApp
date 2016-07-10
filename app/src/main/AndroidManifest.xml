@@ -18,7 +18,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity android:name=".Graphs">
+        </activity>
         <activity
             android:name=".AddActivity"
             android:parentActivityName=".MainActivity">

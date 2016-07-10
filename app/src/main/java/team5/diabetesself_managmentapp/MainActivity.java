@@ -231,4 +231,11 @@ public class MainActivity extends AppCompatActivity {
         AppIndex.AppIndexApi.end(client, viewAction);
         client.disconnect();
     }
+
+    void onGraphClick(View v){
+        if(v.getId() == R.id.bGraph){
+            Intent i = new Intent(MainActivity.this, Graphs.class);
+            startActivity(i);
+        }
+    }
 }
