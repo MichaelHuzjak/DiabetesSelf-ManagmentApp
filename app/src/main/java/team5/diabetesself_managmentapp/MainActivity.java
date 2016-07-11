@@ -45,6 +45,13 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), AddActivity.class));
             }
         });
+        Button buttonGraphs = (Button) findViewById(R.id.bGraph);
+        buttonGraphs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), GraphsActivity.class));
+            }
+        });
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
@@ -232,10 +239,4 @@ public class MainActivity extends AppCompatActivity {
         client.disconnect();
     }
 
-    void onGraphClick(View v){
-        if(v.getId() == R.id.bGraph){
-            Intent i = new Intent(MainActivity.this, Graphs.class);
-            startActivity(i);
-        }
-    }
 }

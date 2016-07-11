@@ -3,18 +3,20 @@ package team5.diabetesself_managmentapp;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.jjoe64.graphview.*;
-import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 
 /**
  * Created by Michael on 7/10/2016.
  */
-public class Graphs extends Activity{
+public class GraphsActivity extends AppCompatActivity {
 
     private GraphView mGraph;
 
@@ -55,12 +57,30 @@ public class Graphs extends Activity{
 
     }
 
-    // On Click listener for Graph page back button
-    void onBackClick(View v){
-        if(v.getId() == R.id.bGraphBack){
-            Intent i = new Intent(Graphs.this, MainActivity.class);
-            startActivity(i);
-        }
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+            case R.id.action_save:
+                //Should save data in EditText fields
+
+                //Nav back to parent
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
 }
