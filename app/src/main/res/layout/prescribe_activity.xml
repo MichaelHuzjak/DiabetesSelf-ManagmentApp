@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                tools:context=".PrescribeActivity">
+
+    <CheckBox
+        android:id="@+id/checkBoxPrescribeDiet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dietString"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:onClick="onCheckboxClicked"/>
+
+    <CheckBox
+        android:id="@+id/checkBoxPrescribeExer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/exerString"
+        android:layout_below="@+id/checkBoxPrescribeDiet"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:onClick="onCheckboxClicked"/>
+
+    <CheckBox
+        android:id="@+id/checkBoxPrescribeMeds"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/medsString"
+        android:layout_below="@+id/checkBoxPrescribeExer"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:onClick="onCheckboxClicked"/>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:id="@+id/layoutPrescribeDiet"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_below="@+id/checkBoxPrescribeMeds">
+
+        <EditText
+            android:id="@+id/editTextPrescribeDiet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:selectAllOnFocus="true"
+            android:hint="@string/enterDietString"/>
+
+        <TextView
+            android:id="@+id/textViewDietFeq"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/freqeuncyString"
+            android:inputType="number"
+            android:selectAllOnFocus="true"
+            android:hint="@string/zero"/>
+
+        <EditText
+            android:id="@+id/editTextDietFreq"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:selectAllOnFocus="true"
+            android:hint="@string/enterDietFreqString"/>
+
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:id="@+id/layoutPrescribeExer"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_below="@+id/layoutPrescribeDiet">
+
+        <EditText
+            android:id="@+id/editTextPrescribeExer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:selectAllOnFocus="true"
+            android:hint="@string/enterExerString"/>
+
+        <TextView
+            android:id="@+id/textViewExerFeq"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/freqeuncyString"
+            android:inputType="number"
+            android:selectAllOnFocus="true"
+            android:hint="@string/zero"/>
+
+        <EditText
+            android:id="@+id/editTextExerFreq"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:selectAllOnFocus="true"
+            android:hint="@string/enterExerFreqString"/>
+
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:id="@+id/layoutPrescribeMeds"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_below="@+id/layoutPrescribeExer">
+
+        <EditText
+            android:id="@+id/editTextPrescribeMeds"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:selectAllOnFocus="true"
+            android:hint="@string/enterMedsString"/>
+
+        <TextView
+            android:id="@+id/textViewMedsFeq"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/freqeuncyString"
+            android:inputType="number"
+            android:selectAllOnFocus="true"
+            android:hint="@string/zero"/>
+
+        <EditText
+            android:id="@+id/editTextMedsFreq"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:selectAllOnFocus="true"
+            android:hint="@string/enterMedsFreqString"/>
+
+    </LinearLayout>
+</RelativeLayout>
