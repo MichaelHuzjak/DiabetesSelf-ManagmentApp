@@ -201,7 +201,7 @@
                 android:id="@+id/buttonLogEvent"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@drawable/bgl"
+                android:background="@drawable/log"
                 />
             <TextView
                 android:layout_width="wrap_content"
@@ -291,7 +291,7 @@
             <Button
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@drawable/bgl"
+                android:background="@drawable/prescription"
                 />
             <TextView
                 android:layout_width="match_parent"
@@ -312,7 +312,7 @@
             <Button
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@drawable/bgl"
+                android:background="@drawable/charts"
                 android:onClick="onGraphClick"
                 android:id="@+id/bGraph"
                 />
@@ -335,7 +335,7 @@
             <Button
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@drawable/bgl"
+                android:background="@drawable/query"
                 />
             <TextView
                 android:layout_width="wrap_content"
