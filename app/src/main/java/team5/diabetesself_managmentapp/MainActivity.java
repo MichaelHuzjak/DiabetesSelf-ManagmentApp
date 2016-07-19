@@ -18,25 +18,40 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
-import java.text.DateFormat;
-import java.util.Calendar;
-
 public class MainActivity extends AppCompatActivity {
-    private ArcProgress arc;
-    private int seekBarProgress = 0;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private GoogleApiClient client;
+    private Toolbar toolbar;
+
+    static ArcProgress arc;
+    static SeekBar bglSelector;
+    static TextView addBGLTextView;
+    static EditText meanEditText;
+    static TextView meanTextView;
+    static TextView time;
+    static TextView low, mid, norm, high, extreme, doc;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initObjects();
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        Button buttonAddBGLEvent = (Button) findViewById(R.id.ButtonAddBGL);
+        buttonAddBGLEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AddBGL.AddNewBGL(view);
+            }
+        });
 
         Button buttonLogEvent = (Button) findViewById(R.id.buttonLogEvent);
         buttonLogEvent.setOnClickListener(new View.OnClickListener() {
@@ -59,124 +74,31 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), QueryActivity.class));
             }
         });
+
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
-    private void toggleNoticeVisibility(int progress) {
-        TextView low = (TextView) findViewById(R.id.textViewLowNotice);
-        TextView mid = (TextView) findViewById(R.id.textViewMediumNotice);
-        TextView norm = (TextView) findViewById(R.id.textViewNormalNotice);
-        TextView high = (TextView) findViewById(R.id.textViewHighNotice);
-        TextView extreme = (TextView) findViewById(R.id.textViewVeryHighNotice);
-        TextView doc = (TextView) findViewById(R.id.textViewDoctorNotice);
-        if (progress <= 70) {
-            low.setVisibility(View.VISIBLE);
-            doc.setVisibility(View.INVISIBLE);
-            mid.setVisibility(View.INVISIBLE);
-            norm.setVisibility(View.INVISIBLE);
-            high.setVisibility(View.INVISIBLE);
-            extreme.setVisibility(View.INVISIBLE);
-
-        } else if (progress >= 70 && progress <= 90) {
-            low.setVisibility(View.INVISIBLE);
-            doc.setVisibility(View.INVISIBLE);
-            mid.setVisibility(View.VISIBLE);
-            norm.setVisibility(View.INVISIBLE);
-            high.setVisibility(View.INVISIBLE);
-            extreme.setVisibility(View.INVISIBLE);
-        } else if (progress >= 90 && progress <= 160) {
-            low.setVisibility(View.INVISIBLE);
-            doc.setVisibility(View.INVISIBLE);
-            mid.setVisibility(View.INVISIBLE);
-            norm.setVisibility(View.VISIBLE);
-            high.setVisibility(View.INVISIBLE);
-            extreme.setVisibility(View.INVISIBLE);
-        } else if (progress >= 160 && progress <= 240) {
-            low.setVisibility(View.INVISIBLE);
-            doc.setVisibility(View.INVISIBLE);
-            mid.setVisibility(View.INVISIBLE);
-            norm.setVisibility(View.INVISIBLE);
-            high.setVisibility(View.VISIBLE);
-            extreme.setVisibility(View.INVISIBLE);
-        } else if (progress >= 240 && progress <= 300) {
-            low.setVisibility(View.INVISIBLE);
-            doc.setVisibility(View.INVISIBLE);
-            mid.setVisibility(View.INVISIBLE);
-            norm.setVisibility(View.INVISIBLE);
-            high.setVisibility(View.INVISIBLE);
-            extreme.setVisibility(View.VISIBLE);
-        } else {
-            low.setVisibility(View.INVISIBLE);
-            doc.setVisibility(View.VISIBLE);
-            mid.setVisibility(View.INVISIBLE);
-            norm.setVisibility(View.INVISIBLE);
-            high.setVisibility(View.INVISIBLE);
-            extreme.setVisibility(View.INVISIBLE);
-
-        }
+    private void initObjects(){
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        time = (TextView) findViewById(R.id.textViewLastEnteredTime);
+        addBGLTextView = (TextView) findViewById(R.id.textViewAddBGL);
+        bglSelector = (SeekBar) findViewById(R.id.seekBar);
+        meanEditText = (EditText) findViewById(R.id.editTextMean);
+        meanTextView = (TextView) findViewById(R.id.textViewMean);
+        arc = (ArcProgress) findViewById(R.id.arc_progress);
+        low =(TextView)findViewById(R.id.textViewLowNotice);
+        mid = (TextView) findViewById(R.id.textViewMediumNotice);
+        norm = (TextView) findViewById(R.id.textViewNormalNotice);
+        high = (TextView) findViewById(R.id.textViewHighNotice);
+        extreme = (TextView) findViewById(R.id.textViewVeryHighNotice);
+        doc = (TextView) findViewById(R.id.textViewDoctorNotice);
     }
-
-    public void AddNewBGL(View v) {
-
-        SeekBar bglSelector = (SeekBar) findViewById(R.id.seekBar);
-        TextView addBGLTextView = (TextView) findViewById(R.id.textViewAddBGL);
-        EditText meanEditText = (EditText) findViewById(R.id.editTextMean);
-        TextView meanTextView = (TextView) findViewById(R.id.textViewMean);
-
-        if (bglSelector.getVisibility() == View.INVISIBLE) {
-            arc = (ArcProgress) findViewById(R.id.arc_progress);
-
-
-            addBGLTextView.setText(R.string.setNewBglString);
-            meanEditText.setVisibility(View.INVISIBLE);
-            meanTextView.setVisibility(View.INVISIBLE);
-            bglSelector.setVisibility(View.VISIBLE);
-            bglSelector.setProgress(0);
-            arc.setProgress(0);
-
-            bglSelector.setOnSeekBarChangeListener(
-                    new SeekBar.OnSeekBarChangeListener() {
-
-                        @Override
-                        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                            arc.setProgress(progress);
-                            seekBarProgress = progress;
-                            toggleNoticeVisibility(progress);
-                        }
-
-                        @Override
-                        public void onStartTrackingTouch(SeekBar seekBar) {
-
-                        }
-
-                        @Override
-                        public void onStopTrackingTouch(SeekBar seekBar) {
-
-                        }
-                    }
-            );
-
-
-        } else {
-            TextView time = (TextView) findViewById(R.id.textViewLastEnteredTime);
-            String date = DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
-
-            addBGLTextView.setText(R.string.addNewBglString);
-            arc.setProgress(bglSelector.getProgress());
-            bglSelector.setVisibility(View.INVISIBLE);
-            meanEditText.setVisibility(View.VISIBLE);
-            meanTextView.setVisibility(View.VISIBLE);
-            time.setText(date);
-        }
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-
         return true;
     }
 
