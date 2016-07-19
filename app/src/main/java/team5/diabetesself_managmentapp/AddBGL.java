@@ -39,6 +39,10 @@ public class AddBGL extends MainActivity{
     // and calls toggleNoticeVisibility() to toggle the visibility of the notices.
     private static void toggleNoticePerProgress(int progress) {
 
+        //The below check (textView.getVisibility() != View.VISIBLE) is
+        //to make sure to only call the toggleNoticeVisibility() method ONCE in the
+        //0-70 progress of the progress bar.
+
         if (progress <= 70) {
             if(low.getVisibility() != View.VISIBLE)
                 toggleNoticeVisibility(View.VISIBLE, low);
