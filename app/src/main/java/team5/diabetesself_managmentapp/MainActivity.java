@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), GraphsActivity.class));
             }
         });
+<<<<<<< Updated upstream
         Button buttonQuery = (Button) findViewById(R.id.buttonQuery);
         buttonQuery.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,6 +76,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+=======
+        Button buttonPrescription = (Button) findViewById(R.id.buttonPrescription);
+        buttonPrescription.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), PrescribeActivity.class));
+            }
+        });
+>>>>>>> Stashed changes
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();

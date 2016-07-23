@@ -23,7 +23,7 @@ public class PrescribeActivity extends AppCompatActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.add_activity);
+		setContentView(R.layout.prescribe_activity);
 
 		// ESTABLISH THE REFERENCES TO LAYOUT
 		prescribeDietLL = (LinearLayout) findViewById(R.id.layoutPrescribeDiet);

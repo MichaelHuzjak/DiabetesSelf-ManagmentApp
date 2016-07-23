@@ -1,13 +1,10 @@
 package team5.diabetesself_managmentapp;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.jjoe64.graphview.*;
 import com.jjoe64.graphview.series.BarGraphSeries;
@@ -18,15 +15,13 @@ import com.jjoe64.graphview.series.DataPoint;
  */
 public class GraphsActivity extends AppCompatActivity {
 
-    private GraphView mGraph;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graphs);
 
         // Basic graph code from GraphView, Open Source Android Graph library
-        mGraph = (GraphView) findViewById(R.id.graphExample);
+        GraphView mGraph = (GraphView) findViewById(R.id.graphExample);
         DataPoint[] data = new DataPoint[30];
         for(int i = 0;i<30;i++){
             data[i] = new DataPoint(i,100 + (i*3));
