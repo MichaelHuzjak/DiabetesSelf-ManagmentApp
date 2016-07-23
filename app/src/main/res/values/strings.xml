@@ -27,4 +27,5 @@
     <string name="prescriptionString">Prescription</string>
     <string name="frequencyString">Frequency</string>
     <string name="zero">0</string>
+    <string name="setNewBglString">Set BGL</string>
 </resources>
