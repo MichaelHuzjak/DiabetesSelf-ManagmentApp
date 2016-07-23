@@ -25,10 +25,6 @@
     <string name="graphsString">Graphs</string>
     <string name="queryString">Query</string>
     <string name="prescriptionString">Prescription</string>
-    <string name="setNewBglString">Set New BGL</string>
-    <string name="enterDietFreqString">How often should this eaten?</string>
-    <string name="enterExerFreqString">How often should this activity last? </string>
-    <string name="enterMedsFreqString">How often should this be taken?</string>
-    <string name="freqeuncyString">Freqeuncy</string>
+    <string name="frequencyString">Frequency</string>
     <string name="zero">0</string>
 </resources>

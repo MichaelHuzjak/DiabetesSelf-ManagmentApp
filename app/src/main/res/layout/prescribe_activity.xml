@@ -47,7 +47,7 @@
 
         <EditText
             android:id="@+id/editTextPrescribeDiet"
-            android:layout_width="wrap_content"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:selectAllOnFocus="true"
             android:hint="@string/enterDietString"/>
@@ -57,18 +57,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="@string/freqeuncyString"
-            android:inputType="number"
+            android:text="@string/frequencyString"
             android:selectAllOnFocus="true"
-            android:hint="@string/zero"/>
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"/>
 
         <EditText
             android:id="@+id/editTextDietFreq"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:selectAllOnFocus="true"
-            android:hint="@string/enterDietFreqString"/>
-
+            android:inputType="number"
+            android:hint="@string/zero"/>
     </LinearLayout>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -79,7 +79,7 @@
 
         <EditText
             android:id="@+id/editTextPrescribeExer"
-            android:layout_width="wrap_content"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:selectAllOnFocus="true"
             android:hint="@string/enterExerString"/>
@@ -89,18 +89,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="@string/freqeuncyString"
-            android:inputType="number"
+            android:text="@string/frequencyString"
             android:selectAllOnFocus="true"
-            android:hint="@string/zero"/>
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"/>
 
         <EditText
             android:id="@+id/editTextExerFreq"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:selectAllOnFocus="true"
-            android:hint="@string/enterExerFreqString"/>
-
+            android:inputType="number"
+            android:hint="@string/zero"/>
     </LinearLayout>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -111,7 +111,7 @@
 
         <EditText
             android:id="@+id/editTextPrescribeMeds"
-            android:layout_width="wrap_content"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:selectAllOnFocus="true"
             android:hint="@string/enterMedsString"/>
@@ -121,17 +121,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="@string/freqeuncyString"
-            android:inputType="number"
+            android:text="@string/frequencyString"
             android:selectAllOnFocus="true"
-            android:hint="@string/zero"/>
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"/>
 
         <EditText
             android:id="@+id/editTextMedsFreq"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:selectAllOnFocus="true"
-            android:hint="@string/enterMedsFreqString"/>
-
+            android:inputType="number"
+            android:hint="@string/zero"/>
     </LinearLayout>
+
 </RelativeLayout>
