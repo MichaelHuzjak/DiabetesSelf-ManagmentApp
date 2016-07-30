@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         buttonLogEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), AddActivity.class));
+                startActivity(new Intent(getApplicationContext(), LogeventActivity.class));
             }
         });
         Button buttonGraphs = (Button) findViewById(R.id.bGraph);
