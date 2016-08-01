@@ -21,10 +21,9 @@ import team5.diabetesself_managmentapp.R;
  */
 public class DatePickerFragment extends DialogFragment
 {
-
 	private Activity mActivity;
 	private DatePickerDialog.OnDateSetListener mListener;
-//    private EditText tv;
+
 	private int year;
 	private int month;
 	private int day;
@@ -37,9 +36,6 @@ public class DatePickerFragment extends DialogFragment
 	{
 		super.onAttach(activity);
 		mActivity = activity;
-
-		// GET REFERENCE TO THE TEXT VIEW FROM THE ACTIVITY TO SET DIALOGFRAGMENT
-//		tv = (EditText)mActivity.findViewById(R.id.editTextDate);
 
 		// This error will remind you to implement an OnDateSetListener in your Activity if you forget
 		try

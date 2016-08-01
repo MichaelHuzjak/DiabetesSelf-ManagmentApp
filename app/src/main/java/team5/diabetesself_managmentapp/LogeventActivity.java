@@ -17,7 +17,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.text.SimpleDateFormat;
@@ -43,13 +42,7 @@ public class LogeventActivity extends AppCompatActivity implements TimePickerDia
 	private LogEventAdapter logEventAdapter;
 	private List<LogEventModel> logEventModelList = new ArrayList<>();
 
-	// PRIVATE CLASS MEMBERS FOR TIME PICKER VIA TIME PICKER DIALOG FRAGMENT
-	private int pickerHour = 0;
-	private int pickerMin = 0;
-	private int pickerYear = 0;
-	private int pickerMonth = 0;
-	private int pickerDay = 0;
-
+	// PRIVATE CLASS MEMBERS
 	private EditText etDate;
 	private EditText etTime;
 
@@ -70,20 +63,20 @@ public class LogeventActivity extends AppCompatActivity implements TimePickerDia
 
 		logEventAdapter = new LogEventAdapter(LogeventActivity.this, logEventModelList);
 
-		// ATTACH LISTVIEW TO ADAPTER
+		// ATTACH RECYCLE VIEW TO ADAPTER
 		logEventRecyclerView.setAdapter(logEventAdapter);
 
-		//
+		// ENSURE THE LOGEVENT LAYOUT ARE CENTERED IN THE RECYCLE VIEW
 		logEventRecyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
 
 		  @Override
 		  public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
 				  int totalWidth = parent.getWidth();
-				  int cardWidth = getResources().getDimensionPixelOffset(R.dimen.logevent_width);
-			      int cardHeight = getResources().getDimensionPixelOffset(R.dimen.logevent_padding);
+				  int layoutWidth = getResources().getDimensionPixelOffset(R.dimen.logevent_width);
+			      int layoutVerticalPad = getResources().getDimensionPixelOffset(R.dimen.logevent_padding);
 
-				  int sidePadding = (totalWidth - cardWidth) / 2;
-			      int abovePadding = cardHeight / 2;
+				  int sidePadding = (totalWidth - layoutWidth) / 2;
+			      int abovePadding = layoutVerticalPad / 2;
 
 				  sidePadding = Math.max(0, sidePadding);
 			      abovePadding = Math.max(0, abovePadding);
@@ -152,46 +145,50 @@ public class LogeventActivity extends AppCompatActivity implements TimePickerDia
 				NavUtils.navigateUpFromSameTask(this);
 				return true;
 			case R.id.action_save:
-				//Should save data in EditText fields
+
+				// GET THE NUMBER OF LOGEVENT LAYOUTS IN THE RECYCLE VIEW
 				int itemCount = logEventAdapter.getItemCount();
+
+				// LOCAL MEMBERS THAT WILL REFERENCE UI ELEMENTS TO GRAB DATA TO BE STORED
 				View parentView;
 				EditText et;
 
 				System.out.println("Item count: " + itemCount);
 
+				// LOOP FOR EACH ITEM IN THE RECYCLE VIEW TO COLLECT DATA
 				for(int i = 0; i < itemCount; i++)
 				{
 					int logEventType = logEventAdapter.getItemViewType(i);
-					System.out.println("Item Type As String: " +logEventAdapter.getItemViewString(i));
 					parentView = logEventRecyclerView.getLayoutManager().findViewByPosition(i);
 
-					switch (logEventType) {
-						case LogEventConstant.DIET:
-
-							et = (EditText)parentView.findViewById(R.id.editTextDietDescription);
-							System.out.println("Inside EditText: " + et.getText().toString());
-
-							et = (EditText)parentView.findViewById(R.id.editTextDate);
-							System.out.println("Inside EditText: " + et.getText().toString());
-
-							et = (EditText)parentView.findViewById(R.id.editTextTime);
-							System.out.println("Inside EditText: " + et.getText().toString());
-
-							continue;
-						case LogEventConstant.EXERCISE:
-							et = (EditText)parentView.findViewById(R.id.editTextExerciseDescription);
-							System.out.println("Inside EditText: " + et.getText().toString());
-							continue;
-						case LogEventConstant.MEDICATION:
-							et = (EditText)parentView.findViewById(R.id.editTextMedicationDescription);
-							System.out.println("Inside EditText: " + et.getText().toString());
-							continue;
-						default:
-							throw new IllegalArgumentException("Unexpected Type");
+					if(parentView != null)
+					{
+						switch (logEventType) {
+							case LogEventConstant.DIET:
+								et = (EditText)parentView.findViewById(R.id.editTextDietDescription);
+								et = (EditText)parentView.findViewById(R.id.editTextDietQty);
+								et = (EditText)parentView.findViewById(R.id.editTextDateDiet);
+								et = (EditText)parentView.findViewById(R.id.editTextTimeDiet);
+								continue;
+							case LogEventConstant.EXERCISE:
+								et = (EditText)parentView.findViewById(R.id.editTextExerciseDescription);
+								et = (EditText)parentView.findViewById(R.id.editTextExerciseDuration);
+								et = (EditText)parentView.findViewById(R.id.editTextDateExercise);
+								et = (EditText)parentView.findViewById(R.id.editTextTimeExercise);
+								continue;
+							case LogEventConstant.MEDICATION:
+								et = (EditText)parentView.findViewById(R.id.editTextMedicationDescription);
+								et = (EditText)parentView.findViewById(R.id.editTextMedicationQty);
+								et = (EditText)parentView.findViewById(R.id.editTextDateMeds);
+								et = (EditText)parentView.findViewById(R.id.editTextTimeMeds);
+								continue;
+							default:
+								throw new IllegalArgumentException("Unexpected Type");
+						}
 					}
 				}
 
-				//Nav back to parent
+				// NAVIGATE BACK THE PARENT
 				NavUtils.navigateUpFromSameTask(this);
 				return true;
 			default:
@@ -226,9 +223,6 @@ public class LogeventActivity extends AppCompatActivity implements TimePickerDia
 	@Override
 	public void onTimeSet(TimePicker view, int hourOfDay, int minute)
 	{
-		pickerHour = hourOfDay;
-		pickerMin = minute;
-
 		Calendar cal = new GregorianCalendar(0, 0, 0, hourOfDay, minute, 0);
 		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 		etTime.setText(sdf.format(cal.getTime()));
@@ -237,11 +231,7 @@ public class LogeventActivity extends AppCompatActivity implements TimePickerDia
 	@Override
 	public void onDateSet(DatePicker view, int year, int month, int dayOfMonth)
 	{
-		pickerYear = year;
-		pickerMonth = month;
-		pickerDay = dayOfMonth;
-
-		Calendar cal = new GregorianCalendar(pickerYear, pickerMonth, pickerDay);
+		Calendar cal = new GregorianCalendar(year, month, dayOfMonth);
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 		etDate.setText(sdf.format(cal.getTime()));
 	}

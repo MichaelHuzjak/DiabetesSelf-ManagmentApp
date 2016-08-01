@@ -13,8 +13,6 @@ import java.util.Calendar;
  */
 public class TimePickerFragment extends DialogFragment
 {
-	// Notice I removed "implements OnTimeSetListener" and changed the variables
-
 	private Activity mActivity;
 	private TimePickerDialog.OnTimeSetListener mListener;
 

@@ -73,15 +73,24 @@
             android:layout_height="wrap_content"
             android:text="@string/textViewTime"/>
 
-        <Button
+        <EditText
+            android:id="@+id/editTextDateExercise"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/pickDate"/>
+            android:paddingRight="30dp"
+            android:focusable="false"
+            android:onClick="showDatePickerDialog"
+            android:inputType="date"/>
 
-        <Button
+        <EditText
+            android:id="@+id/editTextTimeExercise"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/pickTime"/>
+            android:paddingRight="30dp"
+            android:focusable="false"
+            android:onClick="showTimePickerDialog"
+            android:inputType="time"/>
+
     </LinearLayout>
 
 </RelativeLayout>
