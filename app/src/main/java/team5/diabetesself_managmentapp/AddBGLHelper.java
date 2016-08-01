@@ -1,16 +1,18 @@
 package team5.diabetesself_managmentapp;
 
+import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
-
 import java.text.DateFormat;
 import java.util.Calendar;
 
 
-public class AddBGL extends MainActivity{
-
+public class AddBGLHelper extends MainActivity{
+    private static int bgl_progress = 0;
     // This method traverses each present notice and toggles their visibility.
     // Only one is visible at a time.
     // int visibility: either View.VISIBLE or View.INVISIBLE
@@ -65,43 +67,53 @@ public class AddBGL extends MainActivity{
 
     }
 
-    public static void AddNewBGL(View v) {
-        if (bglSelector.getVisibility() == View.INVISIBLE) {
+    public static void AddNewBGL(SeekBar sb) {
 
-            addBGLTextView.setText(R.string.setNewBglString);
-            meanEditText.setVisibility(View.INVISIBLE);
-            meanTextView.setVisibility(View.INVISIBLE);
-            bglSelector.setVisibility(View.VISIBLE);
-            bglSelector.setProgress(0);
-            arc.setProgress(0);
-            toggleNoticePerProgress(0);
-
-            bglSelector.setOnSeekBarChangeListener(
-                    new SeekBar.OnSeekBarChangeListener() {
-                        @Override
-                        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                            arc.setProgress(progress);
-                            toggleNoticePerProgress(progress);
-                        }
-                        @Override
-                        public void onStartTrackingTouch(SeekBar seekBar){}
-                        @Override
-                        public void onStopTrackingTouch(SeekBar seekBar){}
+        sb.setOnSeekBarChangeListener(
+                new SeekBar.OnSeekBarChangeListener() {
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                        arc.setProgress(progress);
+                        toggleNoticePerProgress(progress);
+                        bgl_progress = progress;
                     }
-            );
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar){
+                        seekBar.setProgress(bgl_progress);
+                    }
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar){
+                        seekBar.setProgress(bgl_progress);
+                    }
+                }
+        );
 
 
-        } else {
-
-            String date = DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
-
-            addBGLTextView.setText(R.string.addNewBglString);
-            arc.setProgress(bglSelector.getProgress());
-            bglSelector.setVisibility(View.INVISIBLE);
-            meanEditText.setVisibility(View.VISIBLE);
-            meanTextView.setVisibility(View.VISIBLE);
-            time.setText(date);
-        }
+        String date = DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
+        time.setText(date);
     }
 
+
+    public static void hideFragment(FragmentManager fm, Fragment fr){
+        toggleFragment(fm, fr, "hide");
+    }
+
+
+    public static void showFragment(FragmentManager fm, Fragment fr){
+        toggleFragment(fm, fr, "show");
+    }
+
+    // str: "show" or "hide"
+    private static void toggleFragment(FragmentManager fm, Fragment fr, String str){
+
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
+
+        if(str.equalsIgnoreCase("hide"))
+            ft.hide(fr);
+        else if(str.equalsIgnoreCase("show"))
+            ft.show(fr);
+
+        ft.commit();
+    }
 }

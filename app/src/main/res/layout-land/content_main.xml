@@ -24,11 +24,11 @@
         android:layout_alignParentStart="true">
 
         <LinearLayout
-            android:layout_weight="1.1"
+            android:layout_weight=".5"
             android:orientation="vertical"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:gravity="end">
+            android:layout_height="wrap_content"
+            android:gravity="right">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -38,7 +38,7 @@
                 android:paddingBottom="10dp"
                 android:textColor="#00a8ff"
                 android:id="@+id/textViewNormalNotice"
-                android:visibility="invisible"/>
+                android:visibility="visible"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -62,8 +62,8 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="0dp"
-            android:layout_weight="1.8"
-            android:layout_height="match_parent">
+            android:layout_weight="1.2"
+            android:layout_height="wrap_content">
             <com.github.lzyzsd.circleprogress.ArcProgress
                 android:id="@+id/arc_progress"
                 android:layout_width="170dp"
@@ -87,9 +87,9 @@
         </LinearLayout>
         <LinearLayout
             android:orientation="vertical"
-            android:layout_weight="1.1"
+            android:layout_weight=".4"
             android:layout_width="0dp"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -120,21 +120,27 @@
                 android:visibility="invisible"/>
         </LinearLayout>
 
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_weight="1.9"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+            <fragment
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/linearLayout"
+                android:id="@+id/FragmentButtons"
+                android:name="team5.diabetesself_managmentapp.fragments.MainButtonsFragment"
+                tools:layout="@layout/main_buttons_fragment" />
+            <fragment
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/linearLayout"
+                android:id="@+id/FragmentBGL"
+                android:name="team5.diabetesself_managmentapp.fragments.AddBGLFragment"
+                tools:layout="@layout/bgl_fragment" />
+
+
+        </LinearLayout>
     </LinearLayout>
-
-    <fragment
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/linearLayout"
-        android:id="@+id/FragmentBGL"
-        android:name="team5.diabetesself_managmentapp.fragments.AddBGLFragment"
-        tools:layout="@layout/bgl_fragment" />
-
-    <fragment
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/linearLayout"
-        android:id="@+id/FragmentButtons"
-        android:name="team5.diabetesself_managmentapp.fragments.MainButtonsFragment"
-        tools:layout="@layout/main_buttons_fragment" />
 </RelativeLayout>

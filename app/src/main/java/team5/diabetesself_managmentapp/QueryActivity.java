@@ -15,6 +15,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.series.BarGraphSeries;
+import com.jjoe64.graphview.series.DataPoint;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -43,6 +47,38 @@ public class QueryActivity extends AppCompatActivity {
         c.add(Calendar.DATE, -7);
         ChangeDate(c.getTime());
         showDialogueDatePicker();
+
+        // Basic graph code from GraphView, Open Source Android Graph library
+        GraphView mGraph = (GraphView) findViewById(R.id.graphExample);
+        DataPoint[] data = new DataPoint[30];
+        for(int i = 0;i<30;i++){
+            data[i] = new DataPoint(i,100 + (i*3));
+        }
+        BarGraphSeries<DataPoint> series = new BarGraphSeries<DataPoint>(data);
+        series.setDrawValuesOnTop(true);
+        series.setSpacing(1);
+        mGraph.addSeries(series);
+
+        mGraph.setTitle("Monthly BGL Example");
+        String[] labels = new String[30];
+        for(int i=0;i<30;i++){
+            labels[i] = "7/" + i;
+        }
+
+        // Possible Deprecated code, used for labels. Causes errors and formatting issues when using viewport's scaling.
+
+        // StaticLabelsFormatter formatter = new StaticLabelsFormatter(mGraph);
+        //formatter.setHorizontalLabels(labels);
+        //mGraph.getGridLabelRenderer().setLabelFormatter(formatter);
+
+
+        mGraph.getViewport().setScrollable(true);
+        mGraph.getViewport().setXAxisBoundsManual(true);
+        mGraph.getViewport().setMinX(0);
+        mGraph.getViewport().setMaxX(5);
+
+
+
 
     }
     @Override

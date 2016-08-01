@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -93,9 +94,9 @@ public class LogeventActivity extends AppCompatActivity implements TimePickerDia
 	  });
 
 		// ESTABLISH THE REFERENCES TO INPUT ELEMENTS
-		FloatingActionButton fabAddDiet = (FloatingActionButton) findViewById(R.id.fabDiet);
-		FloatingActionButton fabAddExer = (FloatingActionButton) findViewById(R.id.fabExer);
-		FloatingActionButton fabAddMeds = (FloatingActionButton) findViewById(R.id.fabMeds);
+		ImageButton fabAddDiet = (ImageButton) findViewById(R.id.fabDiet);
+		ImageButton fabAddExer = (ImageButton) findViewById(R.id.fabExer);
+		ImageButton fabAddMeds = (ImageButton) findViewById(R.id.fabMeds);
 
 		fabAddDiet.setOnClickListener(new View.OnClickListener()
 		{
@@ -104,9 +105,11 @@ public class LogeventActivity extends AppCompatActivity implements TimePickerDia
 			{
 				int type = LogEventConstant.DIET;
 				String content = "Diet";
-
+				logEventRecyclerView.scrollToPosition(logEventAdapter.getItemCount()-1);
 				logEventModelList.add(new LogEventModel(type , content));
 				logEventAdapter.notifyDataSetChanged();
+				logEventRecyclerView.scrollToPosition(logEventAdapter.getItemCount()-1);
+
 			}
 		});
 
@@ -117,9 +120,10 @@ public class LogeventActivity extends AppCompatActivity implements TimePickerDia
 			{
 				int type = LogEventConstant.EXERCISE;
 				String content = "Exercise";
-
 				logEventModelList.add(new LogEventModel(type , content));
 				logEventAdapter.notifyDataSetChanged();
+				logEventRecyclerView.scrollToPosition(logEventAdapter.getItemCount()-1);
+
 			}
 		});
 
@@ -130,9 +134,10 @@ public class LogeventActivity extends AppCompatActivity implements TimePickerDia
 			{
 				int type = LogEventConstant.MEDICATION;
 				String content = "Medication";
-
 				logEventModelList.add(new LogEventModel(type , content));
 				logEventAdapter.notifyDataSetChanged();
+				logEventRecyclerView.scrollToPosition(logEventAdapter.getItemCount()-1);
+
 			}
 		});
 	}
@@ -230,7 +235,7 @@ public class LogeventActivity extends AppCompatActivity implements TimePickerDia
 		pickerMin = minute;
 
 		Calendar cal = new GregorianCalendar(0, 0, 0, hourOfDay, minute, 0);
-		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:aa");
 		etTime.setText(sdf.format(cal.getTime()));
 	}
 

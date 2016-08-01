@@ -6,5 +6,8 @@
 
     <color name="black">#000000</color>
     <color name="materialgray">#e0e0e0</color>
+    <color name="dietColor">#fff0dc</color>
+    <color name="exerColor">#ffe6e6</color>
+    <color name="medColor">#e2fefb</color>
 
 </resources>

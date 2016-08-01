@@ -3,7 +3,7 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
-                android:background="@drawable/layout_corning"
+                android:background="@drawable/layout_corning_exer"
                 android:paddingBottom="5dp"
                 android:paddingTop="20dp"
                 android:paddingLeft="20dp"
@@ -73,15 +73,19 @@
             android:layout_height="wrap_content"
             android:text="@string/textViewTime"/>
 
-        <Button
+        <EditText
+            android:id="@+id/editTextDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/pickDate"/>
+            android:focusable="false"
+            android:onClick="showDatePickerDialog"/>
 
-        <Button
+        <EditText
+            android:id="@+id/editTextTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/pickTime"/>
+            android:focusable="false"
+            android:onClick="showTimePickerDialog"/>
     </LinearLayout>
 
 </RelativeLayout>

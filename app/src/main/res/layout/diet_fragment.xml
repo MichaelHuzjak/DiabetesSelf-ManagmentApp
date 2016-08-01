@@ -3,7 +3,7 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
-                android:background="@drawable/layout_corning"
+                android:background="@drawable/layout_corning_diet"
                 android:paddingBottom="5dp"
                 android:paddingTop="20dp"
                 android:paddingLeft="20dp"
@@ -78,7 +78,6 @@
             android:id="@+id/editTextDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingRight="30dp"
             android:focusable="false"
             android:onClick="showDatePickerDialog"/>
 
@@ -86,7 +85,6 @@
             android:id="@+id/editTextTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingRight="30dp"
             android:focusable="false"
             android:onClick="showTimePickerDialog"/>
 

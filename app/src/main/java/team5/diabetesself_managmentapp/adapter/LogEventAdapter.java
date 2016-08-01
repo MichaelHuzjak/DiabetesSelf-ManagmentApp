@@ -41,19 +41,6 @@ public class LogEventAdapter extends RecyclerView.Adapter<LogEventViewHolder>
 		if(viewType == LogEventConstant.DIET)
 		{
 			view = inflater.inflate(R.layout.diet_fragment, parent, false);
-
-			// GET THE CURRENT DATE TO BE DISPLAYED INITIALLY IN THE TEXTVIEW
-			EditText etDate = (EditText)view.findViewById(R.id.editTextDate);
-			EditText etTime = (EditText)view.findViewById(R.id.editTextTime);
-			Date cal = new GregorianCalendar().getTime();
-			SimpleDateFormat sdf;
-
-			sdf = new SimpleDateFormat("MM/dd/yyyy");
-			etDate.setText(sdf.format(cal.getTime()));
-
-			sdf = new SimpleDateFormat("HH:mm");
-			etTime.setText(sdf.format(cal.getTime()));
-
 		}
 		else if(viewType == LogEventConstant.EXERCISE)
 		{
@@ -63,6 +50,17 @@ public class LogEventAdapter extends RecyclerView.Adapter<LogEventViewHolder>
 		{
 			view = inflater.inflate(R.layout.medication_fragment, parent, false);
 		}
+		// GET THE CURRENT DATE TO BE DISPLAYED INITIALLY IN THE TEXTVIEW
+		EditText etDate = (EditText)view.findViewById(R.id.editTextDate);
+		EditText etTime = (EditText)view.findViewById(R.id.editTextTime);
+		Date cal = new GregorianCalendar().getTime();
+		SimpleDateFormat sdf;
+
+		sdf = new SimpleDateFormat("MM/dd/yyyy");
+		etDate.setText(sdf.format(cal.getTime()));
+
+		sdf = new SimpleDateFormat("hh:mm:aa");
+		etTime.setText(sdf.format(cal.getTime()));
 
 		return new LogEventViewHolder(view, viewType);
 	}

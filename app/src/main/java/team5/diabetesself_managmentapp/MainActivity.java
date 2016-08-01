@@ -1,57 +1,84 @@
 package team5.diabetesself_managmentapp;
 
+import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.Fragment;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.github.lzyzsd.circleprogress.ArcProgress;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
-public class MainActivity extends AppCompatActivity {
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
+import team5.diabetesself_managmentapp.adapter.BGLAdapter;
+import team5.diabetesself_managmentapp.fragments.DatePickerFragment;
+import team5.diabetesself_managmentapp.fragments.TimePickerFragment;
+import team5.diabetesself_managmentapp.model.BGLEntryModel;
+
+public class MainActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener{
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private GoogleApiClient client;
     private Toolbar toolbar;
-
+    private Fragment AddBGLFragment, ButtonsFragment;
     static ArcProgress arc;
-    static SeekBar bglSelector;
-    static TextView addBGLTextView;
     static EditText meanEditText;
-    static TextView meanTextView;
-    static TextView time;
-    static TextView low, mid, norm, high, extreme, doc;
+    static TextView meanTextView, addBGLTextView,time, low, mid, norm, high, extreme, doc;
+    private int pickerYear = 0;
+    private int pickerMonth = 0;
+    private int pickerDay = 0;
 
+    private EditText etDate;
+    private EditText etTime;
 
-
+    private ArrayList<BGLEntryModel> bglEntryList;
+    RecyclerView BGLHolderView;
+    BGLAdapter bglAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initObjects();
+        initObjects();  // Must be called first to initialize objects.
 
+        AddBGLHelper.hideFragment(getFragmentManager(), AddBGLFragment);
         setSupportActionBar(toolbar);
 
-        Button buttonAddBGLEvent = (Button) findViewById(R.id.ButtonAddBGL);
+        Button buttonAddBGLEvent = (Button)findViewById(R.id.ButtonShowBGLFragment);
         buttonAddBGLEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AddBGL.AddNewBGL(view);
+                AddBGLHelper.hideFragment(getFragmentManager(), ButtonsFragment);
+                AddBGLHelper.showFragment(getFragmentManager(), AddBGLFragment);
             }
         });
+
 
         Button buttonLogEvent = (Button) findViewById(R.id.buttonLogEvent);
         buttonLogEvent.setOnClickListener(new View.OnClickListener() {
@@ -60,13 +87,13 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), LogeventActivity.class));
             }
         });
-        Button buttonGraphs = (Button) findViewById(R.id.bGraph);
-        buttonGraphs.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), GraphsActivity.class));
-            }
-        });
+//        Button buttonGraphs = (Button) findViewById(R.id.bGraph);
+//        buttonGraphs.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                startActivity(new Intent(getApplicationContext(), GraphsActivity.class));
+//            }
+//        });
 
         Button buttonQuery = (Button) findViewById(R.id.buttonQuery);
         buttonQuery.setOnClickListener(new View.OnClickListener() {
@@ -90,10 +117,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initObjects(){
+        AddBGLFragment = (Fragment) getFragmentManager().findFragmentById(R.id.FragmentBGL);
+        ButtonsFragment = (Fragment) getFragmentManager().findFragmentById(R.id.FragmentButtons);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         time = (TextView) findViewById(R.id.textViewLastEnteredTime);
         addBGLTextView = (TextView) findViewById(R.id.textViewAddBGL);
-        bglSelector = (SeekBar) findViewById(R.id.seekBar);
         meanEditText = (EditText) findViewById(R.id.editTextMean);
         meanTextView = (TextView) findViewById(R.id.textViewMean);
         arc = (ArcProgress) findViewById(R.id.arc_progress);
@@ -177,4 +205,47 @@ public class MainActivity extends AppCompatActivity {
         client.disconnect();
     }
 
+    /* WHEN THE USER CLICKS THE DATE BUTTON IN THE UI,
+    CREATE AN INSTANCE OF A DIALOGFRAGMENT AND SHOW IT
+    VIA THE FRAGMENT MANAGER
+     */
+    public void MainShowDatePickerDialog(View v) {
+
+        etDate = (EditText)v.findViewById(R.id.EditTextBGLDate);
+
+        DialogFragment newFragment = new DatePickerFragment();
+        newFragment.show(getSupportFragmentManager(), "datePicker");
+    }
+
+    /* WHEN THE USER CLICKS THE TIME BUTTON IN THE UI,
+    CREATE AN INSTANCE OF A DIALOGFRAGMENT AND SHOW IT
+    VIA THE FRAGMENT MANAGER
+     */
+    public void MainShowTimePickerDialog(View v) {
+
+        etTime = (EditText)v.findViewById(R.id.EditTextBGLTime);
+
+        TimePickerFragment newFragment = new TimePickerFragment();
+        newFragment.show(getSupportFragmentManager(), "timePicker");
+    }
+
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute)
+    {
+        Calendar cal = new GregorianCalendar(0, 0, 0, hourOfDay, minute, 0);
+        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:aa");
+        etTime.setText(sdf.format(cal.getTime()));
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth)
+    {
+        pickerYear = year;
+        pickerMonth = month;
+        pickerDay = dayOfMonth;
+
+        Calendar cal = new GregorianCalendar(pickerYear, pickerMonth, pickerDay);
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+        etDate.setText(sdf.format(cal.getTime()));
+    }
 }
