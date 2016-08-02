@@ -68,10 +68,8 @@
                 android:id="@+id/arc_progress"
                 android:layout_width="170dp"
                 android:layout_height="170dp"
-                app:arc_progress="240"
                 app:arc_suffix_text="mg/dL"
                 app:arc_max="350"
-                app:paddingStart="10dp"
                 app:arc_bottom_text_size="10dp"
                 app:arc_stroke_width="10dp"
                 app:arc_unfinished_color="#ff5b5b"
@@ -84,14 +82,6 @@
                 android:textColor="#009cff"
                 android:layout_gravity="center"
                 android:id="@+id/textViewLastEnteredTime"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:layout_gravity="center"
-                android:text="@string/lastEnteredString"
-                android:id="@+id/textViewLastEnteredBGL"
                 />
 
         </LinearLayout>
@@ -132,223 +122,19 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_marginTop="5dp"
-        android:id="@+id/linearLayoutRow1"
-        android:orientation="horizontal"
+    <fragment
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/linearLayout"
-        android:weightSum="4"
-        android:gravity="center_vertical"
-        android:baselineAligned="false">
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="0dp"
-            android:layout_weight="2.2"
-            android:gravity="left"
-            android:layout_height="wrap_content">
-            <FrameLayout
-                android:paddingLeft="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/linearLayout"
+        android:id="@+id/FragmentBGL"
+        android:name="team5.diabetesself_managmentapp.fragments.AddBGLFragment"
+        tools:layout="@layout/bgl_fragment" />
 
-                >
-
-                <SeekBar
-                    android:layout_marginTop="30dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/seekBar"
-                    android:visibility="invisible"
-                    android:max="350"
-                    />
-
-                <EditText
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:ems="10"
-                    android:text="@string/meanDefaultString"
-                    android:gravity="center_horizontal"
-                    android:id="@+id/editTextMean"
-                    android:focusable="false"
-                    android:clickable="false"
-                    android:layout_gravity="left|top" />
-
-                <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/meanString"
-                    android:paddingTop="35dp"
-                    android:gravity="center"
-                    android:textColor="#ff0000"
-                    android:id="@+id/textViewMean"
-                    android:visibility="visible"
-                    android:layout_gravity="left|bottom" />
-            </FrameLayout>
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="0dp"
-            android:layout_weight=".9"
-            android:paddingRight="10dp"
-            android:layout_height="wrap_content"
-            android:gravity="center">
-
-            <Button
-                android:id="@+id/buttonLogEvent"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/log"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="@string/logEventString"
-                android:id="@+id/textViewLogs"
-                />
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="0dp"
-            android:layout_weight=".9"
-            android:paddingRight="10dp"
-            android:layout_height="wrap_content"
-            android:gravity="center">
-
-            <Button
-                android:id="@+id/ButtonAddBGL"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/bgl"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="@string/addNewBglString"
-                android:id="@+id/textViewAddBGL"
-                />
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_marginTop="5dp"
-        android:id="@+id/linearLayoutRow2"
-        android:orientation="horizontal"
+    <fragment
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/linearLayoutRow1"
-        android:weightSum="4"
-        android:baselineAligned="false">
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="0dp"
-            android:layout_weight="1.3"
-            android:layout_height="wrap_content"
-            android:gravity="left">
-            <FrameLayout
-                android:paddingLeft="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent">
-
-                <EditText
-                    android:layout_gravity="left|top"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:ems="10"
-                    android:clickable="false"
-                    android:focusable="false"
-                    android:text="@string/varDefaultString"
-                    android:gravity="center_horizontal"
-                    android:id="@+id/editTextVariant" />
-
-                <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/varianceString"
-                    android:paddingTop="35dp"
-                    android:gravity="center_horizontal"
-                    android:textColor="#ff0000"
-                    android:id="@+id/textViewVariant"
-                    android:visibility="visible"
-                    android:layout_gravity="right|top" />
-
-            </FrameLayout>
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="0dp"
-            android:layout_weight=".9"
-            android:paddingRight="10dp"
-            android:layout_height="wrap_content"
-            android:gravity="center">
-
-            <Button
-                android:id="@+id/buttonPrescription"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/prescription"
-                />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="@string/prescriptionString"
-                android:id="@+id/textViewAddPrescription"
-                />
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="0dp"
-            android:layout_weight=".9"
-            android:paddingRight="10dp"
-            android:layout_height="wrap_content"
-            android:gravity="center">
-
-            <Button
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/charts"
-                android:onClick="onGraphClick"
-                android:id="@+id/bGraph"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="@string/graphsString"
-                android:id="@+id/textViewGraph"
-                />
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="0dp"
-            android:layout_weight=".9"
-            android:paddingRight="10dp"
-            android:layout_height="wrap_content"
-            android:gravity="center">
-
-            <Button
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/query"
-                android:onClick="onQueryClick"
-                android:id="@+id/buttonQuery"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="@string/queryString"
-                android:id="@+id/textViewAddQuery"
-                />
-        </LinearLayout>
-
-    </LinearLayout>
+        android:layout_height="match_parent"
+        android:layout_below="@id/linearLayout"
+        android:id="@+id/FragmentButtons"
+        android:name="team5.diabetesself_managmentapp.fragments.MainButtonsFragment"
+        tools:layout="@layout/main_buttons_fragment" />
 </RelativeLayout>
