@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.text.format.DateUtils;
 import android.widget.EditText;
@@ -23,10 +24,6 @@ public class DatePickerFragment extends DialogFragment
 {
 	private Activity mActivity;
 	private DatePickerDialog.OnDateSetListener mListener;
-
-	private int year;
-	private int month;
-	private int day;
 
 	/* THE FRAGMENT IS ATTACHED TO THE ACTIVITY THAT INVOKED THE
 	FRAGMENTS'S CREATION
@@ -48,14 +45,15 @@ public class DatePickerFragment extends DialogFragment
 		}
 	}
 
+	@NonNull
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState)
 	{
 		// GET THE CURRENT DATE
 		final Calendar c = Calendar.getInstance();
-		year = c.get(Calendar.YEAR);
-		month = c.get(Calendar.MONTH);
-		day = c.get(Calendar.DAY_OF_MONTH);
+		int year = c.get(Calendar.YEAR);
+		int month = c.get(Calendar.MONTH);
+		int day = c.get(Calendar.DAY_OF_MONTH);
 
 		// CURRENT DATE IS DEFAULT DATE FOR DATEPICKERDIALOG
 		// CREATE AN INSTANCE OF A DATEPICKERDIALOG AND THEN RETURN IT

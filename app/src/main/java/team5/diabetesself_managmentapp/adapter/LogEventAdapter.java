@@ -27,7 +27,6 @@ public class LogEventAdapter extends RecyclerView.Adapter<LogEventViewHolder>
 	private EditText etDate;
 	private EditText etTime;
 	private Date cal = new GregorianCalendar().getTime();
-	private SimpleDateFormat sdf;
 
 	public LogEventAdapter(Context context, List<LogEventModel> logEventModelList)
 	{
@@ -69,10 +68,10 @@ public class LogEventAdapter extends RecyclerView.Adapter<LogEventViewHolder>
 			cal.getTime();
 		}
 
-		sdf = new SimpleDateFormat("MM/dd/yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 		etDate.setText(sdf.format(cal.getTime()));
 
-		sdf = new SimpleDateFormat("HH:mm");
+		sdf = new SimpleDateFormat("hh:mm:aa");
 		etTime.setText(sdf.format(cal.getTime()));
 
 		return new LogEventViewHolder(view, viewType);
