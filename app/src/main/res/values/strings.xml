@@ -84,9 +84,7 @@
     <string name="setEntriesValue">Set Entries</string>
     <string name="addEntryValue">Add Entry</string>
     <string name="mainPageValue">Main Page</string>
-    <string name="start_date">Start Date</string>
-    <string name="end_date">End Date</string>
-    <string name="search">Search</string>
+
 
 
 </resources>

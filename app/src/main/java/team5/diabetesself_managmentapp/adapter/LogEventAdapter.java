@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import team5.diabetesself_managmentapp.utils.LogEventConstant;
 import team5.diabetesself_managmentapp.R;
@@ -16,6 +17,7 @@ import team5.diabetesself_managmentapp.model.LogEventModel;
 import team5.diabetesself_managmentapp.viewHolder.LogEventViewHolder;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -24,9 +26,6 @@ public class LogEventAdapter extends RecyclerView.Adapter<LogEventViewHolder>
 {
 	private LayoutInflater inflater = null;
 	private List<LogEventModel> logEventModelList;
-	private EditText etDate;
-	private EditText etTime;
-	private Date cal = new GregorianCalendar().getTime();
 
 	public LogEventAdapter(Context context, List<LogEventModel> logEventModelList)
 	{
@@ -42,33 +41,22 @@ public class LogEventAdapter extends RecyclerView.Adapter<LogEventViewHolder>
 		if(viewType == LogEventConstant.DIET)
 		{
 			view = inflater.inflate(R.layout.diet_fragment, parent, false);
-
-			// GET THE CURRENT DATE TO BE DISPLAYED INITIALLY IN THE TEXTVIEW
-			etDate = (EditText)view.findViewById(R.id.editTextDateDiet);
-			etTime = (EditText)view.findViewById(R.id.editTextTimeDiet);
-			cal.getTime();
-
 		}
 		else if(viewType == LogEventConstant.EXERCISE)
 		{
 			view = inflater.inflate(R.layout.exercise_fragment, parent, false);
-
-			// GET THE CURRENT DATE TO BE DISPLAYED INITIALLY IN THE TEXTVIEW
-			etDate = (EditText)view.findViewById(R.id.editTextDateExercise);
-			etTime = (EditText)view.findViewById(R.id.editTextTimeExercise);
-			cal.getTime();
 		}
 		else if(viewType == LogEventConstant.MEDICATION)
 		{
 			view = inflater.inflate(R.layout.medication_fragment, parent, false);
-
-			// GET THE CURRENT DATE TO BE DISPLAYED INITIALLY IN THE TEXTVIEW
-			etDate = (EditText)view.findViewById(R.id.editTextDateMeds);
-			etTime = (EditText)view.findViewById(R.id.editTextTimeMeds);
-			cal.getTime();
 		}
+		// GET THE CURRENT DATE TO BE DISPLAYED INITIALLY IN THE TEXTVIEW
+		EditText etDate = (EditText)view.findViewById(R.id.editTextDate);
+		EditText etTime = (EditText)view.findViewById(R.id.editTextTime);
+		Date cal = new GregorianCalendar().getTime();
+		SimpleDateFormat sdf;
 
-		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+		sdf = new SimpleDateFormat("MM/dd/yyyy");
 		etDate.setText(sdf.format(cal.getTime()));
 
 		sdf = new SimpleDateFormat("hh:mm:aa");

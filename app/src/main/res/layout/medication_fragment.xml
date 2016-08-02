@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/layout_corning_med"
@@ -73,20 +74,18 @@
             android:text="@string/textViewTime"/>
 
         <EditText
-            android:id="@+id/editTextDateMeds"
+            android:id="@+id/editTextDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:focusable="false"
-            android:onClick="showDatePickerDialog"
-            android:inputType="date"/>
+            android:onClick="showDatePickerDialog"/>
 
         <EditText
-            android:id="@+id/editTextTimeMeds"
+            android:id="@+id/editTextTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:focusable="false"
-            android:onClick="showTimePickerDialog"
-            android:inputType="time"/>
+            android:onClick="showTimePickerDialog"/>
     </LinearLayout>
 
 </RelativeLayout>

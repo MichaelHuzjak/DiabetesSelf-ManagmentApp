@@ -40,8 +40,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:focusable="false"
-                android:onClick="MainShowDatePickerDialog"
-                android:inputType="date"/>
+
+                android:onClick="MainShowDatePickerDialog"/>
             <EditText
                 android:layout_weight="1"
                 android:textSize="15sp"
@@ -50,8 +50,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:focusable="false"
-                android:onClick="MainShowTimePickerDialog"
-                android:inputType="time"/>
+                android:onClick="MainShowTimePickerDialog"/>
                 <RelativeLayout
                     android:gravity="center_vertical"
                     android:paddingLeft="15dp"
