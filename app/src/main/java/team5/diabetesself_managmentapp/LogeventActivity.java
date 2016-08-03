@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.NavUtils;
@@ -39,10 +40,14 @@ import team5.diabetesself_managmentapp.utils.LogEventConstant;
  */
 public class LogeventActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener{
 
+	private final String KEY_RECYCLER_STATE = "recycler_state";
+	private final String KEY_LIST_STATE = "list_state";
+
 	// PRIVATE CLASS MEMBERS
 	private RecyclerView logEventRecyclerView;
 	private LogEventAdapter logEventAdapter;
-	private List<LogEventModel> logEventModelList = new ArrayList<>();
+	private List<LogEventModel> logEventModelList;
+	private LinearLayoutManager linearLayoutManager;
 
 	// PRIVATE CLASS MEMBERS
 	private EditText etDate;
@@ -59,7 +64,21 @@ public class LogeventActivity extends AppCompatActivity implements TimePickerDia
 		logEventRecyclerView = (RecyclerView) findViewById(R.id.logEventRecyclerView);
 		logEventRecyclerView.setHasFixedSize(true);
 
-		LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, OrientationHelper.VERTICAL, false);
+		if(savedInstanceState == null || !savedInstanceState.containsKey(KEY_LIST_STATE))
+		{
+			logEventModelList = new ArrayList<>();
+			linearLayoutManager = new LinearLayoutManager(this, OrientationHelper.VERTICAL, false);
+		}
+		else
+		{
+			logEventModelList = savedInstanceState.getParcelableArrayList(KEY_LIST_STATE);
+
+			Parcelable listState = savedInstanceState.getParcelable(KEY_RECYCLER_STATE);
+			linearLayoutManager = new LinearLayoutManager(this, OrientationHelper.VERTICAL, false);
+			linearLayoutManager.onRestoreInstanceState(listState);
+
+		}
+
 		logEventRecyclerView.setLayoutManager(linearLayoutManager);
 		logEventRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
@@ -240,6 +259,16 @@ public class LogeventActivity extends AppCompatActivity implements TimePickerDia
 		Calendar cal = new GregorianCalendar(year, month, dayOfMonth);
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 		etDate.setText(sdf.format(cal.getTime()));
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+
+		outState.putParcelableArrayList(KEY_LIST_STATE, (ArrayList<? extends Parcelable>) logEventModelList);
+
+		Parcelable listState = linearLayoutManager.onSaveInstanceState();
+		outState.putParcelable(KEY_RECYCLER_STATE, listState);
 	}
 
 }
