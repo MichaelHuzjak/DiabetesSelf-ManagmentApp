@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
+    android:id="@+id/mainContainerLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -38,7 +39,7 @@
                 android:paddingBottom="10dp"
                 android:textColor="#00a8ff"
                 android:id="@+id/textViewNormalNotice"
-                android:visibility="visible"/>
+                android:visibility="invisible"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -125,20 +126,19 @@
             android:layout_weight="1.9"
             android:layout_width="0dp"
             android:layout_height="wrap_content">
+
             <fragment
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@id/linearLayout"
                 android:id="@+id/FragmentButtons"
                 android:name="team5.diabetesself_managmentapp.fragments.MainButtonsFragment"
                 tools:layout="@layout/main_buttons_fragment" />
             <fragment
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@id/linearLayout"
                 android:id="@+id/FragmentBGL"
                 android:name="team5.diabetesself_managmentapp.fragments.AddBGLFragment"
-                tools:layout="@layout/bgl_fragment" />
+                 />
 
 
         </LinearLayout>

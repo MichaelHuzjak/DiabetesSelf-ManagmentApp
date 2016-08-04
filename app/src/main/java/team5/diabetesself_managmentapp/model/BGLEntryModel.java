@@ -1,9 +1,25 @@
 package team5.diabetesself_managmentapp.model;
 
-/**
- * Created by Sein on 7/31/2016.
- */
-public class BGLEntryModel {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
+
+
+
+public class BGLEntryModel implements Parcelable{
+
+    public static final Parcelable.Creator<BGLEntryModel> CREATOR
+            = new Parcelable.Creator<BGLEntryModel>() {
+        public BGLEntryModel createFromParcel(Parcel in) {
+            return new BGLEntryModel(in.readString(),in.readString(),in.readInt());
+        }
+
+        public BGLEntryModel[] newArray(int size) {
+            return new BGLEntryModel[size];
+        }
+    };
+
     private String date, time;
     private int progress;
 
@@ -12,7 +28,6 @@ public class BGLEntryModel {
         time = "";
         progress = 0;
     }
-
     public BGLEntryModel(String date, String time, int progress){
         this.date = date;
         this.time = time;
@@ -35,5 +50,17 @@ public class BGLEntryModel {
     }
     public void setProgress(int progress){
         this.progress = progress;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(progress);
+        parcel.writeString(date);
+        parcel.writeString(time);
     }
 }

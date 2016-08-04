@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
+    android:id="@+id/mainContainerLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -122,19 +123,24 @@
 
     </LinearLayout>
 
-    <fragment
+    <RelativeLayout
+        android:id="@+id/RelativeLayoutFragmentHolder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/linearLayout"
-        android:id="@+id/FragmentBGL"
-        android:name="team5.diabetesself_managmentapp.fragments.AddBGLFragment"
-        tools:layout="@layout/bgl_fragment" />
+        >
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/FragmentBGL"
+            android:name="team5.diabetesself_managmentapp.fragments.AddBGLFragment"
+             />
 
-    <fragment
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/linearLayout"
-        android:id="@+id/FragmentButtons"
-        android:name="team5.diabetesself_managmentapp.fragments.MainButtonsFragment"
-        tools:layout="@layout/main_buttons_fragment" />
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/FragmentButtons"
+            android:name="team5.diabetesself_managmentapp.fragments.MainButtonsFragment"
+            tools:layout="@layout/main_buttons_fragment" />
+    </RelativeLayout>
 </RelativeLayout>

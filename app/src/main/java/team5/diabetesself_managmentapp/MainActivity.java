@@ -7,6 +7,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -35,7 +36,9 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import team5.diabetesself_managmentapp.adapter.BGLAdapter;
+import team5.diabetesself_managmentapp.fragments.AddBGLFragment;
 import team5.diabetesself_managmentapp.fragments.DatePickerFragment;
+import team5.diabetesself_managmentapp.fragments.MainButtonsFragment;
 import team5.diabetesself_managmentapp.fragments.TimePickerFragment;
 import team5.diabetesself_managmentapp.model.BGLEntryModel;
 
@@ -44,6 +47,8 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
+    private LinearLayoutManager linearLayoutManager;
+
     private GoogleApiClient client;
     private Toolbar toolbar;
     private Fragment AddBGLFragment, ButtonsFragment;
@@ -58,8 +63,10 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
     private EditText etTime;
 
     private ArrayList<BGLEntryModel> bglEntryList;
-    RecyclerView BGLHolderView;
-    BGLAdapter bglAdapter;
+    private RecyclerView BGLHolderView;
+    private BGLAdapter bglAdapter;
+
+    private boolean BGLFragVisible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +74,18 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         setContentView(R.layout.activity_main);
         initObjects();  // Must be called first to initialize objects.
 
-        AddBGLHelper.hideFragment(getFragmentManager(), AddBGLFragment);
+        if(savedInstanceState==null)
+            AddBGLHelper.hideFragment(getFragmentManager(), AddBGLFragment);
+        else{
+            if(savedInstanceState.getBoolean("BGL")){
+                AddBGLHelper.hideFragment(getFragmentManager(), ButtonsFragment);
+                AddBGLHelper.showFragment(getFragmentManager(), AddBGLFragment);
+            }else{
+                AddBGLHelper.hideFragment(getFragmentManager(), AddBGLFragment);
+            }
+        }
+
+        final AddBGLFragment bgl_frag = new AddBGLFragment();
         setSupportActionBar(toolbar);
 
         Button buttonAddBGLEvent = (Button)findViewById(R.id.ButtonShowBGLFragment);
@@ -116,6 +134,7 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
+
     private void initObjects(){
         AddBGLFragment = (Fragment) getFragmentManager().findFragmentById(R.id.FragmentBGL);
         ButtonsFragment = (Fragment) getFragmentManager().findFragmentById(R.id.FragmentButtons);
@@ -132,6 +151,21 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         extreme = (TextView) findViewById(R.id.textViewVeryHighNotice);
         doc = (TextView) findViewById(R.id.textViewDoctorNotice);
     }
+
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+
+        // Save the user's current game state
+        if(AddBGLFragment.isVisible())
+            BGLFragVisible=true;
+        else
+            BGLFragVisible=false;
+
+        savedInstanceState.putBoolean("BGL", BGLFragVisible);
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

@@ -1,5 +1,7 @@
 package team5.diabetesself_managmentapp.adapter;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -20,20 +22,21 @@ import team5.diabetesself_managmentapp.R;
 import team5.diabetesself_managmentapp.model.BGLEntryModel;
 
 public class BGLAdapter extends RecyclerView.Adapter<BGLAdapter.ViewHolder>{
-    private ArrayList<BGLAdapter.ViewHolder> list;
+    private ArrayList<BGLEntryModel> list;
     private int pos;
+    private ArrayList<BGLAdapter.ViewHolder> vh;
 
-
-    public BGLAdapter(ArrayList<BGLAdapter.ViewHolder> list){
+    public BGLAdapter(ArrayList<BGLEntryModel> list){
         this.list = list;
+        vh = new ArrayList<ViewHolder>();
     }
 
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         public SeekBar seek;
         public ImageButton remove;
-
         private EditText etDate, etTime;
+
         public ViewHolder(View itemView){
             super(itemView);
             seek = (SeekBar)itemView.findViewById(R.id.seekBarForBGL);
@@ -42,12 +45,70 @@ public class BGLAdapter extends RecyclerView.Adapter<BGLAdapter.ViewHolder>{
             etTime = (EditText)itemView.findViewById(R.id.EditTextBGLTime);
             setRemoveFunction();
         }
+        private void syncEntries(String date, String time, int progress){
+            seek.setProgress(progress);
+            etDate.setText(date);
+            etTime.setText(time);
+        }
+        private void setListeners(final int position){
 
+            list.get(position).setTime(etTime.getText().toString());
+            list.get(position).setDate(etDate.getText().toString());
+
+            seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                    AddBGLHelper.AddNewBGL(i);
+                }
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                    list.get(position).setProgress(seekBar.getProgress());
+                    AddBGLHelper.AddNewBGL(seekBar.getProgress());
+                }
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                    list.get(position).setProgress(seekBar.getProgress());
+                    AddBGLHelper.AddNewBGL(seekBar.getProgress());
+                }
+            });
+
+            etDate.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    list.get(position).setDate(charSequence.toString());
+
+                }
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    list.get(position).setDate(charSequence.toString());
+                }
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    list.get(position).setDate(editable.toString());
+                }
+            });
+
+            etTime.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    list.get(position).setTime(charSequence.toString());
+                }
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    list.get(position).setTime(charSequence.toString());
+                }
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    list.get(position).setTime(editable.toString());
+                }
+            });
+        }
         private void setRemoveFunction(){
             remove.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     removeAt(getAdapterPosition());
+                    seek.setProgress(0);
                 }
             });
         }
@@ -75,25 +136,35 @@ public class BGLAdapter extends RecyclerView.Adapter<BGLAdapter.ViewHolder>{
         formatter = new SimpleDateFormat("hh:mm:aa");
         viewHolder.etTime.setText(formatter.format(cal.getTime()));
 
-
+        vh.add(viewHolder);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(final BGLAdapter.ViewHolder viewHolder, int position) {
-        viewHolder.seek.setProgress(0);
-        AddBGLHelper.AddNewBGL(viewHolder.seek);
-        list.set(getItemCount()-1,viewHolder);
+        // If the input item is not empty, then set the editTexts and the seekbar
+        // to the specified values inside the item.
+        if(list.size()!=0 && !list.get(position).getTime().equals("")){
+            BGLEntryModel bml = list.get(position);
+            viewHolder.syncEntries(bml.getDate(),bml.getTime(),bml.getProgress());
+        }
+        viewHolder.setListeners(position);
     }
+
     @Override
     public int getItemCount() {
+        if(list==null)
+            return 0;
         return list.size();
     }
 
-
+    public ArrayList<BGLEntryModel> getList(){
+        return list;
+    }
     //For Debugging purposes
     public void printList(){
-        for(ViewHolder l: list)
-            System.out.println("Progress: "+l.seek.getProgress()+" || Date: "+l.etDate.getText()+" || Time: "+l.etTime.getText());
+        for(BGLEntryModel l: list){
+            System.out.println("Progress: "+l.getProgress()+" || Date: "+l.getDate()+" || Time: "+l.getTime());
+        }
     }
 }
