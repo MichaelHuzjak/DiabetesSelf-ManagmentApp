@@ -2,32 +2,65 @@ package team5.diabetesself_managmentapp.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.widget.EditText;
+
+import java.util.Date;
 
 public class LogEventModel implements Parcelable {
 
     public int type;
+
     public String modelContent;
+
+    public String description;
+    public String value;
+    public String date;
+    public String time;
 
     public LogEventModel(){}
 
-    public LogEventModel(int type, String modelContent){
+    public LogEventModel(int type, String modelContent)
+    {
+        System.out.println("class LogEventModel LogEventModel()");
         this.type = type;
         this.modelContent = modelContent;
+        this.description = null;
+        this.value = null;
+        this.date = null;
+        this.time = null;
     }
 
-    protected LogEventModel(Parcel in) {
+    public LogEventModel(int type, String modelContent, String description, String value, String date, String time)
+    {
+        this.type = type;
+        this.modelContent = modelContent;
+        this.description = description;
+        this.value = value;
+        this.date = date;
+        this.time = time;
+    }
+
+    protected LogEventModel(Parcel in)
+    {
         type = in.readInt();
         modelContent = in.readString();
+        description = in.readString();
+        value = in.readString();
+        date = in.readString();
+        time = in.readString();
     }
 
-    public static final Creator<LogEventModel> CREATOR = new Creator<LogEventModel>() {
+    public static final Creator<LogEventModel> CREATOR = new Creator<LogEventModel>()
+    {
         @Override
-        public LogEventModel createFromParcel(Parcel in) {
+        public LogEventModel createFromParcel(Parcel in)
+        {
             return new LogEventModel(in);
         }
 
         @Override
-        public LogEventModel[] newArray(int size) {
+        public LogEventModel[] newArray(int size)
+        {
             return new LogEventModel[size];
         }
     };
@@ -38,8 +71,58 @@ public class LogEventModel implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel parcel, int i) {
+    public void writeToParcel(Parcel parcel, int i)
+    {
         parcel.writeInt(type);
         parcel.writeString(modelContent);
+        parcel.writeString(description);
+        parcel.writeString(value);
+        parcel.writeString(date);
+        parcel.writeString(time);
+    }
+
+    public String getModelContent()
+    {
+        return modelContent;
+    }
+
+    public String getTime()
+    {
+        return time;
+    }
+
+    public String getDate()
+    {
+        return date;
+    }
+
+    public String getValue()
+    {
+        return value;
+    }
+
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setTime(String time)
+    {
+        this.time = time;
+    }
+
+    public void setDate(String date)
+    {
+        this.date = date;
+    }
+
+    public void setValue(String value)
+    {
+        this.value = value;
+    }
+
+    public void setDescription(String description)
+    {
+        this.description = description;
     }
 }

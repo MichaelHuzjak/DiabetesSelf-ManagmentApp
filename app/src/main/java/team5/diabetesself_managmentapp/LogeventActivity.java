@@ -2,6 +2,7 @@ package team5.diabetesself_managmentapp;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -53,12 +54,17 @@ public class LogeventActivity extends AppCompatActivity implements TimePickerDia
 	private EditText etDate;
 	private EditText etTime;
 
+	DatabaseHelper myEventLogDB;
+	SQLiteDatabase.CursorFactory myEventLogFactory;
+
 	//VIEW OBJECTS FOR LAYOUT UI REFERENCE
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_logevent);
+
+		myEventLogDB = new DatabaseHelper(null, null, null, 1);
 
 		// ESTABLISH THE REFERENCES TO LIST
 		logEventRecyclerView = (RecyclerView) findViewById(R.id.logEventRecyclerView);
