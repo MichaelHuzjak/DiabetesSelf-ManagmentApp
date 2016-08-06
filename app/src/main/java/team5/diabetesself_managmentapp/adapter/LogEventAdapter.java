@@ -2,6 +2,8 @@ package team5.diabetesself_managmentapp.adapter;
 
 /**
  * Created by Joshua on 7/28/2016.
+ * THIS CLASS IS THE ACTIVITY THAT DEFINES THE BEHAVIOR
+ * WHEN THE USER IS ADDING EVENTS TO BE LOGGED.
  */
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -25,12 +27,9 @@ import java.util.List;
 public class LogEventAdapter extends RecyclerView.Adapter<LogEventViewHolder>
 {
 	private LayoutInflater inflater = null;
-	private List<LogEventModel> logEventModelList;
+	private final List<LogEventModel> logEventModelList;
 	private EditText etDate;
 	private EditText etTime;
-
-	private EditText etDescription;
-	private EditText etValue;
 
 	private Date cal;
 	private SimpleDateFormat sdf;
@@ -55,13 +54,11 @@ public class LogEventAdapter extends RecyclerView.Adapter<LogEventViewHolder>
 		if(viewType == LogEventConstant.DIET)
 		{
 			System.out.println("viewType == LogEventConstant.DIET");
-			view = inflater.inflate(R.layout.diet_fragment, parent, false);
+			view = inflater.inflate(R.layout.diet_layout, parent, false);
 
 			// GET THE CURRENT DATE TO BE DISPLAYED INITIALLY IN THE TEXTVIEW
 			etDate = (EditText)view.findViewById(R.id.editTextDateDiet);
 			etTime = (EditText)view.findViewById(R.id.editTextTimeDiet);
-			etDescription = (EditText)view.findViewById(R.id.editTextDietDescription);
-			etValue = (EditText)view.findViewById(R.id.editTextDietQty);
 
 			cal.getTime();
 
@@ -69,26 +66,22 @@ public class LogEventAdapter extends RecyclerView.Adapter<LogEventViewHolder>
 		else if(viewType == LogEventConstant.EXERCISE)
 		{
 			System.out.println("viewType == LogEventConstant.EXERCISE");
-			view = inflater.inflate(R.layout.exercise_fragment, parent, false);
+			view = inflater.inflate(R.layout.exercise_layout, parent, false);
 
 			// GET THE CURRENT DATE TO BE DISPLAYED INITIALLY IN THE TEXTVIEW
 			etDate = (EditText)view.findViewById(R.id.editTextDateExercise);
 			etTime = (EditText)view.findViewById(R.id.editTextTimeExercise);
-			etDescription = (EditText)view.findViewById(R.id.editTextExerciseDescription);
-			etValue = (EditText)view.findViewById(R.id.editTextExerciseDuration);
 
 			cal.getTime();
 		}
 		else if(viewType == LogEventConstant.MEDICATION)
 		{
 			System.out.println("viewType == LogEventConstant.MEDICATION");
-			view = inflater.inflate(R.layout.medication_fragment, parent, false);
+			view = inflater.inflate(R.layout.medication_layout, parent, false);
 
 			// GET THE CURRENT DATE TO BE DISPLAYED INITIALLY IN THE TEXTVIEW
 			etDate = (EditText)view.findViewById(R.id.editTextDateMeds);
 			etTime = (EditText)view.findViewById(R.id.editTextTimeMeds);
-			etDescription = (EditText)view.findViewById(R.id.editTextMedicationDescription);
-			etValue = (EditText)view.findViewById(R.id.editTextMedicationQty);
 
 			cal.getTime();
 		}
@@ -97,7 +90,7 @@ public class LogEventAdapter extends RecyclerView.Adapter<LogEventViewHolder>
 		etDate.setText(sdf.format(cal.getTime()));
 		logEventModelList.get(count).setDate(sdf.format(cal.getTime()));
 
-		sdf = new SimpleDateFormat("hh:mm:ss aa");
+		sdf = new SimpleDateFormat("hh:mm aa");
 		etTime.setText(sdf.format(cal.getTime()));
 		logEventModelList.get(count).setTime(sdf.format(cal.getTime()));
 
@@ -133,7 +126,7 @@ public class LogEventAdapter extends RecyclerView.Adapter<LogEventViewHolder>
 			sdf = new SimpleDateFormat("MM/dd/yyyy");
 			holder.date.setText(sdf.format(cal.getTime()));
 
-			sdf = new SimpleDateFormat("hh:mm:ss aa");
+			sdf = new SimpleDateFormat("hh:mm aa");
 			holder.time.setText(sdf.format(cal.getTime()));
 		}
 		else
@@ -169,37 +162,6 @@ public class LogEventAdapter extends RecyclerView.Adapter<LogEventViewHolder>
 		return super.getItemViewType(position);
 	}
 
-	public String[] getItemViewString(int position)
-	{
-		LogEventModel logEventModel;
-
-		int count = logEventModelList.size();
-
-		String[] strings = new String[count];
-
-		for(int i = 0; i < count; i++)
-		{
-			logEventModel = logEventModelList.get(position);
-
-			if(logEventModel != null)
-			{
-				strings[i] = logEventModel.modelContent;
-			}
-			else
-			{
-				strings[i] = "Empty";
-			}
-		}
-
-		return strings;
-
-	}
-
-	public LogEventModel getItem(int position)
-	{
-		return logEventModelList.get(position);
-	}
-
 	/* TEXTWATCHER TO BE MADE AWARE OF THE POSITION SO WHEN A NEW
 	ITEM IS ATTAHED IN THE ONBINDVIEWHOLDER(), THE CURRENT POSITION WILL BE UPDATED
 	IN THE VIEWHOLDER, THAT CORRESPONDS ITS MODEL IN THE ARRAY LIST AS WELL AS THE POSITION OF THE LISTENER
@@ -208,7 +170,7 @@ public class LogEventAdapter extends RecyclerView.Adapter<LogEventViewHolder>
 	public class MyCustomEditTextListener implements TextWatcher
 	{
 		private int position;
-        int type;
+        final int type;
 
 		public MyCustomEditTextListener(int type)
 		{

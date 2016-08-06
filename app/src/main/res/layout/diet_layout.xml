@@ -1,50 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="350dp"
+                android:layout_width="@dimen/logevent_width"
                 android:layout_height="wrap_content"
-                android:background="@drawable/layout_corning_med"
+                android:background="@drawable/layout_corning_diet"
                 android:paddingBottom="5dp"
                 android:paddingTop="20dp"
                 android:paddingLeft="20dp"
-                android:paddingRight="20dp">
+                android:paddingRight="20dp"
+                android:layout_weight=".70">
 
     <TextView
-        android:id="@+id/textEditMedication"
+        android:id="@+id/textEditDiet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/textEditMedication"
+        android:text="@string/textEditDiet"
         android:textStyle="bold"/>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                  android:id="@+id/linearlayoutMedication"
+                  android:id="@+id/linearlayoutdiet"
                   android:layout_width="fill_parent"
                   android:layout_height="wrap_content"
                   android:orientation="horizontal"
-                  android:layout_below="@+id/textEditMedication">
+                  android:layout_below="@+id/textEditDiet">
 
         <TextView
-            android:id="@+id/textViewMedication"
+            android:id="@+id/textViewDiet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/textViewMedication"
+            android:text="@string/textViewDiet"
             />
         <EditText
-            android:id="@+id/editTextMedicationDescription"
+            android:id="@+id/editTextDietDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:selectAllOnFocus="true"
-            android:hint="@string/enterMedicationDescription"
+            android:hint="@string/enterDietDescription"
             android:inputType="text"/>
 
     </LinearLayout>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                  android:id="@+id/linearlayoutMedicationqty"
+                  android:id="@+id/linearlayoutdietqty"
                   android:layout_width="fill_parent"
                   android:layout_height="wrap_content"
                   android:orientation="horizontal"
-                  android:layout_below="@+id/linearlayoutMedication">
+                  android:layout_below="@+id/linearlayoutdiet">
 
         <TextView
             android:id="@+id/textViewQty"
@@ -52,41 +52,40 @@
             android:layout_height="wrap_content"
             android:text="@string/textViewQty"/>
         <EditText
-            android:id="@+id/editTextMedicationQty"
+            android:id="@+id/editTextDietQty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:selectAllOnFocus="true"
-            android:hint="@string/enterMedicationQty"
+            android:hint="@string/enterDietQty"
             android:inputType="number"/>
     </LinearLayout>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                  android:id="@+id/linearlayoutMedicationtime"
+                  android:id="@+id/linearlayoutdiettime"
                   android:layout_width="fill_parent"
                   android:layout_height="wrap_content"
                   android:orientation="horizontal"
-                  android:layout_below="@+id/linearlayoutMedicationqty">
+                  android:layout_below="@+id/linearlayoutdietqty">
 
         <TextView
             android:id="@+id/textViewTime"
             android:layout_width="wrap_content"
+            android:paddingRight="10dp"
             android:layout_height="wrap_content"
             android:text="@string/textViewTime"/>
 
         <EditText
-            android:id="@+id/editTextDateMeds"
+            android:id="@+id/editTextDateDiet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingRight="30dp"
             android:focusable="false"
             android:onClick="showDatePickerDialog"
             android:inputType="date"/>
 
         <EditText
-            android:id="@+id/editTextTimeMeds"
+            android:id="@+id/editTextTimeDiet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingRight="30dp"
             android:focusable="false"
             android:onClick="showTimePickerDialog"
             android:inputType="time"/>

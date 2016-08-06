@@ -1,13 +1,11 @@
 package team5.diabetesself_managmentapp;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,12 +14,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -38,7 +33,6 @@ import java.util.GregorianCalendar;
 import team5.diabetesself_managmentapp.adapter.BGLAdapter;
 import team5.diabetesself_managmentapp.fragments.AddBGLFragment;
 import team5.diabetesself_managmentapp.fragments.DatePickerFragment;
-import team5.diabetesself_managmentapp.fragments.MainButtonsFragment;
 import team5.diabetesself_managmentapp.fragments.TimePickerFragment;
 import team5.diabetesself_managmentapp.model.BGLEntryModel;
 
@@ -55,9 +49,6 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
     static ArcProgress arc;
     static EditText meanEditText;
     static TextView meanTextView, addBGLTextView,time, low, mid, norm, high, extreme, doc;
-    private int pickerYear = 0;
-    private int pickerMonth = 0;
-    private int pickerDay = 0;
 
     private EditText etDate;
     private EditText etTime;
@@ -65,8 +56,6 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
     private ArrayList<BGLEntryModel> bglEntryList;
     private RecyclerView BGLHolderView;
     private BGLAdapter bglAdapter;
-
-    private boolean BGLFragVisible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,10 +146,11 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
     public void onSaveInstanceState(Bundle savedInstanceState) {
 
         // Save the user's current game state
+        boolean BGLFragVisible = false;
         if(AddBGLFragment.isVisible())
-            BGLFragVisible=true;
+            BGLFragVisible =true;
         else
-            BGLFragVisible=false;
+            BGLFragVisible =false;
 
         savedInstanceState.putBoolean("BGL", BGLFragVisible);
         super.onSaveInstanceState(savedInstanceState);
@@ -274,11 +264,8 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth)
     {
-        pickerYear = year;
-        pickerMonth = month;
-        pickerDay = dayOfMonth;
 
-        Calendar cal = new GregorianCalendar(pickerYear, pickerMonth, pickerDay);
+        Calendar cal = new GregorianCalendar(year, month, dayOfMonth);
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
         etDate.setText(sdf.format(cal.getTime()));
     }

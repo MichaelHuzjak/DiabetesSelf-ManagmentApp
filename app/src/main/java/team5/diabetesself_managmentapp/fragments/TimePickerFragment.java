@@ -11,6 +11,7 @@ import java.util.Calendar;
 
 /**
  * Created by Joshua on 7/28/2016.
+ * A dialog that prompts the user for the time of day.
  */
 public class TimePickerFragment extends DialogFragment
 {

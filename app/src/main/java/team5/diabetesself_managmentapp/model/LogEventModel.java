@@ -2,26 +2,20 @@ package team5.diabetesself_managmentapp.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.widget.EditText;
-
-import java.util.Date;
 
 public class LogEventModel implements Parcelable {
 
-    public int type;
+    public final int type;
 
-    public String modelContent;
+    public final String modelContent;
 
     public String description;
     public String value;
     public String date;
     public String time;
 
-    public LogEventModel(){}
-
     public LogEventModel(int type, String modelContent)
     {
-        System.out.println("class LogEventModel LogEventModel()");
         this.type = type;
         this.modelContent = modelContent;
         this.description = null;
@@ -30,17 +24,7 @@ public class LogEventModel implements Parcelable {
         this.time = null;
     }
 
-    public LogEventModel(int type, String modelContent, String description, String value, String date, String time)
-    {
-        this.type = type;
-        this.modelContent = modelContent;
-        this.description = description;
-        this.value = value;
-        this.date = date;
-        this.time = time;
-    }
-
-    protected LogEventModel(Parcel in)
+    private LogEventModel(Parcel in)
     {
         type = in.readInt();
         modelContent = in.readString();
@@ -79,11 +63,6 @@ public class LogEventModel implements Parcelable {
         parcel.writeString(value);
         parcel.writeString(date);
         parcel.writeString(time);
-    }
-
-    public String getModelContent()
-    {
-        return modelContent;
     }
 
     public String getTime()

@@ -3,11 +3,9 @@ package team5.diabetesself_managmentapp;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -21,7 +19,6 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.text.ParseException;
@@ -31,8 +28,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import team5.diabetesself_managmentapp.adapter.LogEventAdapter;
 import team5.diabetesself_managmentapp.fragments.TimePickerFragment;
@@ -58,13 +53,8 @@ public class LogeventActivity extends AppCompatActivity implements TimePickerDia
 	// PRIVATE CLASS MEMBERS
 	private EditText etDate;
 	private EditText etTime;
-	public String description;
-	public String value;
-	public String date;
-	public String time;
 
 	// DATABASE RELATED MEMEBRS
-	private Context activityContext; // THIS IS THE PROPER CONTEXT FOR THE DB
 	private DatabaseHelper myEventLogDB;
 
 	//VIEW OBJECTS FOR LAYOUT UI REFERENCE
@@ -222,13 +212,13 @@ public class LogeventActivity extends AppCompatActivity implements TimePickerDia
 						switch (logEventType) {
 							case LogEventConstant.DIET:
 								et = (EditText)parentView.findViewById(R.id.editTextDietDescription);
-								description = et.getText().toString();
+								String description = et.getText().toString();
 								et = (EditText)parentView.findViewById(R.id.editTextDietQty);
-								value = et.getText().toString();
+								String value = et.getText().toString();
 								et = (EditText)parentView.findViewById(R.id.editTextDateDiet);
-								date = et.getText().toString();
+								String date = et.getText().toString();
 								et = (EditText)parentView.findViewById(R.id.editTextTimeDiet);
-								time = et.getText().toString();
+								String time = et.getText().toString();
 								makeDbModel(LogEventConstant.DIET, description, value, date, time);
 								break;
 							case LogEventConstant.EXERCISE:
@@ -349,13 +339,13 @@ public class LogeventActivity extends AppCompatActivity implements TimePickerDia
 		{
 			myNum = 0;
 		}
-
-		try {
-			myNum = Integer.parseInt(value);
-		} catch(NumberFormatException nfe) {
-			myNum = 0;
+        else {
+			try {
+				myNum = Integer.parseInt(value);
+			} catch (NumberFormatException nfe) {
+				myNum = 0;
+			}
 		}
-
 		switch(type)
 		{
 			case LogEventConstant.DIET:
