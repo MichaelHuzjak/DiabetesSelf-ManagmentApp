@@ -11,6 +11,8 @@ import team5.diabetesself_managmentapp.adapter.LogEventAdapter;
 
 /**
  * Created by Joshua Dixon on 7/28/2016.
+ * An onject that describes the log event view and metadata about its place within the RecyclerView
+ * that appears on the UI, similarly to a scrollable list / listview.
  */
 public class LogEventViewHolder extends RecyclerView.ViewHolder {
 
@@ -21,12 +23,10 @@ public class LogEventViewHolder extends RecyclerView.ViewHolder {
     public EditText date;
     public EditText time;
 
-    public LogEventAdapter.MyCustomEditTextListener descriptorEditTextListener;
-    public LogEventAdapter.MyCustomEditTextListener valueEditTextListener;
-    public LogEventAdapter.MyCustomEditTextListener dateEditTextListener;
-    public LogEventAdapter.MyCustomEditTextListener timeEditTextListener;
-
-    private int type;
+    public final LogEventAdapter.MyCustomEditTextListener descriptorEditTextListener;
+    public final LogEventAdapter.MyCustomEditTextListener valueEditTextListener;
+    public final LogEventAdapter.MyCustomEditTextListener dateEditTextListener;
+    public final LogEventAdapter.MyCustomEditTextListener timeEditTextListener;
 
     public LogEventViewHolder(View itemView, int type,
                               LogEventAdapter.MyCustomEditTextListener descriptorEditTextListener,
