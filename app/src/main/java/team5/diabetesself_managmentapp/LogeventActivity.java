@@ -2,6 +2,7 @@ package team5.diabetesself_managmentapp;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -23,11 +24,15 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import team5.diabetesself_managmentapp.adapter.LogEventAdapter;
 import team5.diabetesself_managmentapp.fragments.TimePickerFragment;
@@ -44,7 +49,7 @@ public class LogeventActivity extends AppCompatActivity implements TimePickerDia
 	private final String KEY_RECYCLER_STATE = "recycler_state";
 	private final String KEY_LIST_STATE = "list_state";
 
-	// PRIVATE CLASS MEMBERS
+	// PRIVATE CLASS MEMBERS FOR UI
 	private RecyclerView logEventRecyclerView;
 	private LogEventAdapter logEventAdapter;
 	private List<LogEventModel> logEventModelList;
@@ -53,9 +58,14 @@ public class LogeventActivity extends AppCompatActivity implements TimePickerDia
 	// PRIVATE CLASS MEMBERS
 	private EditText etDate;
 	private EditText etTime;
+	public String description;
+	public String value;
+	public String date;
+	public String time;
 
-	DatabaseHelper myEventLogDB;
-	SQLiteDatabase.CursorFactory myEventLogFactory;
+	// DATABASE RELATED MEMEBRS
+	private Context activityContext; // THIS IS THE PROPER CONTEXT FOR THE DB
+	private DatabaseHelper myEventLogDB;
 
 	//VIEW OBJECTS FOR LAYOUT UI REFERENCE
 
@@ -64,7 +74,11 @@ public class LogeventActivity extends AppCompatActivity implements TimePickerDia
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_logevent);
 
-		myEventLogDB = new DatabaseHelper(null, null, null, 1);
+		// GET THE CONTEXT OF THIS ACTIVITY
+		Context activityContext = getApplicationContext();
+
+		// MUST SET THE CONTEXT, OTHERWISE ITS NULL WILL CRASH
+		myEventLogDB = new DatabaseHelper(activityContext, null, null, 1);
 
 		// ESTABLISH THE REFERENCES TO LIST
 		logEventRecyclerView = (RecyclerView) findViewById(R.id.logEventRecyclerView);
@@ -162,6 +176,17 @@ public class LogeventActivity extends AppCompatActivity implements TimePickerDia
 	}
 
 	@Override
+	protected void onStop()
+	{
+		super.onStop();
+
+		/* CLOSE THE DATABASE, WILL BE REOPENED IN THE OnCreate()
+		   when the activity becomes running again.
+		*/
+		myEventLogDB.closeDB();
+	}
+
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -197,22 +222,37 @@ public class LogeventActivity extends AppCompatActivity implements TimePickerDia
 						switch (logEventType) {
 							case LogEventConstant.DIET:
 								et = (EditText)parentView.findViewById(R.id.editTextDietDescription);
+								description = et.getText().toString();
 								et = (EditText)parentView.findViewById(R.id.editTextDietQty);
+								value = et.getText().toString();
 								et = (EditText)parentView.findViewById(R.id.editTextDateDiet);
+								date = et.getText().toString();
 								et = (EditText)parentView.findViewById(R.id.editTextTimeDiet);
-								continue;
+								time = et.getText().toString();
+								makeDbModel(LogEventConstant.DIET, description, value, date, time);
+								break;
 							case LogEventConstant.EXERCISE:
 								et = (EditText)parentView.findViewById(R.id.editTextExerciseDescription);
+								description = et.getText().toString();
 								et = (EditText)parentView.findViewById(R.id.editTextExerciseDuration);
+								value = et.getText().toString();
 								et = (EditText)parentView.findViewById(R.id.editTextDateExercise);
+								date = et.getText().toString();
 								et = (EditText)parentView.findViewById(R.id.editTextTimeExercise);
-								continue;
+								time = et.getText().toString();
+								makeDbModel(LogEventConstant.EXERCISE, description, value, date, time);
+								break;
 							case LogEventConstant.MEDICATION:
 								et = (EditText)parentView.findViewById(R.id.editTextMedicationDescription);
+								description = et.getText().toString();
 								et = (EditText)parentView.findViewById(R.id.editTextMedicationQty);
+								value = et.getText().toString();
 								et = (EditText)parentView.findViewById(R.id.editTextDateMeds);
+								date = et.getText().toString();
 								et = (EditText)parentView.findViewById(R.id.editTextTimeMeds);
-								continue;
+								time = et.getText().toString();
+								makeDbModel(LogEventConstant.MEDICATION, description, value, date, time);
+								break;
 							default:
 								throw new IllegalArgumentException("Unexpected Type");
 						}
@@ -255,7 +295,7 @@ public class LogeventActivity extends AppCompatActivity implements TimePickerDia
 	public void onTimeSet(TimePicker view, int hourOfDay, int minute)
 	{
 		Calendar cal = new GregorianCalendar(0, 0, 0, hourOfDay, minute, 0);
-		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:aa");
+		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss aa");
 		etTime.setText(sdf.format(cal.getTime()));
 	}
 
@@ -277,4 +317,59 @@ public class LogeventActivity extends AppCompatActivity implements TimePickerDia
 		outState.putParcelable(KEY_RECYCLER_STATE, listState);
 	}
 
+	public void makeDbModel(int type, String description, String value, String date, String time)
+	{
+
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date convertedDate = new Date();
+
+		System.out.println("description: " + description);
+		System.out.println("value: " + value);
+		System.out.println("date: " + date);
+		System.out.println("time: " + time);
+
+		try {
+			convertedDate = dateFormat.parse(date + " " + time);
+		} catch(ParseException pe){
+			// no op
+		}
+
+		String dateTime = dateFormat.format(convertedDate);
+
+		System.out.println("dateTime: " + dateTime);
+
+		if(description == null)
+		{
+			description = "empty";
+		}
+
+		int myNum;
+
+		if(value == null)
+		{
+			myNum = 0;
+		}
+
+		try {
+			myNum = Integer.parseInt(value);
+		} catch(NumberFormatException nfe) {
+			myNum = 0;
+		}
+
+		switch(type)
+		{
+			case LogEventConstant.DIET:
+				myEventLogDB.CreateDiet(0, description, myNum, dateTime);
+				break;
+			case LogEventConstant.EXERCISE:
+				myEventLogDB.CreateExercise(0, description, myNum, dateTime);
+				break;
+			case LogEventConstant.MEDICATION:
+				myEventLogDB.CreateMedication(0, description, myNum, dateTime);
+				break;
+			default:
+				throw new IllegalArgumentException("Unexpected Type");
+		}
+
+	}
 }

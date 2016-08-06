@@ -65,16 +65,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // endregion
 
+    private boolean createCategoryDBOnce = false;
+
     // region Interface Methods
 
     public DatabaseHelper(Context context, String name,SQLiteDatabase.CursorFactory factory,int version){
         super(context,DATABASE_NAME,factory,DATABASE_VERSION);
-        this.context = context;
+        System.out.println("DatabaseHelper CONSTRUCTOR");
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
+        System.out.println("DatabaseHelper onCreate() BEGIN");
         // Table Categories
         String query = "CREATE TABLE " + TABLE_CATEGORIES + " (" +
                 CATEGORY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -130,16 +132,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(query);
 
         // Initialize initial Categories
-        CreateCategory("Diet");
-        CreateCategory("Exercise");
-        CreateCategory("Medication");
+        /* THESE FUNCTIONS CALLED FOR A REFERENCE FOR THE BASE
+        THUS MAKING A RECURSIVE CALL THAT WOULD HAVE BEEN INFINITE
+        LOOP SO WE INCLUDE THE DATABASE OBJECT AS A PARAMETER AND
+        ENSURE THESE SET OF FUNCTIONS RUN ONCE
+         */
+        if(!createCategoryDBOnce)
+        {
+            createCategoryDBOnce = true;
+            CreateCategory("Diet", db);
+            CreateCategory("Exercise", db);
+            CreateCategory("Medication", db);
+        }
+//        // Test code, DELETE ME
+//        CreatePrescription(1,"D","Repeat");
+//        CreatePrescription(2,"E","Repeat");
+//        CreatePrescription(3,"M","Repeat");
+//        CreatePrescription(1,"D 2","Repeat");
 
-        // Test code, DELETE ME
-        CreatePrescription(1,"D","Repeat");
-        CreatePrescription(2,"E","Repeat");
-        CreatePrescription(3,"M","Repeat");
-        CreatePrescription(1,"D 2","Repeat");
-
+        System.out.println("DatabaseHelper onCreate() COMPLETE");
     }
 
     @Override
@@ -167,12 +178,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // region Diet
     // Create Diet
-    public void CreateDiet(int preid,String desc,int amount, Date date){
+    public void CreateDiet(int preid, String desc, int amount, String date){
+
+        System.out.println("preid: " + preid);
+        System.out.println("desc: " + desc);
+        System.out.println("amount: " + amount);
+        System.out.println("date: " + date);
+
         ContentValues values = new ContentValues();
         values.put(DIET_PRES, preid);
         values.put(DIET_DESC, desc);
         values.put(DIET_AMOUNT, amount);
-        values.put(DIET_DATETIME, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date));
+        values.put(DIET_DATETIME, date);
         SQLiteDatabase db = getWritableDatabase();
         db.insert(TABLE_DIET,null,values);
         db.close();
@@ -245,15 +262,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // region Exercise
     // Create Exercise
-    public void CreateExercise(int preid,String desc,int duration, Date date){
+    public void CreateExercise(int preid, String desc, int duration, String date){
         ContentValues values = new ContentValues();
         values.put(EXER_PRES, preid);
         values.put(EXER_DESC, desc);
         values.put(EXER_DURATION, duration);
-        values.put(EXER_DATETIME, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date));
+        values.put(EXER_DATETIME, date);
         SQLiteDatabase db = getWritableDatabase();
         db.insert(TABLE_EXERCISE,null,values);
-        db.close();
+        db.close(); //THE ACTIVITY BETTER BE EXITING AFTER THIS SINCE ITS CLOSING THE DB
     }
     // Search Exercise by Keyword
     public List<Exercise> GetExercisesByKeyword(String keyword){
@@ -323,12 +340,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // region Medication
 
     // Create Medication
-    public void CreateMedication(int preid,String desc,int amount, Date date){
+    public void CreateMedication(int preid, String desc, int amount, String date){
         ContentValues values = new ContentValues();
         values.put(MED_PRES, preid);
         values.put(MED_DESC, desc);
         values.put(MED_AMOUNT, amount);
-        values.put(MED_DATETIME, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date));
+        values.put(MED_DATETIME, date);
         SQLiteDatabase db = getWritableDatabase();
         db.insert(TABLE_MED,null,values);
         db.close();
@@ -621,13 +638,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // region Category
     // Create a Category
-    public void CreateCategory(String categoryName){
+    public void CreateCategory(String categoryName, SQLiteDatabase db){
         ContentValues values = new ContentValues();
         values.put(CATEGORY_NAME, categoryName);
-        SQLiteDatabase db = getWritableDatabase();
         db.insert(TABLE_CATEGORIES,null,values);
-        db.close();
+        // CANNOT CLOSE DB, SEND OTHER INSERTS WILL ATTEMPT TO RE-OPEN A PREVIOUSLY CLOSE DB.
+        // RECOMMEND TO CLOSE DB ONLY WHEN THE ACTIVITY EXITS
+        // WHEN THE ACTIVITY COMES BACK INTO RUNNING STATE, THE NEW WILL BE CALLED IMPLYING THE OPEN
     }
+
     // Get Category by id
     public Category GetCategory(int id){
         SQLiteDatabase db = getWritableDatabase();
@@ -704,6 +723,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Prescription p = GetPrescription(1);
         s = p.get_id() + ": " + p.get_description() + ", " + p.get_repeat() + ", " + p.get_category() + "\n";
         return s;
+    }
+
+    // Explicitly close the database
+    public void closeDB(){
+        SQLiteDatabase db = getWritableDatabase();
+        db.close();
     }
 
 }

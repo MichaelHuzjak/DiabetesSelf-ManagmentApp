@@ -97,7 +97,7 @@ public class LogEventAdapter extends RecyclerView.Adapter<LogEventViewHolder>
 		etDate.setText(sdf.format(cal.getTime()));
 		logEventModelList.get(count).setDate(sdf.format(cal.getTime()));
 
-		sdf = new SimpleDateFormat("hh:mm:aa");
+		sdf = new SimpleDateFormat("hh:mm:ss aa");
 		etTime.setText(sdf.format(cal.getTime()));
 		logEventModelList.get(count).setTime(sdf.format(cal.getTime()));
 
@@ -133,7 +133,7 @@ public class LogEventAdapter extends RecyclerView.Adapter<LogEventViewHolder>
 			sdf = new SimpleDateFormat("MM/dd/yyyy");
 			holder.date.setText(sdf.format(cal.getTime()));
 
-			sdf = new SimpleDateFormat("hh:mm:aa");
+			sdf = new SimpleDateFormat("hh:mm:ss aa");
 			holder.time.setText(sdf.format(cal.getTime()));
 		}
 		else
