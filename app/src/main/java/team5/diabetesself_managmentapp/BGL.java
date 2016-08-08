@@ -1,8 +1,23 @@
 package team5.diabetesself_managmentapp;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class BGL {
+    public static final Parcelable.Creator<BGL> CREATOR
+            = new Parcelable.Creator<BGL>() {
+        public BGL createFromParcel(Parcel in) {
+            return new BGL(in.readInt(),in.readString(),in.readInt());
+        }
+        public BGL[] newArray(int size) {
+            return new BGL[size];
+        }
+    };
     private int _id;
     private Date _date;
 
@@ -38,6 +53,41 @@ public class BGL {
         _id = id;
         _date = date;
         _value = value;
+    }
+    public BGL(int id, String date, int value){
+        _id = id;
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            _date = format.parse(date);
+        }catch(ParseException e){
+            e.printStackTrace();
+        }
+        _value = value;
+    }
+    public String GetDateToString(){
+        return new SimpleDateFormat("yyyy-MM-dd").format(_date);
+    }
+    public String GetTimeToString(){
+        return new SimpleDateFormat("HH:mm").format(_date);
+    }
+    public void ChangeDate(String date){
+        String time = GetTimeToString();
+        String dateTime = date + " " + time;
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            _date = format.parse(dateTime);
+        }catch(ParseException e){
+            e.printStackTrace();
+        }
+    }
+    public void ChangeTime(String time){
+        String dateTime = GetDateToString() + " " + time;
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            _date = format.parse(dateTime);
+        }catch(ParseException e){
+            e.printStackTrace();
+        }
     }
 
 }

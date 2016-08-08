@@ -165,6 +165,14 @@ public class BGLAdapter extends RecyclerView.Adapter<BGLAdapter.ViewHolder>{
     public void printList(){
         for(BGLEntryModel l: list){
             System.out.println("Progress: "+l.getProgress()+" || Date: "+l.getDate()+" || Time: "+l.getTime());
+
         }
+    }
+
+    public void clearList(){
+        while(list.size() > 0){
+            removeAt(0);
+        }
+        vh.removeAll(vh);
     }
 }

@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import team5.diabetesself_managmentapp.AddBGLHelper;
+import team5.diabetesself_managmentapp.MainActivity;
 import team5.diabetesself_managmentapp.R;
 import team5.diabetesself_managmentapp.adapter.BGLAdapter;
 import team5.diabetesself_managmentapp.model.BGLEntryModel;
@@ -30,7 +31,7 @@ public class AddBGLFragment extends Fragment{
 
     private ArrayList<BGLEntryModel> bglEntryList;
     private RecyclerView BGLHolderView;
-    private BGLAdapter bglAdapter;
+    public BGLAdapter bglAdapter;
     private LinearLayoutManager linearLayoutManager;
 
     private String List_State = "List_State";
@@ -83,7 +84,7 @@ public class AddBGLFragment extends Fragment{
         setValues.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                bglAdapter.printList();
+                ((MainActivity)getActivity()).AddBGLtoDatabase();
             }
         });
 
@@ -91,10 +92,7 @@ public class AddBGLFragment extends Fragment{
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment bgl_frag = (Fragment)getFragmentManager().findFragmentByTag("BGL_FRAGMENT");
-//                getFragmentManager().beginTransaction().remove(bgl_frag).commit();
-                AddBGLHelper.showFragment(getFragmentManager(),buttons);
-                AddBGLHelper.hideFragment(getFragmentManager(),addBGL);
+                ((MainActivity)getActivity()).ShowHome();
             }
         });
 

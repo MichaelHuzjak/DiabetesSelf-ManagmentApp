@@ -25,9 +25,12 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 import team5.diabetesself_managmentapp.adapter.BGLAdapter;
@@ -45,7 +48,8 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
 
     private GoogleApiClient client;
     private Toolbar toolbar;
-    private Fragment AddBGLFragment, ButtonsFragment;
+    private AddBGLFragment AddBGLFragment;
+    private Fragment ButtonsFragment;
     static ArcProgress arc;
     static EditText meanEditText;
     static TextView meanTextView, addBGLTextView,time, low, mid, norm, high, extreme, doc;
@@ -57,11 +61,16 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
     private RecyclerView BGLHolderView;
     private BGLAdapter bglAdapter;
 
+    private DatabaseHelper db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initObjects();  // Must be called first to initialize objects.
+
+        // Create Helper
+        db = new DatabaseHelper(this,null,null,1);
 
         if(savedInstanceState==null)
             AddBGLHelper.hideFragment(getFragmentManager(), AddBGLFragment);
@@ -125,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
 
 
     private void initObjects(){
-        AddBGLFragment = (Fragment) getFragmentManager().findFragmentById(R.id.FragmentBGL);
+        AddBGLFragment = (AddBGLFragment) getFragmentManager().findFragmentById(R.id.FragmentBGL);
         ButtonsFragment = (Fragment) getFragmentManager().findFragmentById(R.id.FragmentButtons);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         time = (TextView) findViewById(R.id.textViewLastEnteredTime);
@@ -268,5 +277,36 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         Calendar cal = new GregorianCalendar(year, month, dayOfMonth);
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
         etDate.setText(sdf.format(cal.getTime()));
+    }
+
+    public void AddBGLtoDatabase(){
+        //AddBGLFragment frag = (AddBGLFragment) getFragmentManager().findFragmentById(R.id.FragmentBGL);
+
+        for(BGLEntryModel entry: AddBGLFragment.bglAdapter.getList()){
+            DateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+            String dateString = entry.getDate() + " " +  entry.getTime();
+            System.out.println("Progress: "+entry.getProgress()+" || Date: "+entry.getDate()+" || Time: "+entry.getTime());
+            Date date;
+            try {
+                db.CreateBGL(format.parse(dateString),entry.getProgress());
+            }catch(ParseException e){
+                e.printStackTrace();
+            }
+        }
+
+        AddBGLFragment.bglAdapter.clearList();
+        ShowHome();
+    }
+
+    public void ShowHome(){
+
+        Fragment buttons = (Fragment)getFragmentManager().findFragmentById(R.id.FragmentButtons);
+        Fragment addBGL = (Fragment)getFragmentManager().findFragmentById(R.id.FragmentBGL);
+        Fragment bgl_frag = (Fragment)getFragmentManager().findFragmentByTag("BGL_FRAGMENT");
+//                getFragmentManager().beginTransaction().remove(bgl_frag).commit();
+        AddBGLHelper.showFragment(getFragmentManager(),buttons);
+        AddBGLHelper.hideFragment(getFragmentManager(),addBGL);
+
+        AddBGLFragment.bglAdapter.clearList();
     }
 }
