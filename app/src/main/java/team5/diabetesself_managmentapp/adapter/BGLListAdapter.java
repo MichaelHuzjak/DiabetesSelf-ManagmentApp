@@ -58,15 +58,18 @@ public class BGLListAdapter extends RecyclerView.Adapter<BGLListAdapter.ViewHold
             etValue.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    list.get(position).set_value(Integer.parseInt(charSequence.toString()));
+                    if(!charSequence.toString().equals(""))
+                        list.get(position).set_value(Integer.parseInt(charSequence.toString()));
                 }
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    list.get(position).set_value(Integer.parseInt(charSequence.toString()));
+                    if(!charSequence.toString().equals(""))
+                        list.get(position).set_value(Integer.parseInt(charSequence.toString()));
                 }
                 @Override
                 public void afterTextChanged(Editable editable) {
-                    list.get(position).set_value(Integer.parseInt(editable.toString()));
+                    if(!editable.toString().equals(""))
+                        list.get(position).set_value(Integer.parseInt(editable.toString()));
                 }
             });
 

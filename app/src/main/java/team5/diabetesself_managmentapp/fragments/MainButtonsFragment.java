@@ -8,9 +8,6 @@ import android.view.ViewGroup;
 
 import team5.diabetesself_managmentapp.R;
 
-/**
- * Created by Sein on 7/31/2016.
- */
 public class MainButtonsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

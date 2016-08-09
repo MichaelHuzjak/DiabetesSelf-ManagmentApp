@@ -63,6 +63,8 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
 
     private DatabaseHelper db;
 
+    private final String BGL_FRAG_STATE = "BGL_STATE";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         if(savedInstanceState==null)
             AddBGLHelper.hideFragment(getFragmentManager(), AddBGLFragment);
         else{
-            if(savedInstanceState.getBoolean("BGL")){
+            if(savedInstanceState.getBoolean(BGL_FRAG_STATE)){
                 AddBGLHelper.hideFragment(getFragmentManager(), ButtonsFragment);
                 AddBGLHelper.showFragment(getFragmentManager(), AddBGLFragment);
             }else{
@@ -83,7 +85,6 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
             }
         }
 
-        final AddBGLFragment bgl_frag = new AddBGLFragment();
         setSupportActionBar(toolbar);
 
         Button buttonAddBGLEvent = (Button)findViewById(R.id.ButtonShowBGLFragment);
@@ -103,13 +104,6 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
                 startActivity(new Intent(getApplicationContext(), LogeventActivity.class));
             }
         });
-//        Button buttonGraphs = (Button) findViewById(R.id.bGraph);
-//        buttonGraphs.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                startActivity(new Intent(getApplicationContext(), GraphsActivity.class));
-//            }
-//        });
 
         Button buttonQuery = (Button) findViewById(R.id.buttonQuery);
         buttonQuery.setOnClickListener(new View.OnClickListener() {
@@ -133,35 +127,13 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
     }
 
 
-    private void initObjects(){
-        AddBGLFragment = (AddBGLFragment) getFragmentManager().findFragmentById(R.id.FragmentBGL);
-        ButtonsFragment = (Fragment) getFragmentManager().findFragmentById(R.id.FragmentButtons);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        time = (TextView) findViewById(R.id.textViewLastEnteredTime);
-        addBGLTextView = (TextView) findViewById(R.id.textViewAddBGL);
-        meanEditText = (EditText) findViewById(R.id.editTextMean);
-        meanTextView = (TextView) findViewById(R.id.textViewMean);
-        arc = (ArcProgress) findViewById(R.id.arc_progress);
-        low =(TextView)findViewById(R.id.textViewLowNotice);
-        mid = (TextView) findViewById(R.id.textViewMediumNotice);
-        norm = (TextView) findViewById(R.id.textViewNormalNotice);
-        high = (TextView) findViewById(R.id.textViewHighNotice);
-        extreme = (TextView) findViewById(R.id.textViewVeryHighNotice);
-        doc = (TextView) findViewById(R.id.textViewDoctorNotice);
-    }
 
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
 
-        // Save the user's current game state
-        boolean BGLFragVisible = false;
-        if(AddBGLFragment.isVisible())
-            BGLFragVisible =true;
-        else
-            BGLFragVisible =false;
-
-        savedInstanceState.putBoolean("BGL", BGLFragVisible);
+        // Save the fragment's current visibility state
+        savedInstanceState.putBoolean(BGL_FRAG_STATE, AddBGLFragment.isVisible());
         super.onSaveInstanceState(savedInstanceState);
     }
 
@@ -183,6 +155,22 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         return true;
     }
 
+    private void initObjects(){
+        AddBGLFragment = (AddBGLFragment) getFragmentManager().findFragmentById(R.id.FragmentBGL);
+        ButtonsFragment = (Fragment) getFragmentManager().findFragmentById(R.id.FragmentButtons);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        time = (TextView) findViewById(R.id.textViewLastEnteredTime);
+        addBGLTextView = (TextView) findViewById(R.id.textViewAddBGL);
+        meanEditText = (EditText) findViewById(R.id.editTextMean);
+        meanTextView = (TextView) findViewById(R.id.textViewMean);
+        arc = (ArcProgress) findViewById(R.id.arc_progress);
+        low =(TextView)findViewById(R.id.textViewLowNotice);
+        mid = (TextView) findViewById(R.id.textViewMediumNotice);
+        norm = (TextView) findViewById(R.id.textViewNormalNotice);
+        high = (TextView) findViewById(R.id.textViewHighNotice);
+        extreme = (TextView) findViewById(R.id.textViewVeryHighNotice);
+        doc = (TextView) findViewById(R.id.textViewDoctorNotice);
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
