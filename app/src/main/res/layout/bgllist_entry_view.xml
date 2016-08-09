@@ -5,9 +5,10 @@
     android:layout_height="wrap_content"
     android:background="@drawable/layout_corning_diet"
     android:paddingBottom="5dp"
-    android:paddingTop="20dp"
+    android:paddingTop="5dp"
     android:paddingLeft="20dp"
     android:paddingRight="20dp"
+    android:layout_margin="5dp"
     android:layout_weight=".70">
 
     <LinearLayout
