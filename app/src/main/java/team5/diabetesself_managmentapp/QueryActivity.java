@@ -196,11 +196,10 @@ public class QueryActivity extends AppCompatActivity implements TimePickerDialog
     {
 
         Calendar cal = new GregorianCalendar(year, month, dayOfMonth);
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         etDate.setText(sdf.format(cal.getTime()));
     }
     public void UpdateBGL(BGL bgl){
-        System.out.println("Updating: " + bgl.get_id() + " " + bgl.get_value());
         db.UpdateBGL(bgl);
     }
 

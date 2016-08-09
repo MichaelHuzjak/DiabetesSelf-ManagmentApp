@@ -206,7 +206,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Diet diet;
         if(c.getCount() > 0){
             while(c.moveToNext()){
-                DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:aa");
                 try {
                     diet = new Diet(Integer.valueOf(c.getString(0)),c.getString(1),format.parse(c.getString(2)),Integer.valueOf(c.getString(3)),Integer.valueOf(c.getString(4)));
                     diets.add(diet);
@@ -225,7 +225,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor c = db.rawQuery("SELECT * FROM " + TABLE_DIET + " WHERE " + DIET_ID + " = " + id, null);
         if(c!=null){
             c.moveToFirst();
-            DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:aa");
             try {
                 Diet diet = new Diet(Integer.valueOf(c.getString(0)),c.getString(1),format.parse(c.getString(2)),Integer.valueOf(c.getString(3)),Integer.valueOf(c.getString(4)));
                 db.close();
@@ -246,7 +246,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(DIET_PRES, diet.get_prescriptionId());
         values.put(DIET_DESC, diet.get_description());
         values.put(DIET_AMOUNT, diet.get_amount());
-        values.put(DIET_DATETIME, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(diet.get_date()));
+        values.put(DIET_DATETIME, new SimpleDateFormat("yyyy-MM-dd hh:mm:aa").format(diet.get_date()));
         SQLiteDatabase db = getWritableDatabase();
         db.update(TABLE_DIET,values,DIET_ID+"="+diet.get_id(),null);
         db.close();
@@ -284,7 +284,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Exercise exer;
         if(c.getCount() > 0){
             while(c.moveToNext()){
-                DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:aa");
                 try {
                     exer = new Exercise(Integer.valueOf(c.getString(0)),c.getString(1),format.parse(c.getString(2)),Integer.valueOf(c.getString(3)),Integer.valueOf(c.getString(4)));
                     exercises.add(exer);
@@ -303,7 +303,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor c = db.rawQuery("SELECT * FROM " + TABLE_EXERCISE + " WHERE " + EXER_ID + " = " + id, null);
         if(c!=null){
             c.moveToFirst();
-            DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:aa");
             try {
                 Exercise exer = new Exercise(Integer.valueOf(c.getString(0)),c.getString(1),format.parse(c.getString(2)),Integer.valueOf(c.getString(3)),Integer.valueOf(c.getString(4)));
                 db.close();
@@ -324,7 +324,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(EXER_PRES, exer.get_prescriptionId());
         values.put(EXER_DESC, exer.get_description());
         values.put(EXER_DURATION, exer.get_duration());
-        values.put(MED_DATETIME, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(exer.get_dateTime()));
+        values.put(MED_DATETIME, new SimpleDateFormat("yyyy-MM-dd hh:mm:aa").format(exer.get_dateTime()));
         SQLiteDatabase db = getWritableDatabase();
         db.update(TABLE_EXERCISE,values,MED_ID+"="+exer.get_id(),null);
         db.close();
@@ -357,7 +357,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor c = db.rawQuery("SELECT * FROM " + TABLE_MED + " WHERE " + MED_ID + " = " + id, null);
         if(c!=null){
             c.moveToFirst();
-            DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:aa");
             try {
                 Medication med = new Medication(Integer.valueOf(c.getString(0)),c.getString(1),format.parse(c.getString(2)),Integer.valueOf(c.getString(3)),Integer.valueOf(c.getString(4)));
                 db.close();
@@ -378,7 +378,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(MED_PRES, med.get_prescriptionId());
         values.put(MED_DESC, med.get_description());
         values.put(MED_AMOUNT, med.get_amount());
-        values.put(MED_DATETIME, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(med.get_datetime()));
+        values.put(MED_DATETIME, new SimpleDateFormat("yyyy-MM-dd hh:mm:aa").format(med.get_datetime()));
         SQLiteDatabase db = getWritableDatabase();
         db.update(TABLE_MED,values,MED_ID+"="+med.get_id(),null);
         db.close();
@@ -477,7 +477,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Medication med;
         if(c.getCount() > 0){
             while(c.moveToNext()){
-                DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:aa");
                 try {
                     med = new Medication(Integer.valueOf(c.getString(0)),c.getString(1),format.parse(c.getString(2)),Integer.valueOf(c.getString(3)),Integer.valueOf(c.getString(4)));
                     medications.add(med);
@@ -501,7 +501,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Diet diet;
         if(c.getCount() > 0){
             while(c.moveToNext()){
-                DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:aa");
                 try {
                     diet = new Diet(Integer.valueOf(c.getString(0)),c.getString(1),format.parse(c.getString(2)),Integer.valueOf(c.getString(3)),Integer.valueOf(c.getString(4)));
                     diets.add(diet);
@@ -525,7 +525,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Exercise exer;
         if(c.getCount() > 0){
             while(c.moveToNext()){
-                DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:aa");
                 try {
                     exer = new Exercise(Integer.valueOf(c.getString(0)),c.getString(1),format.parse(c.getString(2)),Integer.valueOf(c.getString(3)),Integer.valueOf(c.getString(4)));
                     exercises.add(exer);
@@ -549,7 +549,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Create a BGL Entry
     public void CreateBGL(Date date,int value){
         ContentValues values = new ContentValues();
-        String dateString = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
+        String dateString = new SimpleDateFormat("yyyy-MM-dd hh:mm:aa").format(date);
         values.put(BGL_DateTime, dateString);
         values.put(BGL_Value, value);
         SQLiteDatabase db = getWritableDatabase();
@@ -563,7 +563,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor c = db.rawQuery("SELECT * FROM " + TABLE_BGL + " WHERE " + BGL_ID + " = " + id, null);
         if(c!=null){
             c.moveToFirst();
-            DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:aa");
             try {
                 BGL bgl = new BGL(Integer.valueOf(c.getString(0)),format.parse(c.getString(1)),Integer.valueOf(c.getString(2)));
                 db.close();
@@ -581,11 +581,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Update BGL
     public void UpdateBGL(BGL bgl){
         ContentValues values = new ContentValues();
-        values.put(BGL_DateTime, bgl.get_date().toString());
+        System.out.println("Updating BGL of ID: " + bgl.get_id() + " value: " + bgl.get_value() + " date: " + bgl.get_date());
+        values.put(BGL_DateTime, bgl.GetFormatedDate());
         values.put(BGL_Value, bgl.get_value());
+
         SQLiteDatabase db = getWritableDatabase();
         db.update(TABLE_BGL,values,BGL_ID+"="+bgl.get_id(),null);
         db.close();
+        System.out.println("closed");
     }
     // Delete BGL
     public void DeleteBGL(int id){
@@ -601,7 +604,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         BGL bgl;
         if(c.getCount() > 0){
             while(c.moveToNext()){
-                DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:aa");
                 try {
                     bgl = new BGL(Integer.valueOf(c.getString(0)), format.parse(c.getString(1)),Integer.valueOf(c.getString(2)));
                     bgls.add(bgl);
@@ -610,6 +613,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 }
             }
         }
+        c.close();
         db.close();
         return bgls;
     }
@@ -694,36 +698,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // endregion
-
-    public String productTableToString(){
-        //StringBuffer buffer = new StringBuffer();
-        //while( c.moveToNext())
-        //{
-        //    buffer.append("ID: " + c.getString(0) + " ");
-        //    buffer.append("Name: " + c.getString(1) + "\n");
-        //}
-        //s+= buffer.toString();
-       String s = "";
-//        for(Product p: getListOfProducts()){
-//            s+= p.get_id() + ": " + p.getProductname() + "\n";
-//        }
-//        for(Category c: GetCategories()){
-//            s+= c.getId() + ": " + c.getName() + "\n";
-////        }
-//        for(Prescription p: GetAllPrescriptions()){
-//            s+= p.get_id() + ": " + p.get_description() + ", " + p.get_repeat() + ", " + p.get_category() + "\n";
-//        }
-        for(BGL b: GetAllBGL()){
-            s+= b.get_date().toString() + " - " + b.get_value() + "\n";
-        }
-
-        //Category c = GetCategory(1);
-        //s = c.getId() + ": " + c.getName() + "\n";
-
-        Prescription p = GetPrescription(1);
-        s = p.get_id() + ": " + p.get_description() + ", " + p.get_repeat() + ", " + p.get_category() + "\n";
-        return s;
-    }
 
     // Explicitly close the database
     public void closeDB(){

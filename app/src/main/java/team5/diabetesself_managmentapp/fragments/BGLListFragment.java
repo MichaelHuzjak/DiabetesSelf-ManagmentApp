@@ -29,7 +29,9 @@ public class BGLListFragment extends Fragment {
 
         holderView = (RecyclerView)view.findViewById(R.id.RecyclerViewBGLListHolder);
         ArrayList<BGL> list = new ArrayList<BGL>();
+
         for(BGL bgl: ((QueryActivity)getActivity()).GetCompleteBGL()){
+            System.out.println("ID: " + bgl.get_id());
             list.add(bgl);
         }
         adapter = new BGLListAdapter(list,((QueryActivity)getActivity()));
