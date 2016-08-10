@@ -34,6 +34,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import team5.diabetesself_managmentapp.fragments.BGLGraphFragment;
 import team5.diabetesself_managmentapp.fragments.BGLListFragment;
 import team5.diabetesself_managmentapp.fragments.DatePickerFragment;
 import team5.diabetesself_managmentapp.fragments.MainQueryFragment;
@@ -47,6 +48,7 @@ public class QueryActivity extends AppCompatActivity implements TimePickerDialog
     private DatabaseHelper db;
     private BGLListFragment ListFragment;
     private MainQueryFragment MainFragment;
+    private BGLGraphFragment GraphFragment;
 
     EditText etDate;
     EditText etTime;
@@ -64,6 +66,8 @@ public class QueryActivity extends AppCompatActivity implements TimePickerDialog
         ListFragment = (BGLListFragment) getFragmentManager().findFragmentById(R.id.BGLListFragment);
         QueryHelper.ShowFragment(getFragmentManager(), ListFragment,false);
 
+        GraphFragment = (BGLGraphFragment) getFragmentManager().findFragmentById(R.id.GraphFragment);
+        QueryHelper.ShowFragment(getFragmentManager(), GraphFragment,false);
 
     }
     public void old(){
@@ -203,6 +207,10 @@ public class QueryActivity extends AppCompatActivity implements TimePickerDialog
         db.UpdateBGL(bgl);
     }
 
+    public void ShowGraph(){
+        QueryHelper.ShowFragment(getFragmentManager(),GraphFragment,true);
+        QueryHelper.ShowFragment(getFragmentManager(),MainFragment,false);
+    }
 
 
 }

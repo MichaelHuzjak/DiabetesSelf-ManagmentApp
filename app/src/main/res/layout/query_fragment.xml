@@ -11,6 +11,12 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Graph"
+        android:id="@+id/buttonGraph"
+        android:layout_gravity="center_horizontal" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Clear Database"
         android:id="@+id/buttonClear"
         android:layout_gravity="center_horizontal" />

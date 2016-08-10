@@ -23,5 +23,13 @@
 
             />
 
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/GraphFragment"
+            android:name="team5.diabetesself_managmentapp.fragments.BGLGraphFragment"
+
+            />
+
     </RelativeLayout>
 </LinearLayout>

@@ -29,6 +29,13 @@ public class MainQueryFragment extends Fragment {
                 ((QueryActivity)getActivity()).ListBGL();
             }
         });
+        Button graphButton = (Button)getActivity().findViewById(R.id.buttonGraph);
+        graphButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((QueryActivity)getActivity()).ShowGraph();
+            }
+        });
         Button clearButton = (Button)getActivity().findViewById(R.id.buttonClear);
         clearButton.setOnClickListener(new View.OnClickListener() {
             @Override
