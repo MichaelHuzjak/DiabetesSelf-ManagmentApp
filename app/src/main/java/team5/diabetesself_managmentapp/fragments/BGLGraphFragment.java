@@ -9,6 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.Viewport;
 import com.jjoe64.graphview.series.DataPoint;
@@ -32,7 +39,8 @@ public class BGLGraphFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Graph();
+        //Graph();
+        Chart();
 
     }
     @Override
@@ -45,7 +53,51 @@ public class BGLGraphFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState){
         super.onSaveInstanceState(outState);
     }
+    public void Chart(){
+        // Get ALL BGL List
+        ArrayList<BGL> list = new ArrayList<BGL>();
 
+        for(BGL bgl: ((QueryActivity)getActivity()).GetCompleteBGL()){
+            System.out.println("ID: " + bgl.get_id());
+            list.add(bgl);
+        }
+
+
+        LineChart chart = (LineChart)((QueryActivity)getActivity()).findViewById(R.id.graphExample);
+
+        chart.setTouchEnabled(true);
+        chart.setScaleEnabled(true);
+        chart.setPinchZoom(true);
+        chart.setDragEnabled(true);
+        chart.setDrawGridBackground(false);
+        //chart.setVisibleXRange(0,5);
+
+        List<Entry> data = new ArrayList<>();
+        ArrayList<String> xdata = new ArrayList<>();
+
+        for(int i=0;i<list.size();i++){
+            data.add(new Entry(i,list.get(i).get_value()));
+        }
+
+        LineDataSet dataSet = new LineDataSet(data,"Values");
+
+        List<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
+        dataSet.setDrawValues(true);
+        dataSet.setCircleRadius(15);
+        dataSet.setValueTextSize(20);
+
+        dataSets.add(dataSet);
+        XAxis xaxis = chart.getXAxis();
+        xaxis.disableGridDashedLine();
+
+        YAxis yaxis = chart.getAxisLeft();
+        yaxis.setDrawGridLines(true);
+
+        LineData lineData = new LineData(dataSets);
+        chart.setData(lineData);
+        ///chart.invalidate();
+        // chart.setData(lineData);
+    }
     public void Graph(){
 
         // Get ALL BGL List
