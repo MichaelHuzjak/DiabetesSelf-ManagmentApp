@@ -47,9 +47,9 @@ public class AddBGLFragment extends Fragment{
         if(savedInstanceState != null)
         {
             bglEntryList = savedInstanceState.getParcelableArrayList(List_State);
-            for(BGLEntryModel l: bglEntryList){
-                System.out.println("Progress: "+l.getProgress()+" || Date: "+l.getDate()+" || Time: "+l.getTime());
-            }
+//            for(BGLEntryModel l: bglEntryList){
+//                System.out.println("Progress: "+l.getProgress()+" || Date: "+l.getDate()+" || Time: "+l.getTime());
+//            }
 
         }else{
             bglEntryList = new ArrayList<BGLEntryModel>();

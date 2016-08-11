@@ -144,9 +144,13 @@ public class BGLAdapter extends RecyclerView.Adapter<BGLAdapter.ViewHolder>{
     public void onBindViewHolder(final BGLAdapter.ViewHolder viewHolder, int position) {
         // If the input item is not empty, then set the editTexts and the seekbar
         // to the specified values inside the item.
+
         if(list.size()!=0 && !list.get(position).getTime().equals("")){
             BGLEntryModel bml = list.get(position);
             viewHolder.syncEntries(bml.getDate(),bml.getTime(),bml.getProgress());
+        }else{
+            // Set the seek bar to zero.
+            viewHolder.seek.setProgress(0);
         }
         viewHolder.setListeners(position);
     }

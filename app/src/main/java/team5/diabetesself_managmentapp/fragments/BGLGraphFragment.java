@@ -5,9 +5,16 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -15,7 +22,11 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.listener.ChartTouchListener;
+import com.github.mikephil.charting.listener.OnChartGestureListener;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.Viewport;
 import com.jjoe64.graphview.series.DataPoint;
@@ -33,9 +44,13 @@ import team5.diabetesself_managmentapp.adapter.BGLListAdapter;
 /**
  * Created by Michael on 8/7/2016.
  */
-public class BGLGraphFragment extends Fragment {
-
+public class BGLGraphFragment extends Fragment implements OnChartValueSelectedListener{
+    LineChart chart;
+    LineData lineData;
+    List<Entry> data;
     View view;
+    LineDataSet dataSet;
+    List<ILineDataSet> dataSets;
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -62,39 +77,44 @@ public class BGLGraphFragment extends Fragment {
             list.add(bgl);
         }
 
-
-        LineChart chart = (LineChart)((QueryActivity)getActivity()).findViewById(R.id.graphExample);
+        chart = (LineChart)((QueryActivity)getActivity()).findViewById(R.id.graphExample);
 
         chart.setTouchEnabled(true);
         chart.setScaleEnabled(true);
         chart.setPinchZoom(true);
         chart.setDragEnabled(true);
         chart.setDrawGridBackground(false);
+        chart.setOnChartValueSelectedListener(this);
         //chart.setVisibleXRange(0,5);
 
-        List<Entry> data = new ArrayList<>();
+        data = new ArrayList<>();
         ArrayList<String> xdata = new ArrayList<>();
 
         for(int i=0;i<list.size();i++){
             data.add(new Entry(i,list.get(i).get_value()));
         }
 
-        LineDataSet dataSet = new LineDataSet(data,"Values");
+        dataSet = new LineDataSet(data,"Values");
+        dataSets = new ArrayList<ILineDataSet>();
 
-        List<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
         dataSet.setDrawValues(true);
         dataSet.setCircleRadius(15);
         dataSet.setValueTextSize(20);
+        dataSet.setHighlightEnabled(true);
+        dataSet.setDrawHighlightIndicators(true);
+        dataSet.setHighLightColor(Color.RED);
 
         dataSets.add(dataSet);
+
         XAxis xaxis = chart.getXAxis();
         xaxis.disableGridDashedLine();
 
         YAxis yaxis = chart.getAxisLeft();
         yaxis.setDrawGridLines(true);
 
-        LineData lineData = new LineData(dataSets);
+        lineData = new LineData(dataSets);
         chart.setData(lineData);
+
         ///chart.invalidate();
         // chart.setData(lineData);
     }
@@ -143,5 +163,44 @@ public class BGLGraphFragment extends Fragment {
         for(int i=0;i<30;i++){
             labels[i] = "7/" + i;
         }
+    }
+    LinearLayout ll;
+
+    @Override
+    public void onValueSelected(final Entry e, Highlight h) {
+        ll = (LinearLayout)getActivity().findViewById(R.id.LinearLayoutUpdateBGLQuery);
+        final Button btn = (Button)getActivity().findViewById(R.id.ButtonSetGraphBGL);
+        final EditText bglGraphEditText = (EditText)getActivity().findViewById(R.id.editTextNewBGLValue);
+
+        ll.setVisibility(View.VISIBLE);
+
+        chart.setAlpha(0.3f);
+        btn.setOnClickListener(new View.OnClickListener() {
+            int ind = data.indexOf(e);
+
+            @Override
+            public void onClick(View view) {
+                    try {
+                        //data.get(ind).setY((float) Integer.parseInt(bglGraphEditText.getText().toString()));
+                        e.setY((float) Integer.parseInt(bglGraphEditText.getText().toString()));
+                    } catch (Exception e) {}
+
+                ll.setVisibility(View.INVISIBLE);
+                bglGraphEditText.setText("");
+                chart.setAlpha(1f);
+                dataSet.notifyDataSetChanged();
+                lineData.notifyDataChanged();
+                chart.notifyDataSetChanged();
+
+
+            }
+        });
+
+    }
+
+    @Override
+    public void onNothingSelected() {
+        chart.setAlpha(1f);
+        ll.setVisibility(View.INVISIBLE);
     }
 }
