@@ -68,30 +68,9 @@ public class AddBGLHelper extends MainActivity{
     }
 
     public static void AddNewBGL(int progress) {
+        if(progress!=0){
         arc.setProgress(progress);
-        toggleNoticePerProgress(progress);
-//        sb.setOnSeekBarChangeListener(
-//                new SeekBar.OnSeekBarChangeListener() {
-//                    @Override
-//                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-//                        arc.setProgress(progress);
-//                        toggleNoticePerProgress(progress);
-//                        bgl_progress = progress;
-//                    }
-//                    @Override
-//                    public void onStartTrackingTouch(SeekBar seekBar){
-//                        seekBar.setProgress(bgl_progress);
-//                        bgl_progress = seekBar.getProgress();
-//                    }
-//                    @Override
-//                    public void onStopTrackingTouch(SeekBar seekBar){
-//                        seekBar.setProgress(bgl_progress);
-//                        bgl_progress = seekBar.getProgress();
-//                    }
-//                }
-//        );
-
-
+        toggleNoticePerProgress(progress);}
         String date = DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
         time.setText(date);
     }

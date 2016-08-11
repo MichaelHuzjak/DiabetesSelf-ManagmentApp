@@ -34,25 +34,18 @@ public class AddBGLFragment extends Fragment{
     public BGLAdapter bglAdapter;
     private LinearLayoutManager linearLayoutManager;
 
-    private String List_State = "List_State";
-    private String Recycler_State = "Recycler_State";
+    private String List_State = "LIST_STATE";
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
 
-        final Fragment addBGL = (Fragment)getActivity().getFragmentManager().findFragmentById(R.id.FragmentBGL);
-        final Fragment buttons = (Fragment)getActivity().getFragmentManager().findFragmentById(R.id.FragmentButtons);
-
         if(savedInstanceState != null)
         {
             bglEntryList = savedInstanceState.getParcelableArrayList(List_State);
-//            for(BGLEntryModel l: bglEntryList){
-//                System.out.println("Progress: "+l.getProgress()+" || Date: "+l.getDate()+" || Time: "+l.getTime());
-//            }
 
         }else{
-            bglEntryList = new ArrayList<BGLEntryModel>();
+            bglEntryList = new ArrayList<>();
         }
 
         BGLHolderView = (RecyclerView)view.findViewById(R.id.RecyclerViewBGLHolder);

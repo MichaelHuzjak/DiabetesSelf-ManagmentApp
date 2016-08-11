@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -33,6 +34,8 @@ import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.PointsGraphSeries;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,6 +54,8 @@ public class BGLGraphFragment extends Fragment implements OnChartValueSelectedLi
     View view;
     LineDataSet dataSet;
     List<ILineDataSet> dataSets;
+    LinearLayout ButtonAndEditTextLayout;
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -70,11 +75,22 @@ public class BGLGraphFragment extends Fragment implements OnChartValueSelectedLi
     }
     public void Chart(){
         // Get ALL BGL List
-        ArrayList<BGL> list = new ArrayList<BGL>();
+//        ArrayList<BGL> list = new ArrayList<BGL>();
+        data = new ArrayList<>();
 
+        int counter = 0;
         for(BGL bgl: ((QueryActivity)getActivity()).GetCompleteBGL()){
             System.out.println("ID: " + bgl.get_id());
-            list.add(bgl);
+//            list.add(bgl);
+            Entry bgl_entry = new Entry(counter++,bgl.get_value());
+
+            // There is a data "Object" inside every Entry that is null by default.
+            // I utilize it by setting it to be a BGL object, then I retrieve the BGL object
+            // when the set button inside the graph is clicked to update the SQL!
+            bgl_entry.setData(bgl);
+
+            data.add(bgl_entry);
+
         }
 
         chart = (LineChart)((QueryActivity)getActivity()).findViewById(R.id.graphExample);
@@ -87,12 +103,12 @@ public class BGLGraphFragment extends Fragment implements OnChartValueSelectedLi
         chart.setOnChartValueSelectedListener(this);
         //chart.setVisibleXRange(0,5);
 
-        data = new ArrayList<>();
-        ArrayList<String> xdata = new ArrayList<>();
+//        ArrayList<String> xdata = new ArrayList<>();
 
-        for(int i=0;i<list.size();i++){
-            data.add(new Entry(i,list.get(i).get_value()));
-        }
+//        for(int i=0;i<list.size();i++){
+//            Entry bgl_entry = new Entry(i,list.get(i).get_value());
+//            data.add(new Entry(i,list.get(i).get_value()));
+//        }
 
         dataSet = new LineDataSet(data,"Values");
         dataSets = new ArrayList<ILineDataSet>();
@@ -164,43 +180,82 @@ public class BGLGraphFragment extends Fragment implements OnChartValueSelectedLi
             labels[i] = "7/" + i;
         }
     }
-    LinearLayout ll;
 
-    @Override
-    public void onValueSelected(final Entry e, Highlight h) {
-        ll = (LinearLayout)getActivity().findViewById(R.id.LinearLayoutUpdateBGLQuery);
+
+    //Brings up the editTexts layout when the user clicks on a point.
+    //It also shifts the view based on the location of the point that was clicked.
+    private void BgingEditLayout(Entry e, Highlight h){
+        EditText graphDateTime = (EditText)getActivity().findViewById(R.id.EditTextGraphDateTime);
+        ButtonAndEditTextLayout = (LinearLayout)getActivity().findViewById(R.id.LinearLayoutUpdateBGLQuery);
+
+        ButtonAndEditTextLayout.setVisibility(View.VISIBLE);
+        graphDateTime.setText(((BGL)e.getData()).GetFormatedDate());
+
+        /////////////////////////////////////////////////////////
+        // If the point is on the edge of the screen (left or top)
+        // shift the layout of the edittext and button so
+        // it wont disappear from view.
+        if(h.getXPx() <= 320)
+            ButtonAndEditTextLayout.setX(h.getXPx());
+        else
+            ButtonAndEditTextLayout.setX(h.getXPx()-320);
+
+        if(h.getYPx() <= 300)
+            ButtonAndEditTextLayout.setY(h.getYPx()+50);
+        else
+            ButtonAndEditTextLayout.setY(h.getYPx()-300);
+        /////////////////////////////////////////////////////////
+    }
+
+    //Sets the functionality of the check button.
+    private void setEditLayoutFunction(final Entry e){
         final Button btn = (Button)getActivity().findViewById(R.id.ButtonSetGraphBGL);
         final EditText bglGraphEditText = (EditText)getActivity().findViewById(R.id.editTextNewBGLValue);
 
-        ll.setVisibility(View.VISIBLE);
-
-        chart.setAlpha(0.3f);
         btn.setOnClickListener(new View.OnClickListener() {
-            int ind = data.indexOf(e);
-
+            float new_value = 0;
             @Override
             public void onClick(View view) {
-                    try {
-                        //data.get(ind).setY((float) Integer.parseInt(bglGraphEditText.getText().toString()));
-                        e.setY((float) Integer.parseInt(bglGraphEditText.getText().toString()));
-                    } catch (Exception e) {}
 
-                ll.setVisibility(View.INVISIBLE);
+                try {
+
+                    new_value = Float.parseFloat(bglGraphEditText.getText().toString());
+                    e.setY(new_value);
+                    BGL bgl = (BGL)e.getData();
+                    bgl.set_value((int)new_value);
+                    ((QueryActivity) getActivity()).UpdateBGL(((bgl)));
+
+                } catch (Exception e) {}
+
+
+
+                // Update the sql table with the new value.
+
+
+                ButtonAndEditTextLayout.setVisibility(View.INVISIBLE);
                 bglGraphEditText.setText("");
                 chart.setAlpha(1f);
                 dataSet.notifyDataSetChanged();
                 lineData.notifyDataChanged();
                 chart.notifyDataSetChanged();
-
-
             }
         });
 
     }
 
     @Override
+    public void onValueSelected(Entry e, Highlight h) {
+        BgingEditLayout(e,h);
+        setEditLayoutFunction(e);
+        chart.setAlpha(0.3f); //Changes the opacity of the graph
+    }
+
+    @Override
     public void onNothingSelected() {
-        chart.setAlpha(1f);
-        ll.setVisibility(View.INVISIBLE);
+        //When the user touchs somewhere else, set the opacity of the graph back to 1 and make
+        //the edit view invisible.
+        if(chart!=null) chart.setAlpha(1f);
+        if(ButtonAndEditTextLayout!=null) ButtonAndEditTextLayout.setVisibility(View.INVISIBLE);
+
     }
 }
