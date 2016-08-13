@@ -3,9 +3,12 @@ package team5.diabetesself_managmentapp;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.multidex.MultiDex;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,10 +23,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.firebase.client.Firebase;
 import com.github.lzyzsd.circleprogress.ArcProgress;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -34,6 +41,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import team5.diabetesself_managmentapp.adapter.BGLAdapter;
+import team5.diabetesself_managmentapp.firebase.SignInActivity;
 import team5.diabetesself_managmentapp.fragments.AddBGLFragment;
 import team5.diabetesself_managmentapp.fragments.DatePickerFragment;
 import team5.diabetesself_managmentapp.fragments.TimePickerFragment;
@@ -65,11 +73,80 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
 
     private final String BGL_FRAG_STATE = "BGL_STATE";
 
+    // Initial User Info
+    private String mUsername;
+    private String mPhotoUrl;
+    public static final String ANONYMOUS = "anonymous";
+
+    // Firebase instance variables
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseUser mFirebaseUser;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private GoogleApiClient mGoogleApiClient;
+
+    //private Firebase myFirebaseRef;
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(newBase);
+        MultiDex.install(this);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initObjects();  // Must be called first to initialize objects.
+
+        // Set default username is anonymous.
+        mUsername = ANONYMOUS;
+
+        // Initialize Firebase Auth
+        mFirebaseAuth = FirebaseAuth.getInstance();
+
+        mAuthListener = new FirebaseAuth.AuthStateListener()
+        {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth)
+            {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null)
+                {
+                    // User is signed in
+                    System.out.println("onAuthStateChanged:signed_in:" + user.getUid());
+                }
+                else
+                {
+                    // User is signed out
+                    System.out.println("onAuthStateChanged:signed_out");
+                }
+                // ...
+            }
+        };
+
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+
+        if(mFirebaseUser == null)
+        {
+            // Not signed in, launch the Sign In activity
+            startActivity(new Intent(this, SignInActivity.class));
+            finish();
+            return;
+        }
+        else
+        {
+            mUsername = mFirebaseUser.getDisplayName();
+
+            if (mFirebaseUser.getPhotoUrl() != null)
+            {
+                mPhotoUrl = mFirebaseUser.getPhotoUrl().toString();
+            }
+        }
+
+        // Firebase library must be initialized once with the Android's  App context
+        //Firebase.setAndroidContext(this);
+
+        //myFirebaseRef = new Firebase("https://<YOUR-FIREBASE-APP>.firebaseio.com/");
 
         // Create Helper
         db = new DatabaseHelper(this,null,null,1);
@@ -176,14 +253,20 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch(item.getItemId())
+        {
+            case R.id.action_settings:
+                return true;
+            case R.id.sign_out_menu:
+                mFirebaseAuth.signOut();
+                Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+                mUsername = ANONYMOUS;
+                startActivity(new Intent(this, SignInActivity.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
