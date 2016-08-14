@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
     private RecyclerView BGLHolderView;
     private BGLAdapter bglAdapter;
 
-    private DatabaseHelper db;
+    //private DatabaseHelper db;
 
     private final String BGL_FRAG_STATE = "BGL_STATE";
 
@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
     private FirebaseAuth.AuthStateListener mAuthListener;
     private GoogleApiClient mGoogleApiClient;
     private DatabaseReference mFirebaseDatabaseReference;
+    public static final String BGL_CHILD = "bgl";
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -152,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         //myFirebaseRef = new Firebase("https://<YOUR-FIREBASE-APP>.firebaseio.com/");
 
         // Create Helper
-        db = new DatabaseHelper(this,null,null,1);
+        //db = new DatabaseHelper(this,null,null,1);
 
         if(savedInstanceState==null)
             AddBGLHelper.hideFragment(getFragmentManager(), AddBGLFragment);
@@ -361,11 +362,17 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
             String dateString = entry.getDate() + " " +  entry.getTime();
             System.out.println("Progress: "+entry.getProgress()+" || Date: "+entry.getDate()+" || Time: "+entry.getTime());
             Date date;
-            try {
-                db.CreateBGL(format.parse(dateString),entry.getProgress());
-            }catch(ParseException e){
-                e.printStackTrace();
-            }
+
+            mFirebaseDatabaseReference.child("users")
+                    .child(mFirebaseUser.getUid())
+                    .child(BGL_CHILD)
+                    .push().setValue(entry);
+
+//            try {
+//                db.CreateBGL(format.parse(dateString),entry.getProgress());
+//            }catch(ParseException e){
+//                e.printStackTrace();
+//            }
         }
 
         AddBGLFragment.bglAdapter.clearList();
