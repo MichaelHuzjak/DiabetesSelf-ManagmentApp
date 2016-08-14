@@ -31,6 +31,8 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -83,8 +85,7 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
     private FirebaseUser mFirebaseUser;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private GoogleApiClient mGoogleApiClient;
-
-    //private Firebase myFirebaseRef;
+    private DatabaseReference mFirebaseDatabaseReference;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -142,6 +143,8 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
                 mPhotoUrl = mFirebaseUser.getPhotoUrl().toString();
             }
         }
+
+        mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
 
         // Firebase library must be initialized once with the Android's  App context
         //Firebase.setAndroidContext(this);

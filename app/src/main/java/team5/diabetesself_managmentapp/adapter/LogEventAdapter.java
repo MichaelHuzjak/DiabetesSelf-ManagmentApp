@@ -162,6 +162,13 @@ public class LogEventAdapter extends RecyclerView.Adapter<LogEventViewHolder>
 		return super.getItemViewType(position);
 	}
 
+	public LogEventModel getLogEvent(int position)
+	{
+		LogEventModel logEventModel = logEventModelList.get(position);
+
+		return logEventModel;
+	}
+
 	/* TEXTWATCHER TO BE MADE AWARE OF THE POSITION SO WHEN A NEW
 	ITEM IS ATTAHED IN THE ONBINDVIEWHOLDER(), THE CURRENT POSITION WILL BE UPDATED
 	IN THE VIEWHOLDER, THAT CORRESPONDS ITS MODEL IN THE ARRAY LIST AS WELL AS THE POSITION OF THE LISTENER
