@@ -42,9 +42,11 @@ import team5.diabetesself_managmentapp.fragments.BGLListFragment;
 import team5.diabetesself_managmentapp.fragments.BGLResultFragment;
 import team5.diabetesself_managmentapp.fragments.BGLStatsFragment;
 import team5.diabetesself_managmentapp.fragments.DatePickerFragment;
+import team5.diabetesself_managmentapp.fragments.DietGraphFragment;
 import team5.diabetesself_managmentapp.fragments.DietListFragment;
 import team5.diabetesself_managmentapp.fragments.DietResultFragment;
 import team5.diabetesself_managmentapp.fragments.DietResultMenuFragment;
+import team5.diabetesself_managmentapp.fragments.DietStatFragment;
 import team5.diabetesself_managmentapp.fragments.MainBGLFragment;
 import team5.diabetesself_managmentapp.fragments.MainDietFragment;
 import team5.diabetesself_managmentapp.fragments.MainQueryFragment;
@@ -57,9 +59,9 @@ public class DietQueryActivity extends AppCompatActivity implements TimePickerDi
     private DatabaseHelper db;
     private DietListFragment ListFragment;
     private MainDietFragment MainFragment;
-    private BGLGraphFragment GraphFragment;
+    private DietGraphFragment GraphFragment;
     private DietResultFragment ResultFragment;
-    private BGLStatsFragment StatsFragment;
+    private DietStatFragment StatsFragment;
     public android.app.Fragment CurrentFragment;
     EditText etDate;
     EditText etTime;
@@ -211,9 +213,9 @@ public class DietQueryActivity extends AppCompatActivity implements TimePickerDi
 
     public void ShowAll(){
         GetCompleteDiet();
-       // GraphFragment.Chart();
+        GraphFragment.Chart();
         ListFragment.BuildList();
-        //StatsFragment.Calculate();
+        StatsFragment.Calculate();
         ShowResult();
     }
     public void ShowBefore(Date date){
@@ -233,20 +235,20 @@ public class DietQueryActivity extends AppCompatActivity implements TimePickerDi
 
     public void ShowResult(){
         ShowFragment(getFragmentManager(), ResultFragment,true);
-        //ShowFragment(getFragmentManager(),GraphFragment,false);
-        //ShowFragment(getFragmentManager(),StatsFragment,false);
+        ShowFragment(getFragmentManager(),GraphFragment,false);
+        ShowFragment(getFragmentManager(),StatsFragment,false);
         ShowList();
         ShowFragment(getFragmentManager(),MainFragment,false);
     }
 
     public void SetGraphFragment(Fragment frag){
-        GraphFragment = (BGLGraphFragment) frag;
+        GraphFragment = (DietGraphFragment) frag;
     }
     public void SetListFragment(Fragment frag){
         ListFragment = (DietListFragment) frag;
     }
     public void SetStatsFragment(Fragment frag){
-        StatsFragment = (BGLStatsFragment) frag;
+        StatsFragment = (DietStatFragment) frag;
     }
 
 

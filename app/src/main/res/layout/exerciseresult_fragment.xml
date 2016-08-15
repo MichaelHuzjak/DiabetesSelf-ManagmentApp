@@ -19,6 +19,18 @@
             android:id="@+id/ExerciseListFragment"
             android:name="team5.diabetesself_managmentapp.fragments.ExerciseListFragment"
             />
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/ExerGraphFragment"
+            android:name="team5.diabetesself_managmentapp.fragments.ExerGraphFragment"
+            />
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/ExerStatFragment"
+            android:name="team5.diabetesself_managmentapp.fragments.ExerStatFragment"
+            />
     </RelativeLayout>
 
 </LinearLayout>

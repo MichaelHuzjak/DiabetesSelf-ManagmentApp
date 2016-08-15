@@ -44,6 +44,8 @@ import team5.diabetesself_managmentapp.fragments.BGLStatsFragment;
 import team5.diabetesself_managmentapp.fragments.DatePickerFragment;
 import team5.diabetesself_managmentapp.fragments.DietResultFragment;
 import team5.diabetesself_managmentapp.fragments.DietResultMenuFragment;
+import team5.diabetesself_managmentapp.fragments.ExerGraphFragment;
+import team5.diabetesself_managmentapp.fragments.ExerStatFragment;
 import team5.diabetesself_managmentapp.fragments.ExerciseListFragment;
 import team5.diabetesself_managmentapp.fragments.ExerciseResultFragment;
 import team5.diabetesself_managmentapp.fragments.MainBGLFragment;
@@ -60,9 +62,9 @@ public class ExerciseQueryActivity extends AppCompatActivity implements TimePick
     private DatabaseHelper db;
     private ExerciseListFragment ListFragment;
     private MainExerciseFragment MainFragment;
-    private BGLGraphFragment GraphFragment;
+    private ExerGraphFragment GraphFragment;
     private ExerciseResultFragment ResultFragment;
-    private BGLStatsFragment StatsFragment;
+    private ExerStatFragment StatsFragment;
     public android.app.Fragment CurrentFragment;
     EditText etDate;
     EditText etTime;
@@ -211,9 +213,9 @@ public class ExerciseQueryActivity extends AppCompatActivity implements TimePick
 
     public void ShowAll(){
         GetCompleteDiet();
-        //GraphFragment.Chart();
+        GraphFragment.Chart();
         ListFragment.BuildList();
-        //StatsFragment.Calculate();
+        StatsFragment.Calculate();
         ShowResult();
     }
     public void ShowBefore(Date date){
@@ -233,20 +235,20 @@ public class ExerciseQueryActivity extends AppCompatActivity implements TimePick
 
     public void ShowResult(){
         ShowFragment(getFragmentManager(), ResultFragment,true);
-        //ShowFragment(getFragmentManager(),GraphFragment,false);
-        //ShowFragment(getFragmentManager(),StatsFragment,false);
+        ShowFragment(getFragmentManager(),GraphFragment,false);
+        ShowFragment(getFragmentManager(),StatsFragment,false);
         ShowList();
         ShowFragment(getFragmentManager(),MainFragment,false);
     }
 
     public void SetGraphFragment(Fragment frag){
-        GraphFragment = (BGLGraphFragment) frag;
+        GraphFragment = (ExerGraphFragment) frag;
     }
     public void SetListFragment(Fragment frag){
         ListFragment = (ExerciseListFragment) frag;
     }
     public void SetStatsFragment(Fragment frag){
-        StatsFragment = (BGLStatsFragment) frag;
+        StatsFragment = (ExerStatFragment) frag;
     }
 
 

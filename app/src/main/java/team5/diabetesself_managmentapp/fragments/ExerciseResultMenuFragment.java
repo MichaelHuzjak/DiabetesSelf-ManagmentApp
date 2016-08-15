@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import team5.diabetesself_managmentapp.BGLQueryActivity;
+import team5.diabetesself_managmentapp.ExerciseQueryActivity;
 import team5.diabetesself_managmentapp.LogeventActivity;
 import team5.diabetesself_managmentapp.QueryActivity;
 import team5.diabetesself_managmentapp.R;
@@ -42,21 +43,21 @@ public class ExerciseResultMenuFragment extends Fragment {
         graphButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((BGLQueryActivity)getActivity()).ShowGraph();
+                ((ExerciseQueryActivity)getActivity()).ShowGraph();
             }
         });
         Button buttonList = (Button)getActivity().findViewById(R.id.buttonExerList);
         buttonList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((BGLQueryActivity)getActivity()).ShowList();
+                ((ExerciseQueryActivity)getActivity()).ShowList();
             }
         });
         Button buttonStats = (Button)getActivity().findViewById(R.id.buttonExerStat);
         buttonStats.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((BGLQueryActivity)getActivity()).ShowStats();
+                ((ExerciseQueryActivity)getActivity()).ShowStats();
             }
         });
         //listButton.

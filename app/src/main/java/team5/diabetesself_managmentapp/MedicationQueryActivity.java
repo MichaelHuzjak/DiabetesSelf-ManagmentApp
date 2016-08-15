@@ -49,6 +49,8 @@ import team5.diabetesself_managmentapp.fragments.MainBGLFragment;
 import team5.diabetesself_managmentapp.fragments.MainDietFragment;
 import team5.diabetesself_managmentapp.fragments.MainMedicationFragment;
 import team5.diabetesself_managmentapp.fragments.MainQueryFragment;
+import team5.diabetesself_managmentapp.fragments.MedGraphFragment;
+import team5.diabetesself_managmentapp.fragments.MedStatFragment;
 import team5.diabetesself_managmentapp.fragments.MedicationListFragment;
 import team5.diabetesself_managmentapp.fragments.MedicationResultFragment;
 import team5.diabetesself_managmentapp.fragments.TimePickerFragment;
@@ -61,9 +63,9 @@ public class MedicationQueryActivity extends AppCompatActivity implements TimePi
     private DatabaseHelper db;
     private MedicationListFragment ListFragment;
     private MainMedicationFragment MainFragment;
-    private BGLGraphFragment GraphFragment;
+    private MedGraphFragment GraphFragment;
     private MedicationResultFragment ResultFragment;
-    private BGLStatsFragment StatsFragment;
+    private MedStatFragment StatsFragment;
     public android.app.Fragment CurrentFragment;
     EditText etDate;
     EditText etTime;
@@ -215,8 +217,9 @@ public class MedicationQueryActivity extends AppCompatActivity implements TimePi
 
     public void ShowAll(){
         GetCompleteMedication();
+        GraphFragment.Chart();
         ListFragment.BuildList();
-        //StatsFragment.Calculate();
+        StatsFragment.Calculate();
         ShowResult();
     }
     public void ShowBefore(Date date){
@@ -236,20 +239,20 @@ public class MedicationQueryActivity extends AppCompatActivity implements TimePi
 
     public void ShowResult(){
         ShowFragment(getFragmentManager(), ResultFragment,true);
-        //ShowFragment(getFragmentManager(),GraphFragment,false);
-        //ShowFragment(getFragmentManager(),StatsFragment,false);
+        ShowFragment(getFragmentManager(),GraphFragment,false);
+        ShowFragment(getFragmentManager(),StatsFragment,false);
         ShowList();
         ShowFragment(getFragmentManager(),MainFragment,false);
     }
 
     public void SetGraphFragment(Fragment frag){
-        GraphFragment = (BGLGraphFragment) frag;
+        GraphFragment = (MedGraphFragment) frag;
     }
     public void SetListFragment(Fragment frag){
         ListFragment = (MedicationListFragment) frag;
     }
     public void SetStatsFragment(Fragment frag){
-        StatsFragment = (BGLStatsFragment) frag;
+        StatsFragment = (MedStatFragment) frag;
     }
 
 

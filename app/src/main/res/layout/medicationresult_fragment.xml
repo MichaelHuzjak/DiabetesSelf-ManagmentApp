@@ -19,6 +19,18 @@
             android:id="@+id/MedListFragment"
             android:name="team5.diabetesself_managmentapp.fragments.MedicationListFragment"
             />
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/MedGraphFragment"
+            android:name="team5.diabetesself_managmentapp.fragments.MedGraphFragment"
+            />
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/MedStatFragment"
+            android:name="team5.diabetesself_managmentapp.fragments.MedStatFragment"
+            />
     </RelativeLayout>
 
 </LinearLayout>
