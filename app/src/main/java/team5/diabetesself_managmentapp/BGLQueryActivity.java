@@ -235,8 +235,16 @@ public class BGLQueryActivity extends AppCompatActivity implements TimePickerDia
     public void ShowBefore(Date date){
         GetBefore(date);
         GraphFragment.Chart();
-        ShowFragment(getFragmentManager(),GraphFragment,true);
-        ShowFragment(getFragmentManager(),MainFragment,false);
+        ListFragment.BuildList();
+        StatsFragment.Calculate();
+        ShowResult();
+    }
+    public void ShowAfter(Date date){
+        Getafter(date);
+        GraphFragment.Chart();
+        ListFragment.BuildList();
+        StatsFragment.Calculate();
+        ShowResult();
     }
 
     public void ShowResult(){

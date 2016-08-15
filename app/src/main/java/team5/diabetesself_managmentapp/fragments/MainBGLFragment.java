@@ -56,6 +56,13 @@ public class MainBGLFragment extends Fragment {
                 onBefore();
             }
         });
+        Button afterButton = (Button)getActivity().findViewById(R.id.buttonBGLQueryAfter);
+        afterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onAfter();
+            }
+        });
 
         //listButton.
     }
@@ -126,5 +133,9 @@ public class MainBGLFragment extends Fragment {
     public void onBefore(){
         Date date = GetCombinedDate();
         ((BGLQueryActivity)getActivity()).ShowBefore(date);
+    }
+    public void onAfter(){
+        Date date = GetCombinedDate();
+        ((BGLQueryActivity)getActivity()).ShowAfter(date);
     }
 }
