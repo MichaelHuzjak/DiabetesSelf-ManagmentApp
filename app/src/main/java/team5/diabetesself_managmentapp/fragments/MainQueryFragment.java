@@ -9,7 +9,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import team5.diabetesself_managmentapp.BGLQueryActivity;
+import team5.diabetesself_managmentapp.DietQueryActivity;
+import team5.diabetesself_managmentapp.ExerciseQueryActivity;
 import team5.diabetesself_managmentapp.LogeventActivity;
+import team5.diabetesself_managmentapp.MedicationQueryActivity;
 import team5.diabetesself_managmentapp.QueryActivity;
 import team5.diabetesself_managmentapp.R;
 
@@ -29,6 +32,27 @@ public class MainQueryFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(((QueryActivity)getActivity()).getApplicationContext(), BGLQueryActivity.class));
+            }
+        });
+        Button buttonDiet = (Button)getActivity().findViewById(R.id.buttonQueryDiet);
+        buttonDiet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(((QueryActivity)getActivity()).getApplicationContext(), DietQueryActivity.class));
+            }
+        });
+        Button buttonExercise = (Button)getActivity().findViewById(R.id.buttonQueryExercise);
+        buttonExercise.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(((QueryActivity)getActivity()).getApplicationContext(), ExerciseQueryActivity.class));
+            }
+        });
+        Button buttonMedication = (Button)getActivity().findViewById(R.id.buttonQueryMed);
+        buttonMedication.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(((QueryActivity)getActivity()).getApplicationContext(), MedicationQueryActivity.class));
             }
         });
         Button clearButton = (Button)getActivity().findViewById(R.id.buttonClear);

@@ -194,6 +194,40 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.insert(TABLE_DIET,null,values);
         db.close();
     }
+    // Create Diet
+    public void CreateDiet( String desc, int amount, String date){
+        System.out.println("Creating!");
+        ContentValues values = new ContentValues();
+        values.put(DIET_DESC, desc);
+        values.put(DIET_AMOUNT, amount);
+        values.put(DIET_DATETIME, date);
+        SQLiteDatabase db = getWritableDatabase();
+        db.insert(TABLE_DIET,null,values);
+        db.close();
+    }
+    // Search Diet by Keyword
+    public List<Diet> GetAllDiet(){
+        List<Diet> diets = new ArrayList<Diet>();
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "SELECT * FROM " + TABLE_DIET + " WHERE 1;";
+        Cursor c = db.rawQuery(query,null);
+        Diet diet;
+        System.out.println("Diet " + c.getCount());
+
+        if(c.getCount() > 0){
+            while(c.moveToNext()){
+                DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:aa");
+                try {
+                    diet = new Diet(Integer.valueOf(c.getString(0)),c.getString(1),format.parse(c.getString(2)),Integer.valueOf(c.getString(3)));
+                    diets.add(diet);
+                }catch(ParseException e){
+                    e.printStackTrace();
+                }
+            }
+        }
+        db.close();
+        return diets;
+    }
     // Search Diet by Keyword
     public List<Diet> GetDietByKeyword(String keyword){
         List<Diet> diets = new ArrayList<Diet>();
@@ -349,6 +383,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         db.insert(TABLE_MED,null,values);
         db.close();
+    }
+    // Search Diet by Keyword
+    public List<Medication> GetAllMedication(){
+        List<Medication> medications = new ArrayList<Medication>();
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "SELECT * FROM " + TABLE_MED + " WHERE 1;";
+        Cursor c = db.rawQuery(query,null);
+        Medication med;
+        System.out.println("Diet " + c.getCount());
+
+        if(c.getCount() > 0){
+            while(c.moveToNext()){
+                DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:aa");
+                try {
+                    med = new Medication(Integer.valueOf(c.getString(0)),c.getString(1),format.parse(c.getString(2)),Integer.valueOf(c.getString(3)));
+                    medications.add(med);
+                }catch(ParseException e){
+                    e.printStackTrace();
+                }
+            }
+        }
+        db.close();
+        return medications;
     }
     // Get Medication by id
     public Medication GetMedication(int id){
@@ -513,6 +570,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return diets;
     }
+    public List<Exercise> GetAllExercise(){
+        List<Exercise> exercises = new ArrayList<Exercise>();
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "SELECT * FROM " + TABLE_EXERCISE + " WHERE 1;";
+        Cursor c = db.rawQuery(query,null);
+        Exercise exer;
+
+        if(c.getCount() > 0){
+            while(c.moveToNext()){
+                DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:aa");
+                try {
+                    exer = new Exercise(Integer.valueOf(c.getString(0)),c.getString(1),format.parse(c.getString(2)),Integer.valueOf(c.getString(3)));
+                    exercises.add(exer);
+                }catch(ParseException e){
+                    e.printStackTrace();
+                }
+            }
+        }
+        db.close();
+        return exercises;
+    }
     // Get All Exercises Associated with Prescription
     public List<Exercise> GetExercisesFromPrescription(int id){
         List<Exercise> exercises = new ArrayList<Exercise>();
@@ -599,7 +677,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public List<BGL> GetAllBGL(){
         List<BGL> bgls = new ArrayList<BGL>();
         SQLiteDatabase db = getWritableDatabase();
-        String query = "SELECT * FROM " + TABLE_BGL + " WHERE 1";
+        String query = "SELECT * FROM " + TABLE_BGL + " WHERE 1;";
         Cursor c = db.rawQuery(query,null);
         BGL bgl;
         if(c.getCount() > 0){

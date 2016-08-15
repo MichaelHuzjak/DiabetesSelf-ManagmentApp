@@ -285,7 +285,7 @@ public class LogeventActivity extends AppCompatActivity implements TimePickerDia
 	public void onTimeSet(TimePicker view, int hourOfDay, int minute)
 	{
 		Calendar cal = new GregorianCalendar(0, 0, 0, hourOfDay, minute, 0);
-		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss aa");
+		SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:aa");
 		etTime.setText(sdf.format(cal.getTime()));
 	}
 
@@ -293,7 +293,7 @@ public class LogeventActivity extends AppCompatActivity implements TimePickerDia
 	public void onDateSet(DatePicker view, int year, int month, int dayOfMonth)
 	{
 		Calendar cal = new GregorianCalendar(year, month, dayOfMonth);
-		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		etDate.setText(sdf.format(cal.getTime()));
 	}
 
@@ -310,7 +310,7 @@ public class LogeventActivity extends AppCompatActivity implements TimePickerDia
 	public void makeDbModel(int type, String description, String value, String date, String time)
 	{
 
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:aa");
 		Date convertedDate = new Date();
 
 		System.out.println("description: " + description);
@@ -349,7 +349,7 @@ public class LogeventActivity extends AppCompatActivity implements TimePickerDia
 		switch(type)
 		{
 			case LogEventConstant.DIET:
-				myEventLogDB.CreateDiet(0, description, myNum, dateTime);
+				myEventLogDB.CreateDiet( description, myNum, dateTime);
 				break;
 			case LogEventConstant.EXERCISE:
 				myEventLogDB.CreateExercise(0, description, myNum, dateTime);

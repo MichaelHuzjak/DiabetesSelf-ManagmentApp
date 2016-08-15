@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+    <RelativeLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/MainDietFragment"
+            android:name="team5.diabetesself_managmentapp.fragments.MainDietFragment"
+            />
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/DietResultFragment"
+            android:name="team5.diabetesself_managmentapp.fragments.DietResultFragment"
+            />
+
+
+
+    </RelativeLayout>
+</LinearLayout>
