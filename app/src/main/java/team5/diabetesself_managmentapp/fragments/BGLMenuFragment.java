@@ -1,12 +1,25 @@
 package team5.diabetesself_managmentapp.fragments;
 
+import android.app.DatePickerDialog;
 import android.app.Fragment;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.TimePicker;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import team5.diabetesself_managmentapp.BGLQueryActivity;
 import team5.diabetesself_managmentapp.LogeventActivity;
@@ -16,7 +29,8 @@ import team5.diabetesself_managmentapp.R;
 /**
  * Created by Michael on 8/7/2016.
  */
-public class MainQueryFragment extends Fragment {
+public class BGLMenuFragment extends Fragment {
+
     View view;
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -24,26 +38,34 @@ public class MainQueryFragment extends Fragment {
         CreateButtons();
     }
     private void CreateButtons(){
-        Button bglButton = (Button)getActivity().findViewById(R.id.buttonBGLQuery);
-        bglButton.setOnClickListener(new View.OnClickListener() {
+        Button graphButton = (Button)getActivity().findViewById(R.id.buttonBGLGraph);
+        graphButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(((QueryActivity)getActivity()).getApplicationContext(), BGLQueryActivity.class));
+                ((BGLQueryActivity)getActivity()).ShowGraph();
             }
         });
-        Button clearButton = (Button)getActivity().findViewById(R.id.buttonClear);
-        clearButton.setOnClickListener(new View.OnClickListener() {
+        Button buttonList = (Button)getActivity().findViewById(R.id.buttonBGLList);
+        buttonList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((QueryActivity)getActivity()).ClearDatabase();
+                ((BGLQueryActivity)getActivity()).ShowList();
+            }
+        });
+        Button buttonStats = (Button)getActivity().findViewById(R.id.buttonBGLStats);
+        buttonStats.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((BGLQueryActivity)getActivity()).ShowStats();
             }
         });
         //listButton.
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        view = inflater.inflate(R.layout.query_fragment, container, false);
+        view = inflater.inflate(R.layout.bglmenu_fragment, container, false);
         return view;
     }
     @Override
@@ -51,4 +73,5 @@ public class MainQueryFragment extends Fragment {
         super.onSaveInstanceState(outState);
         //outState.putParcelableArrayList(List_State, bglAdapter.getList());
     }
+
 }

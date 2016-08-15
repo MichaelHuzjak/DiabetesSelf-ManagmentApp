@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import team5.diabetesself_managmentapp.BGL;
+import team5.diabetesself_managmentapp.BGLQueryActivity;
 import team5.diabetesself_managmentapp.QueryActivity;
 import team5.diabetesself_managmentapp.R;
 import team5.diabetesself_managmentapp.adapter.BGLListAdapter;
@@ -20,21 +21,25 @@ import team5.diabetesself_managmentapp.adapter.BGLListAdapter;
  * Created by Michael on 8/7/2016.
  */
 public class BGLListFragment extends Fragment {
+    ArrayList<BGL> list;
     BGLListAdapter adapter;
     RecyclerView holderView;
     View view;
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        ((BGLQueryActivity)getActivity()).SetListFragment(this);
 
         holderView = (RecyclerView)view.findViewById(R.id.RecyclerViewBGLListHolder);
-        ArrayList<BGL> list = new ArrayList<BGL>();
+        list = new ArrayList<BGL>();
 
-        for(BGL bgl: ((QueryActivity)getActivity()).GetCompleteBGL()){
+    }
+    public void BuildList(){
+        for(BGL bgl: ((BGLQueryActivity)getActivity()).GetList()){
             System.out.println("ID: " + bgl.get_id());
             list.add(bgl);
         }
-        adapter = new BGLListAdapter(list,((QueryActivity)getActivity()));
+        adapter = new BGLListAdapter(list,((BGLQueryActivity)getActivity()));
         holderView.setLayoutManager(new LinearLayoutManager(getActivity()));
         holderView.setAdapter(adapter);
         adapter.notifyDataSetChanged();

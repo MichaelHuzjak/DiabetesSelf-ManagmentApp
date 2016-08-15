@@ -3,6 +3,7 @@ package team5.diabetesself_managmentapp;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.TimePickerDialog;
@@ -10,6 +11,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.NavUtils;
+import android.support.v4.media.MediaBrowserServiceCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,88 +39,53 @@ import java.util.List;
 
 import team5.diabetesself_managmentapp.fragments.BGLGraphFragment;
 import team5.diabetesself_managmentapp.fragments.BGLListFragment;
+import team5.diabetesself_managmentapp.fragments.BGLResultFragment;
+import team5.diabetesself_managmentapp.fragments.BGLStatsFragment;
 import team5.diabetesself_managmentapp.fragments.DatePickerFragment;
+import team5.diabetesself_managmentapp.fragments.MainBGLFragment;
 import team5.diabetesself_managmentapp.fragments.MainQueryFragment;
 import team5.diabetesself_managmentapp.fragments.TimePickerFragment;
 
 
-public class QueryActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener{
+public class BGLQueryActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener{
 
     static final int DIALOG_ID = 0;
     boolean isStart;
     private DatabaseHelper db;
     private BGLListFragment ListFragment;
-    private MainQueryFragment MainFragment;
+    private MainBGLFragment MainFragment;
+    private BGLGraphFragment GraphFragment;
+    private BGLResultFragment ResultFragment;
+    private BGLStatsFragment StatsFragment;
     public android.app.Fragment CurrentFragment;
     EditText etDate;
     EditText etTime;
+    List<BGL> currentList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_query);
+        setContentView(R.layout.activity_bglquery);
         db = new DatabaseHelper(this,null,null,1);
         //DisplayBGL();
 
 
-        MainFragment = (MainQueryFragment) getFragmentManager().findFragmentById(R.id.MainQueryFragment);
+        MainFragment = (MainBGLFragment) getFragmentManager().findFragmentById(R.id.MainBGL);
         CurrentFragment = MainFragment;
         ShowFragment(getFragmentManager(), MainFragment,true);
 
+//        GraphFragment = (BGLGraphFragment) getFragmentManager().findFragmentById(R.id.GraphFragment);
+//        ShowFragment(getFragmentManager(), GraphFragment,false);
+
+        ResultFragment = (BGLResultFragment) getFragmentManager().findFragmentById(R.id.ResultFragment);
+        ShowFragment(getFragmentManager(), ResultFragment,false);
+
+//
+//        ListFragment = (BGLListFragment) getFragmentManager().findFragmentById(R.id.BGLListFragment);
+//        ShowFragment(getFragmentManager(), ListFragment,false);
 
 
     }
-    public void old(){
-        Calendar cal = Calendar.getInstance();
-        Calendar c = Calendar.getInstance();
-        // end date
-        isStart = false;
-        //mEndDate = c.getTime();
-        TextView etDate;
-        TextView etTime;
-
-        // Basic graph code from GraphView, Open Source Android Graph library
-        GraphView mGraph = (GraphView) findViewById(R.id.graphExample);
-        DataPoint[] data = new DataPoint[30];
-        for(int i = 0;i<30;i++){
-            data[i] = new DataPoint(i,100 + (i*3));
-        }
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(data);
-        PointsGraphSeries<DataPoint> series2 = new PointsGraphSeries<DataPoint>(data);
-
-        //series.setDrawValuesOnTop(true);
-        //series.setSpacing(1);
-
-        mGraph.addSeries(series);
-        mGraph.addSeries(series2);
-
-
-        mGraph.setTitle("Monthly BGL Example");
-        String[] labels = new String[30];
-        for(int i=0;i<30;i++){
-            labels[i] = "7/" + i;
-        }
-
-        // Possible Deprecated code, used for labels. Causes errors and formatting issues when using viewport's scaling.
-
-
-        mGraph.getViewport().setScrollable(true);
-        mGraph.getViewport().setXAxisBoundsManual(true);
-        //mGraph.getViewport().setMinX(0);
-        //mGraph.getViewport().setMaxX(5);
-
-//        <RelativeLayout
-//        android:layout_width="wrap_content"
-//        android:layout_height="wrap_content">
-//
-//        <com.jjoe64.graphview.GraphView
-//        android:layout_width="match_parent"
-//        android:layout_height="match_parent"
-//        android:id="@+id/graphExample" />
-//
-//        </RelativeLayout>
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -139,7 +106,7 @@ public class QueryActivity extends AppCompatActivity implements TimePickerDialog
                 //Should save data in EditText fields
 
                 //Nav back to parent
-                //NavUtils.navigateUpFromSameTask(this);
+                NavUtils.navigateUpFromSameTask(this);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -159,8 +126,18 @@ public class QueryActivity extends AppCompatActivity implements TimePickerDialog
         ShowFragment(getFragmentManager(),ListFragment,true);
         ShowFragment(getFragmentManager(),MainFragment,false);
     }
-    public List<BGL> GetCompleteBGL(){
-        return db.GetAllBGL();
+    public List<BGL> GetList(){
+        return currentList;
+    }
+    public void GetCompleteBGL(){
+        //return db.GetAllBGL();
+        currentList = db.GetAllBGL();
+    }
+    public void GetBefore(Date date){
+        currentList = db.GetAllBGLBeforeDate(date);
+    }
+    public void Getafter(Date date){
+        currentList = db.GetAllBGLAfterDate(date);
     }
     public void ClearDatabase(){
         db.ClearDatabase();
@@ -197,7 +174,6 @@ public class QueryActivity extends AppCompatActivity implements TimePickerDialog
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth)
     {
-
         Calendar cal = new GregorianCalendar(year, month, dayOfMonth);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         etDate.setText(sdf.format(cal.getTime()));
@@ -206,18 +182,24 @@ public class QueryActivity extends AppCompatActivity implements TimePickerDialog
         db.UpdateBGL(bgl);
     }
 
-
+    public void ShowGraph(){
+        ShowFragment(getFragmentManager(),GraphFragment,true);
+        ShowFragment(getFragmentManager(),CurrentFragment,false);
+        CurrentFragment=GraphFragment;
+    }
+    public void ShowList(){
+        ShowFragment(getFragmentManager(),ListFragment,true);
+        ShowFragment(getFragmentManager(),CurrentFragment,false);
+        CurrentFragment=ListFragment;
+    }
+    public void ShowStats(){
+        ShowFragment(getFragmentManager(),StatsFragment,true);
+        ShowFragment(getFragmentManager(),CurrentFragment,false);
+        CurrentFragment=StatsFragment;
+    }
     public void ShowMain(){
         ShowFragment(getFragmentManager(),MainFragment,true);
         ShowFragment(getFragmentManager(),CurrentFragment,false);
-    }
-
-
-
-    @Override
-    public void onBackPressed() {
-        //super.onBackPressed();
-        System.out.println("Here");
     }
 
     public void ShowFragment(FragmentManager fm, android.app.Fragment fr, boolean show){
@@ -229,9 +211,52 @@ public class QueryActivity extends AppCompatActivity implements TimePickerDialog
             ft.hide(fr);
         else
             ft.show(fr);
-        if(show)        CurrentFragment = fr;
 
         ft.commit();
     }
+
+    public void DialogHelper(DialogFragment frag, String name){
+        frag.show(getSupportFragmentManager(), name);
+    }
+    public void SetDateEdit(EditText et){
+        etDate = et;
+    }
+    public void SetTimeEdit(EditText et){
+        etTime = et;
+    }
+
+    public void ShowAll(){
+        GetCompleteBGL();
+        GraphFragment.Chart();
+        ListFragment.BuildList();
+        StatsFragment.Calculate();
+        ShowResult();
+    }
+    public void ShowBefore(Date date){
+        GetBefore(date);
+        GraphFragment.Chart();
+        ShowFragment(getFragmentManager(),GraphFragment,true);
+        ShowFragment(getFragmentManager(),MainFragment,false);
+    }
+
+    public void ShowResult(){
+        ShowFragment(getFragmentManager(), ResultFragment,true);
+        ShowFragment(getFragmentManager(),GraphFragment,false);
+        ShowFragment(getFragmentManager(),StatsFragment,false);
+        ShowList();
+        ShowFragment(getFragmentManager(),MainFragment,false);
+    }
+
+    public void SetGraphFragment(Fragment frag){
+        GraphFragment = (BGLGraphFragment) frag;
+    }
+    public void SetListFragment(Fragment frag){
+        ListFragment = (BGLListFragment) frag;
+    }
+    public void SetStatsFragment(Fragment frag){
+        StatsFragment = (BGLStatsFragment) frag;
+    }
+
+
 
 }

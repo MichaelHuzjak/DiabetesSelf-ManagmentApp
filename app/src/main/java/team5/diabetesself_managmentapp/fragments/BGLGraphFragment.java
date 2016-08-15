@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import team5.diabetesself_managmentapp.BGL;
+import team5.diabetesself_managmentapp.BGLQueryActivity;
 import team5.diabetesself_managmentapp.QueryActivity;
 import team5.diabetesself_managmentapp.R;
 import team5.diabetesself_managmentapp.adapter.BGLListAdapter;
@@ -59,8 +60,9 @@ public class BGLGraphFragment extends Fragment implements OnChartValueSelectedLi
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        ((BGLQueryActivity)getActivity()).SetGraphFragment(this);
         //Graph();
-        Chart();
+        //Chart();
 
     }
     @Override
@@ -74,12 +76,13 @@ public class BGLGraphFragment extends Fragment implements OnChartValueSelectedLi
         super.onSaveInstanceState(outState);
     }
     public void Chart(){
+        System.out.println("Chart");
         // Get ALL BGL List
 //        ArrayList<BGL> list = new ArrayList<BGL>();
         data = new ArrayList<>();
 
         int counter = 0;
-        for(BGL bgl: ((QueryActivity)getActivity()).GetCompleteBGL()){
+        for(BGL bgl: ((BGLQueryActivity)getActivity()).GetList()){
             System.out.println("ID: " + bgl.get_id());
 //            list.add(bgl);
             Entry bgl_entry = new Entry(counter++,bgl.get_value());
@@ -93,7 +96,7 @@ public class BGLGraphFragment extends Fragment implements OnChartValueSelectedLi
 
         }
 
-        chart = (LineChart)((QueryActivity)getActivity()).findViewById(R.id.graphExample);
+        chart = (LineChart)((BGLQueryActivity)getActivity()).findViewById(R.id.graphBGL);
 
         chart.setTouchEnabled(true);
         chart.setScaleEnabled(true);
@@ -139,7 +142,7 @@ public class BGLGraphFragment extends Fragment implements OnChartValueSelectedLi
         // Get ALL BGL List
         ArrayList<BGL> list = new ArrayList<BGL>();
 
-        for(BGL bgl: ((QueryActivity)getActivity()).GetCompleteBGL()){
+        for(BGL bgl: ((BGLQueryActivity)getActivity()).GetList()){
             System.out.println("ID: " + bgl.get_id());
             list.add(bgl);
         }
@@ -149,7 +152,7 @@ public class BGLGraphFragment extends Fragment implements OnChartValueSelectedLi
         }
 
         // Basic graph code from GraphView, Open Source Android Graph library
-        GraphView mGraph = (GraphView)((QueryActivity)getActivity()).findViewById(R.id.graphExample);
+        GraphView mGraph = (GraphView)((BGLQueryActivity)getActivity()).findViewById(R.id.graphBGL);
         DataPoint[] data = new DataPoint[30];
         for(int i = 0;i<30;i++){
             data[i] = new DataPoint(i,100 + (i*3));
@@ -223,7 +226,7 @@ public class BGLGraphFragment extends Fragment implements OnChartValueSelectedLi
                     e.setY(new_value);
                     BGL bgl = (BGL)e.getData();
                     bgl.set_value((int)new_value);
-                    ((QueryActivity) getActivity()).UpdateBGL(((bgl)));
+                    ((BGLQueryActivity) getActivity()).UpdateBGL(((bgl)));
 
                 } catch (Exception e) {}
 
@@ -257,5 +260,8 @@ public class BGLGraphFragment extends Fragment implements OnChartValueSelectedLi
         if(chart!=null) chart.setAlpha(1f);
         if(ButtonAndEditTextLayout!=null) ButtonAndEditTextLayout.setVisibility(View.INVISIBLE);
 
+    }
+    public void Test(){
+        System.out.println("Test!");
     }
 }
