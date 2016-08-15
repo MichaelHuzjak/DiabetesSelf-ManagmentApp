@@ -1,11 +1,9 @@
 package team5.diabetesself_managmentapp;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.view.View;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -17,18 +15,15 @@ public class AddBGLHelper extends MainActivity{
     // Only one is visible at a time.
     // int visibility: either View.VISIBLE or View.INVISIBLE
     // TextView t: the textView to toggle on or off.
-    private static void toggleNoticeVisibility(int visibility, TextView t){
+    private static void toggleNoticeVisibility(TextView t){
 
         TextView[] notices = {low,mid,norm,high,extreme,doc};
 
-        int new_visibility = 0;
+        int new_visibility;
 
-        if(visibility == View.VISIBLE)
-            new_visibility = View.INVISIBLE;
-        else
-            new_visibility = View.VISIBLE;
+        new_visibility = View.INVISIBLE;
 
-        t.setVisibility(visibility);
+        t.setVisibility(View.VISIBLE);
 
         for (TextView notice : notices) {
             if (!notice.equals(t))
@@ -47,22 +42,22 @@ public class AddBGLHelper extends MainActivity{
 
         if (progress <= 70) {
             if(low.getVisibility() != View.VISIBLE)
-                toggleNoticeVisibility(View.VISIBLE, low);
+                toggleNoticeVisibility(low);
         } else if (progress >= 70 && progress <= 90) {
             if(mid.getVisibility() != View.VISIBLE)
-                toggleNoticeVisibility(View.VISIBLE, mid);
+                toggleNoticeVisibility(mid);
         } else if (progress >= 90 && progress <= 160) {
             if(norm.getVisibility() != View.VISIBLE)
-                toggleNoticeVisibility(View.VISIBLE, norm);
+                toggleNoticeVisibility(norm);
         } else if (progress >= 160 && progress <= 240) {
             if(high.getVisibility() != View.VISIBLE)
-                toggleNoticeVisibility(View.VISIBLE, high);
+                toggleNoticeVisibility(high);
         } else if (progress >= 240 && progress <= 300) {
             if(extreme.getVisibility() != View.VISIBLE)
-                toggleNoticeVisibility(View.VISIBLE, extreme);
+                toggleNoticeVisibility(extreme);
         } else {
             if(doc.getVisibility() != View.VISIBLE)
-                toggleNoticeVisibility(View.VISIBLE, doc);
+                toggleNoticeVisibility(doc);
         }
 
     }

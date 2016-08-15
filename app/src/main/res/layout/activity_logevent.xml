@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/relativelayoutlogevent"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -25,7 +23,8 @@
             android:id="@+id/gridLayoutButtons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:baselineAligned="false">
                 <LinearLayout
                     android:gravity="center"
                     android:layout_weight="1"
@@ -188,10 +187,8 @@
         <!--</RelativeLayout>-->
 
         <RelativeLayout
-            android:id="@+id/relativelayoutlistview"
             xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:orientation="vertical"
             android:layout_below="@+id/gridLayoutButtons"
             android:layout_width="match_parent"

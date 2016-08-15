@@ -2,7 +2,6 @@ package team5.diabetesself_managmentapp;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -22,19 +21,19 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -49,7 +48,7 @@ import team5.diabetesself_managmentapp.utils.LogEventConstant;
  * Created by Joshua on 7/7/2016.
  * Activity class for adding diet, exercise and medication event entries.
  */
-public class LogeventActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener{
+public class LogeventActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener, GoogleApiClient.OnConnectionFailedListener {
 
 	private final String KEY_RECYCLER_STATE = "recycler_state";
 	private final String KEY_LIST_STATE = "list_state";
@@ -67,18 +66,15 @@ public class LogeventActivity extends AppCompatActivity implements TimePickerDia
 	// DATABASE RELATED MEMEBRS
 	//private DatabaseHelper myEventLogDB;
 
-	// Initial User Info
-	private String mUsername;
-	public static final String ANONYMOUS = "anonymous";
-
 	// Firebase instance variables
 	private FirebaseAuth mFirebaseAuth;
-	private FirebaseUser mFirebaseUser;
+	private String mUsername;
+	private static final String ANONYMOUS = "anonymous";
 	private GoogleApiClient mGoogleApiClient;
 	private DatabaseReference mFirebaseDatabaseReference;
-	public static final String DIET_CHILD = "diet";
-	public static final String EXERCISE_CHILD = "exercise";
-	public static final String MEDICATION_CHILD = "medication";
+	private static final String DIET_CHILD = "diet";
+	private static final String EXERCISE_CHILD = "exercise";
+	private static final String MEDICATION_CHILD = "medication";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -87,14 +83,18 @@ public class LogeventActivity extends AppCompatActivity implements TimePickerDia
 
 		// Initialize Firebase Auth
 		mFirebaseAuth = FirebaseAuth.getInstance();
-		mFirebaseUser = mFirebaseAuth.getCurrentUser();
-		mUsername = mFirebaseUser.getDisplayName();
-		mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
+		FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
+		mUsername = mFirebaseUser != null ? mFirebaseUser.getDisplayName() : null;
+
+		mGoogleApiClient = new GoogleApiClient.Builder(this)
+				.enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+				.addApi(Auth.GOOGLE_SIGN_IN_API)
+				.build();
+
+		mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference("/users/" + mFirebaseUser.getUid());
+
 		System.out.println("USER ID: " + mFirebaseUser.getUid());
 		System.out.println("USER STRING: " + mUsername);
-
-		// GET THE CONTEXT OF THIS ACTIVITY
-		Context activityContext = getApplicationContext();
 
 		// MUST SET THE CONTEXT, OTHERWISE ITS NULL WILL CRASH
 		//myEventLogDB = new DatabaseHelper(activityContext, null, null, 1);
@@ -231,8 +231,6 @@ public class LogeventActivity extends AppCompatActivity implements TimePickerDia
 				int itemCount = logEventAdapter.getItemCount();
 
 				// LOCAL MEMBERS THAT WILL REFERENCE UI ELEMENTS TO GRAB DATA TO BE STORED
-				View parentView;
-				EditText et;
 
 				System.out.println("Item count: " + itemCount);
 
@@ -246,24 +244,15 @@ public class LogeventActivity extends AppCompatActivity implements TimePickerDia
 					{
 						case LogEventConstant.DIET:
 							//makeDbModel(LogEventConstant.DIET, description, value, date, time);
-							mFirebaseDatabaseReference.child("users")
-									.child(mFirebaseUser.getUid())
-									.child(DIET_CHILD)
-									.push().setValue(logEvent);
+							mFirebaseDatabaseReference.child(DIET_CHILD).push().setValue(logEvent);
 							break;
 						case LogEventConstant.EXERCISE:
 							//makeDbModel(LogEventConstant.EXERCISE, description, value, date, time);
-							mFirebaseDatabaseReference.child("users")
-									.child(mFirebaseUser.getUid())
-									.child(EXERCISE_CHILD)
-									.push().setValue(logEvent);
+							mFirebaseDatabaseReference.child(EXERCISE_CHILD).push().setValue(logEvent);
 							break;
 						case LogEventConstant.MEDICATION:
 							//makeDbModel(LogEventConstant.MEDICATION, description, value, date, time);
-							mFirebaseDatabaseReference.child("users")
-									.child(mFirebaseUser.getUid())
-									.child(MEDICATION_CHILD)
-									.push().setValue(logEvent);
+							mFirebaseDatabaseReference.child(MEDICATION_CHILD).push().setValue(logEvent);
 							break;
 						default:
 							throw new IllegalArgumentException("Unexpected Type");
@@ -328,59 +317,11 @@ public class LogeventActivity extends AppCompatActivity implements TimePickerDia
 		outState.putParcelable(KEY_RECYCLER_STATE, listState);
 	}
 
-//	public void makeDbModel(int type, String description, String value, String date, String time)
-//	{
-//
-//		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//		Date convertedDate = new Date();
-//
-//		System.out.println("description: " + description);
-//		System.out.println("value: " + value);
-//		System.out.println("date: " + date);
-//		System.out.println("time: " + time);
-//
-//		try {
-//			convertedDate = dateFormat.parse(date + " " + time);
-//		} catch(ParseException pe){
-//			// no op
-//		}
-//
-//		String dateTime = dateFormat.format(convertedDate);
-//
-//		System.out.println("dateTime: " + dateTime);
-//
-//		if(description == null)
-//		{
-//			description = "empty";
-//		}
-//
-//		int myNum;
-//
-//		if(value == null)
-//		{
-//			myNum = 0;
-//		}
-//        else {
-//			try {
-//				myNum = Integer.parseInt(value);
-//			} catch (NumberFormatException nfe) {
-//				myNum = 0;
-//			}
-//		}
-//		switch(type)
-//		{
-//			case LogEventConstant.DIET:
-//				myEventLogDB.CreateDiet(0, description, myNum, dateTime);
-//				break;
-//			case LogEventConstant.EXERCISE:
-//				myEventLogDB.CreateExercise(0, description, myNum, dateTime);
-//				break;
-//			case LogEventConstant.MEDICATION:
-//				myEventLogDB.CreateMedication(0, description, myNum, dateTime);
-//				break;
-//			default:
-//				throw new IllegalArgumentException("Unexpected Type");
-//		}
-//
-//	}
+	@Override
+	public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+		// An unresolvable error has occurred and Google APIs (including Sign-In) will not
+		// be available.
+		System.out.println("onConnectionFailed:" + connectionResult);
+		Toast.makeText(this, "Google Play Services error.", Toast.LENGTH_SHORT).show();
+	}
 }

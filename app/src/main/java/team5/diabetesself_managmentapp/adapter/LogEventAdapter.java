@@ -164,9 +164,7 @@ public class LogEventAdapter extends RecyclerView.Adapter<LogEventViewHolder>
 
 	public LogEventModel getLogEvent(int position)
 	{
-		LogEventModel logEventModel = logEventModelList.get(position);
-
-		return logEventModel;
+		return logEventModelList.get(position);
 	}
 
 	/* TEXTWATCHER TO BE MADE AWARE OF THE POSITION SO WHEN A NEW

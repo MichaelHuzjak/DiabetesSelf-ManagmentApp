@@ -71,7 +71,6 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="@string/logEventString"
-                android:id="@+id/textViewLogs"
                 />
         </LinearLayout>
         <LinearLayout
@@ -100,11 +99,9 @@
 
     <LinearLayout
         android:layout_marginTop="5dp"
-        android:id="@+id/linearLayoutRow2"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/linearLayoutRow1"
         android:weightSum="4"
         android:baselineAligned="false">
         <LinearLayout
@@ -128,7 +125,7 @@
                     android:focusable="false"
                     android:text="@string/varDefaultString"
                     android:gravity="center_horizontal"
-                    android:id="@+id/editTextVariant" />
+                    />
 
                 <TextView
                     android:layout_width="100dp"
@@ -138,7 +135,6 @@
                     android:paddingTop="35dp"
                     android:gravity="center_horizontal"
                     android:textColor="#ff0000"
-                    android:id="@+id/textViewVariant"
                     android:visibility="visible"
                     android:layout_gravity="right|top" />
 
@@ -163,7 +159,6 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="@string/prescriptionString"
-                android:id="@+id/textViewAddPrescription"
                 />
         </LinearLayout>
         <!--<LinearLayout-->
@@ -209,7 +204,6 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="@string/queryString"
-                android:id="@+id/textViewAddQuery"
                 />
         </LinearLayout>
 

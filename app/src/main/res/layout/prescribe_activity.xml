@@ -46,14 +46,12 @@
                   android:layout_below="@+id/checkBoxPrescribeMeds">
 
         <EditText
-            android:id="@+id/editTextPrescribeDiet"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:selectAllOnFocus="true"
             android:hint="@string/enterDietString"/>
 
         <TextView
-            android:id="@+id/textViewDietFeq"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
@@ -63,7 +61,6 @@
             android:layout_marginLeft="10dp"/>
 
         <EditText
-            android:id="@+id/editTextDietFreq"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:selectAllOnFocus="true"
@@ -78,14 +75,12 @@
                   android:layout_below="@+id/layoutPrescribeDiet">
 
         <EditText
-            android:id="@+id/editTextPrescribeExer"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:selectAllOnFocus="true"
             android:hint="@string/enterExerString"/>
 
         <TextView
-            android:id="@+id/textViewExerFeq"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
@@ -95,7 +90,6 @@
             android:layout_marginLeft="10dp"/>
 
         <EditText
-            android:id="@+id/editTextExerFreq"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:selectAllOnFocus="true"
@@ -110,14 +104,12 @@
                   android:layout_below="@+id/layoutPrescribeExer">
 
         <EditText
-            android:id="@+id/editTextPrescribeMeds"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:selectAllOnFocus="true"
             android:hint="@string/enterMedsString"/>
 
         <TextView
-            android:id="@+id/textViewMedsFeq"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
@@ -127,7 +119,6 @@
             android:layout_marginLeft="10dp"/>
 
         <EditText
-            android:id="@+id/editTextMedsFreq"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:selectAllOnFocus="true"

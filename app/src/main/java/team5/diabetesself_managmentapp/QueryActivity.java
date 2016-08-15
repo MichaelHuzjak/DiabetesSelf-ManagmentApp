@@ -1,66 +1,91 @@
 package team5.diabetesself_managmentapp;
 
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 
-import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.series.BarGraphSeries;
-import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.LineGraphSeries;
-import com.jjoe64.graphview.series.PointsGraphSeries;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
+import team5.diabetesself_managmentapp.firebase.SignInActivity;
 import team5.diabetesself_managmentapp.fragments.BGLGraphFragment;
 import team5.diabetesself_managmentapp.fragments.BGLListFragment;
 import team5.diabetesself_managmentapp.fragments.DatePickerFragment;
 import team5.diabetesself_managmentapp.fragments.MainQueryFragment;
 import team5.diabetesself_managmentapp.fragments.TimePickerFragment;
+import team5.diabetesself_managmentapp.model.BGLEntryModel;
 
 
-public class QueryActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener{
+public class QueryActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener, GoogleApiClient.OnConnectionFailedListener {
 
     static final int DIALOG_ID = 0;
     boolean isStart;
-    private DatabaseHelper db;
+    //private DatabaseHelper db;
     private BGLListFragment ListFragment;
     private MainQueryFragment MainFragment;
     private BGLGraphFragment GraphFragment;
 
-    EditText etDate;
-    EditText etTime;
+    private EditText etDate;
+    private EditText etTime;
+
+    // Firebase instance variables
+    private FirebaseAuth mFirebaseAuth;
+    private GoogleApiClient mGoogleApiClient;
+    private String mUsername;
+    private static final String ANONYMOUS = "anonymous";
+    private DatabaseReference mFirebaseDatabaseReference;
+    private static final String BGL_CHILD = "bgl";
+    //private FirebaseDatabase mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_query);
-        db = new DatabaseHelper(this,null,null,1);
+
+        // Initialize Firebase Auth
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        mUsername = mFirebaseUser != null ? mFirebaseUser.getDisplayName() : null;
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .addApi(Auth.GOOGLE_SIGN_IN_API)
+                .build();
+
+        mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference("/users/" + mFirebaseUser.getUid());
+
+        System.out.println("USER ID: " + mFirebaseUser.getUid());
+        System.out.println("USER STRING: " + mUsername);
+
+        //db = new DatabaseHelper(this,null,null,1);
         //DisplayBGL();
 
-         MainFragment = (MainQueryFragment) getFragmentManager().findFragmentById(R.id.MainQueryFragment);
+        MainFragment = (MainQueryFragment) getFragmentManager().findFragmentById(R.id.MainQueryFragment);
         QueryHelper.ShowFragment(getFragmentManager(), MainFragment,true);
 
         ListFragment = (BGLListFragment) getFragmentManager().findFragmentById(R.id.BGLListFragment);
@@ -70,57 +95,6 @@ public class QueryActivity extends AppCompatActivity implements TimePickerDialog
         QueryHelper.ShowFragment(getFragmentManager(), GraphFragment,false);
 
     }
-    public void old(){
-        Calendar cal = Calendar.getInstance();
-        Calendar c = Calendar.getInstance();
-        // end date
-        isStart = false;
-        //mEndDate = c.getTime();
-        TextView etDate;
-        TextView etTime;
-
-        // Basic graph code from GraphView, Open Source Android Graph library
-        GraphView mGraph = (GraphView) findViewById(R.id.graphExample);
-        DataPoint[] data = new DataPoint[30];
-        for(int i = 0;i<30;i++){
-            data[i] = new DataPoint(i,100 + (i*3));
-        }
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(data);
-        PointsGraphSeries<DataPoint> series2 = new PointsGraphSeries<DataPoint>(data);
-
-        //series.setDrawValuesOnTop(true);
-        //series.setSpacing(1);
-
-        mGraph.addSeries(series);
-        mGraph.addSeries(series2);
-
-
-        mGraph.setTitle("Monthly BGL Example");
-        String[] labels = new String[30];
-        for(int i=0;i<30;i++){
-            labels[i] = "7/" + i;
-        }
-
-        // Possible Deprecated code, used for labels. Causes errors and formatting issues when using viewport's scaling.
-
-
-        mGraph.getViewport().setScrollable(true);
-        mGraph.getViewport().setXAxisBoundsManual(true);
-        //mGraph.getViewport().setMinX(0);
-        //mGraph.getViewport().setMaxX(5);
-
-//        <RelativeLayout
-//        android:layout_width="wrap_content"
-//        android:layout_height="wrap_content">
-//
-//        <com.jjoe64.graphview.GraphView
-//        android:layout_width="match_parent"
-//        android:layout_height="match_parent"
-//        android:id="@+id/graphExample" />
-//
-//        </RelativeLayout>
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -142,33 +116,29 @@ public class QueryActivity extends AppCompatActivity implements TimePickerDialog
                 //Nav back to parent
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
+            case R.id.sign_out_menu:
+                mFirebaseAuth.signOut();
+                Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+                mUsername = ANONYMOUS;
+                startActivity(new Intent(this, SignInActivity.class));
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    public void DisplayBGL(){
-        String s = "";
-        for(BGL b: db.GetAllBGL()){
-            s+= b.get_id() + " " + b.get_date().toString() + " - " + b.get_value() + "\n";
-        }
-        //TextView text = (TextView)findViewById(R.id.bglDisplay);
-        //text.setText(s);
     }
 
     public void ListBGL(){
         QueryHelper.ShowFragment(getFragmentManager(),ListFragment,true);
         QueryHelper.ShowFragment(getFragmentManager(),MainFragment,false);
     }
-    public List<BGL> GetCompleteBGL(){
-        return db.GetAllBGL();
-    }
-    public void ClearDatabase(){
-        db.ClearDatabase();
-    }
-    public void BGLListShowDatePickerDialog(View v) {
 
-        //etDate = (EditText)v.findViewById(R.id.EditTextBGLDate);
+    public void ClearDatabase()
+    {
+        //db.ClearDatabase();
+    }
+
+    public void BGLListShowDatePickerDialog(View v)
+    {
         etDate = (EditText)v.findViewById(R.id.EditTextBGLListDate);
 
         DialogFragment newFragment = new DatePickerFragment();
@@ -179,14 +149,14 @@ public class QueryActivity extends AppCompatActivity implements TimePickerDialog
     CREATE AN INSTANCE OF A DIALOGFRAGMENT AND SHOW IT
     VIA THE FRAGMENT MANAGER
      */
-    public void BGLListShowTimePickerDialog(View v) {
-
-        //etTime = (EditText)v.findViewById(R.id.EditTextBGLTime);
+    public void BGLListShowTimePickerDialog(View v)
+    {
         etTime = (EditText)v.findViewById(R.id.EditTextBGLListTime);
 
         TimePickerFragment newFragment = new TimePickerFragment();
         newFragment.show(getSupportFragmentManager(), "timePicker");
     }
+
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute)
     {
@@ -198,19 +168,42 @@ public class QueryActivity extends AppCompatActivity implements TimePickerDialog
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth)
     {
-
         Calendar cal = new GregorianCalendar(year, month, dayOfMonth);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         etDate.setText(sdf.format(cal.getTime()));
     }
-    public void UpdateBGL(BGL bgl){
-        db.UpdateBGL(bgl);
+
+    public void UpdateBGL(BGLEntryModel bgl, String bglID)
+    {
+        System.out.println("UpdateBGL()");
+        //db.UpdateBGL(bgl);
+        updateBgl(bgl, bglID);
     }
 
-    public void ShowGraph(){
+    public void ShowGraph()
+    {
         QueryHelper.ShowFragment(getFragmentManager(),GraphFragment,true);
         QueryHelper.ShowFragment(getFragmentManager(),MainFragment,false);
     }
 
+    /* Update the BGL values on the UI resulting in a update
+     * of the entry in the firebase database
+     */
+    private void updateBgl(BGLEntryModel bglModel, String bglID)
+    {
+        Map<String, Object> updatedValues = bglModel.toMap();
+        Map<String, Object> childUpdates = new HashMap<>();
 
+        childUpdates.put("/" + BGL_CHILD + "/" + bglID, updatedValues);
+
+        mFirebaseDatabaseReference.updateChildren(childUpdates);
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        // An unresolvable error has occurred and Google APIs (including Sign-In) will not
+        // be available.
+        System.out.println("onConnectionFailed:" + connectionResult);
+        Toast.makeText(this, "Google Play Services error.", Toast.LENGTH_SHORT).show();
+    }
 }

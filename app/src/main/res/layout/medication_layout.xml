@@ -23,7 +23,6 @@
                   android:layout_below="@+id/textEditMedication">
 
         <TextView
-            android:id="@+id/textViewMedication"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/textViewMedication"
@@ -46,7 +45,6 @@
                   android:layout_below="@+id/linearlayoutMedication">
 
         <TextView
-            android:id="@+id/textViewQty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/textViewQty"/>
@@ -60,14 +58,12 @@
     </LinearLayout>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                  android:id="@+id/linearlayoutMedicationtime"
                   android:layout_width="fill_parent"
                   android:layout_height="wrap_content"
                   android:orientation="horizontal"
                   android:layout_below="@+id/linearlayoutMedicationqty">
 
         <TextView
-            android:id="@+id/textViewTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/textViewTime"/>

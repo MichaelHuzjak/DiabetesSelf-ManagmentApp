@@ -54,7 +54,7 @@ public class BGL {
         _date = date;
         _value = value;
     }
-    public BGL(int id, String date, int value){
+    private BGL(int id, String date, int value){
         _id = id;
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:aa");
         try {
@@ -64,10 +64,10 @@ public class BGL {
         }
         _value = value;
     }
-    public String GetDateToString(){
+    private String GetDateToString(){
         return new SimpleDateFormat("yyyy-MM-dd").format(_date);
     }
-    public String GetTimeToString(){
+    private String GetTimeToString(){
         return new SimpleDateFormat("hh:mm:aa").format(_date);
     }
     public void ChangeDate(String date){

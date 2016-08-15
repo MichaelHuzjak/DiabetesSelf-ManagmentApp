@@ -1,44 +1,40 @@
 package team5.diabetesself_managmentapp.adapter;
 
 import android.content.Context;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.SeekBar;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.GregorianCalendar;
 
 
-import team5.diabetesself_managmentapp.BGL;
 import team5.diabetesself_managmentapp.QueryActivity;
 import team5.diabetesself_managmentapp.R;
-import team5.diabetesself_managmentapp.fragments.BGLListFragment;
+import team5.diabetesself_managmentapp.model.BGLEntryModel;
 
 public class BGLListAdapter extends RecyclerView.Adapter<BGLListAdapter.ViewHolder>{
-    private ArrayList<BGL> list;
+    private final ArrayList<BGLEntryModel> list;
     private int pos;
-    private ArrayList<BGLListAdapter.ViewHolder> vh;
-    Context Context;
-    public BGLListAdapter(ArrayList<BGL> list,Context context){
+    private final ArrayList<BGLListAdapter.ViewHolder> vh;
+    private final Context Context;
+    private final ArrayList<String> bglID;
+
+    public BGLListAdapter(ArrayList<BGLEntryModel> list, ArrayList<String> bglID, Context context){
         this.list = list;
-        vh = new ArrayList<ViewHolder>();
+        this.bglID = bglID;
+        vh = new ArrayList<>();
         Context = context;
     }
 
-
     public class ViewHolder extends RecyclerView.ViewHolder{
-        private EditText etDate, etTime, etValue;
+        private final EditText etDate;
+        private final EditText etTime;
+        private final EditText etValue;
 
         public ViewHolder(View itemView){
             super(itemView);
@@ -59,48 +55,48 @@ public class BGLListAdapter extends RecyclerView.Adapter<BGLListAdapter.ViewHold
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                     if(!charSequence.toString().equals(""))
-                        list.get(position).set_value(Integer.parseInt(charSequence.toString()));
+                        list.get(position).setProgress(Integer.parseInt(charSequence.toString()));
                 }
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                     if(!charSequence.toString().equals(""))
-                        list.get(position).set_value(Integer.parseInt(charSequence.toString()));
+                        list.get(position).setProgress(Integer.parseInt(charSequence.toString()));
                 }
                 @Override
                 public void afterTextChanged(Editable editable) {
                     if(!editable.toString().equals(""))
-                        list.get(position).set_value(Integer.parseInt(editable.toString()));
+                        list.get(position).setProgress(Integer.parseInt(editable.toString()));
                 }
             });
 
             etDate.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    list.get(position).ChangeDate(charSequence.toString());
+                    list.get(position).setDate(charSequence.toString());
 
                 }
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    list.get(position).ChangeDate(charSequence.toString());
+                    list.get(position).setDate(charSequence.toString());
                 }
                 @Override
                 public void afterTextChanged(Editable editable) {
-                    list.get(position).ChangeDate(editable.toString());
+                    list.get(position).setDate(editable.toString());
                 }
             });
 
             etTime.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    list.get(position).ChangeTime(charSequence.toString());
+                    list.get(position).setTime(charSequence.toString());
                 }
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    list.get(position).ChangeTime(charSequence.toString());
+                    list.get(position).setTime(charSequence.toString());
                 }
                 @Override
                 public void afterTextChanged(Editable editable) {
-                   list.get(position).ChangeTime(editable.toString());
+                   list.get(position).setTime(editable.toString());
                 }
             });
         }
@@ -116,10 +112,14 @@ public class BGLListAdapter extends RecyclerView.Adapter<BGLListAdapter.ViewHold
 
     }
 
-    public void removeAt(int position) {
+    private void removeAt(int position)
+    {
         if(position < 0)
             return;
+
         list.remove(position);
+        bglID.remove(position);
+
         notifyItemRemoved(position);
     }
     @Override
@@ -127,15 +127,6 @@ public class BGLListAdapter extends RecyclerView.Adapter<BGLListAdapter.ViewHold
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.bgllist_entry_view, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
-
-        //Date cal = new GregorianCalendar().getTime();
-        //SimpleDateFormat formatter;
-
-        //formatter = new SimpleDateFormat("MM/dd/yyyy");
-        //viewHolder.etDate.setText(formatter.format(cal.getTime()));
-
-        //formatter = new SimpleDateFormat("hh:mm:aa");
-        //viewHolder.etTime.setText(formatter.format(cal.getTime()));
 
         vh.add(viewHolder);
         return viewHolder;
@@ -145,36 +136,54 @@ public class BGLListAdapter extends RecyclerView.Adapter<BGLListAdapter.ViewHold
     public void onBindViewHolder(final BGLListAdapter.ViewHolder viewHolder, int position) {
         // If the input item is not empty, then set the editTexts and the seekbar
         // to the specified values inside the item.
-        if(list.size()!=0 ){
-            BGL bgl = list.get(position);
-            viewHolder.syncEntries(bgl.GetDateToString(),bgl.GetTimeToString(),bgl.get_value());
+        if(list.size()!=0 )
+        {
+            BGLEntryModel bgl = list.get(position);
+            viewHolder.syncEntries(bgl.getDate(),bgl.getTime(),bgl.getProgress());
         }
+
         viewHolder.setListeners(position);
     }
 
     @Override
-    public int getItemCount() {
+    public int getItemCount()
+    {
         if(list==null)
             return 0;
+
         return list.size();
     }
 
-    public ArrayList<BGL> getList(){
+    public ArrayList<BGLEntryModel> getList()
+    {
         return list;
     }
 
+    public ArrayList<String> getBglIDList()
+    {
+        return bglID;
+    }
 
-    public void clearList(){
-        while(list.size() > 0){
+    public void clearList()
+    {
+        while(list.size() > 0)
+        {
             removeAt(0);
         }
+
         vh.removeAll(vh);
     }
 
-    public void UpdateBGL(int position){
-        final BGL bgl = list.get(position);
-        if(Context instanceof QueryActivity) {
-            ((QueryActivity) Context).UpdateBGL(bgl);
+    private void UpdateBGL(int position)
+    {
+        System.out.println("BGLListAdapter: UpdateBGL()");
+
+        final BGLEntryModel bgl = list.get(position);
+        final String bglId = bglID.get(position);
+
+        if(Context instanceof QueryActivity)
+        {
+            ((QueryActivity) Context).UpdateBGL(bgl, bglId);
         }
     }
 }

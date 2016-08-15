@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class DatabaseHelper extends SQLiteOpenHelper {
+class DatabaseHelper extends SQLiteOpenHelper {
 
     // region Variables
     private static final int DATABASE_VERSION = 1;
@@ -22,46 +22,46 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     Context context;
 
     // Category Variables
-    public static final String TABLE_CATEGORIES = "categories";
-    public static final String CATEGORY_ID = "cat_id";
-    public static final String CATEGORY_NAME = "cat_name";
+    private static final String TABLE_CATEGORIES = "categories";
+    private static final String CATEGORY_ID = "cat_id";
+    private static final String CATEGORY_NAME = "cat_name";
 
     // Prescription Variables
-    public static final String TABLE_PRESCRIPTION = "prescriptions";
-    public static final String PRE_ID = "pre_id";
-    public static final String PRE_DESC = "pre_desc";
-    public static final String PRE_REPEAT = "pre_repeat";
-    public static final String PRE_CAT = "pre_cat";
+    private static final String TABLE_PRESCRIPTION = "prescriptions";
+    private static final String PRE_ID = "pre_id";
+    private static final String PRE_DESC = "pre_desc";
+    private static final String PRE_REPEAT = "pre_repeat";
+    private static final String PRE_CAT = "pre_cat";
 
     // BGL Variables
-    public static final String TABLE_BGL = "bgl_value";
-    public static final String BGL_ID = "bgl_id";
-    public static final String BGL_DateTime = "bgl_datetime";
-    public static final String BGL_Value = "bgl_value";
+    private static final String TABLE_BGL = "bgl_value";
+    private static final String BGL_ID = "bgl_id";
+    private static final String BGL_DateTime = "bgl_datetime";
+    private static final String BGL_Value = "bgl_value";
 
     // Medication Variables
-    public static final String TABLE_MED = "medications";
-    public static final String MED_ID = "med_id";
-    public static final String MED_DESC = "med_desc";
-    public static final String MED_AMOUNT = "med_amount";
-    public static final String MED_DATETIME = "med_datetime";
-    public static final String MED_PRES = "med_pres";
+    private static final String TABLE_MED = "medications";
+    private static final String MED_ID = "med_id";
+    private static final String MED_DESC = "med_desc";
+    private static final String MED_AMOUNT = "med_amount";
+    private static final String MED_DATETIME = "med_datetime";
+    private static final String MED_PRES = "med_pres";
 
     // Diet Variables
-    public static final String TABLE_DIET = "diets";
-    public static final String DIET_ID = "diet_id";
-    public static final String DIET_DESC = "diet_desc";
-    public static final String DIET_AMOUNT = "diet_amount";
-    public static final String DIET_DATETIME = "diet_datetime";
-    public static final String DIET_PRES = "diet_pres";
+    private static final String TABLE_DIET = "diets";
+    private static final String DIET_ID = "diet_id";
+    private static final String DIET_DESC = "diet_desc";
+    private static final String DIET_AMOUNT = "diet_amount";
+    private static final String DIET_DATETIME = "diet_datetime";
+    private static final String DIET_PRES = "diet_pres";
 
     // Exercise
-    public static final String TABLE_EXERCISE = "exercise";
-    public static final String EXER_ID = "exer_id";
-    public static final String EXER_DESC = "exer_desc";
-    public static final String EXER_DATETIME = "exer_datetime";
-    public static final String EXER_DURATION = "exer_duration";
-    public static final String EXER_PRES = "exer_pres";
+    private static final String TABLE_EXERCISE = "exercise";
+    private static final String EXER_ID = "exer_id";
+    private static final String EXER_DESC = "exer_desc";
+    private static final String EXER_DATETIME = "exer_datetime";
+    private static final String EXER_DURATION = "exer_duration";
+    private static final String EXER_PRES = "exer_pres";
 
     // endregion
 
@@ -159,7 +159,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public void ClearDatabase(){
+    private void ClearDatabase(){
         //context.deleteDatabase("Database1.db");
         //context.deleteDatabase(DATABASE_NAME);
         SQLiteDatabase db = getWritableDatabase();
@@ -196,7 +196,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
     // Search Diet by Keyword
     public List<Diet> GetDietByKeyword(String keyword){
-        List<Diet> diets = new ArrayList<Diet>();
+        List<Diet> diets = new ArrayList<>();
         SQLiteDatabase db = getWritableDatabase();
         String query = "SELECT * FROM " + TABLE_DIET +
                 " WHERE " +
@@ -274,7 +274,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
     // Search Exercise by Keyword
     public List<Exercise> GetExercisesByKeyword(String keyword){
-        List<Exercise> exercises = new ArrayList<Exercise>();
+        List<Exercise> exercises = new ArrayList<>();
         SQLiteDatabase db = getWritableDatabase();
         String query = "SELECT * FROM " + TABLE_EXERCISE +
                 " WHERE " +
@@ -415,7 +415,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
     public List<Prescription> GetAllPrescriptions(){
-        List<Prescription> prescriptions = new ArrayList<Prescription>();
+        List<Prescription> prescriptions = new ArrayList<>();
         SQLiteDatabase db = getWritableDatabase();
         String query = "SELECT " +
                 TABLE_PRESCRIPTION + "." + PRE_ID + ", " +
@@ -467,7 +467,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
     // Get Diets from associated Prescription
     public List<Medication> GetMedicationsFromPrescription(int id){
-        List<Medication> medications = new ArrayList<Medication>();
+        List<Medication> medications = new ArrayList<>();
         SQLiteDatabase db = getWritableDatabase();
         String query = "SELECT * FROM " + TABLE_MED +
                 " WHERE " +
@@ -491,7 +491,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
     // Get Diets from associated Prescription
     public List<Diet> GetDietsFromPrescription(int id){
-        List<Diet> diets = new ArrayList<Diet>();
+        List<Diet> diets = new ArrayList<>();
         SQLiteDatabase db = getWritableDatabase();
         String query = "SELECT * FROM " + TABLE_DIET +
                 " WHERE " +
@@ -515,7 +515,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
     // Get All Exercises Associated with Prescription
     public List<Exercise> GetExercisesFromPrescription(int id){
-        List<Exercise> exercises = new ArrayList<Exercise>();
+        List<Exercise> exercises = new ArrayList<>();
         SQLiteDatabase db = getWritableDatabase();
         String query = "SELECT * FROM " + TABLE_EXERCISE +
                 " WHERE " +
@@ -596,8 +596,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DELETE FROM " + TABLE_BGL + " WHERE " + BGL_ID + " = " + id + " ;");
         db.close();
     }
-    public List<BGL> GetAllBGL(){
-        List<BGL> bgls = new ArrayList<BGL>();
+    private List<BGL> GetAllBGL(){
+        List<BGL> bgls = new ArrayList<>();
         SQLiteDatabase db = getWritableDatabase();
         String query = "SELECT * FROM " + TABLE_BGL + " WHERE 1";
         Cursor c = db.rawQuery(query,null);
@@ -619,7 +619,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
     // Get All BGL before a date
     public List<BGL> GetAllBGLBeforeDate(Date date){
-        List<BGL> before = new ArrayList<BGL>();
+        List<BGL> before = new ArrayList<>();
         for(BGL bgl: GetAllBGL()){
             if(bgl.get_date().before(date)){
                 before.add(bgl);
@@ -629,7 +629,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
     // Get All BGL after a date
     public List<BGL> GetAllBGLAfterDate(Date date){
-        List<BGL> after = new ArrayList<BGL>();
+        List<BGL> after = new ArrayList<>();
         for(BGL bgl: GetAllBGL()){
             if(bgl.get_date().after(date)){
                 after.add(bgl);
@@ -642,7 +642,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // region Category
     // Create a Category
-    public void CreateCategory(String categoryName, SQLiteDatabase db){
+    private void CreateCategory(String categoryName, SQLiteDatabase db){
         ContentValues values = new ContentValues();
         values.put(CATEGORY_NAME, categoryName);
         db.insert(TABLE_CATEGORIES,null,values);
@@ -682,7 +682,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
     // Get All Categories
     public List<Category> GetCategories(){
-        List<Category> categories = new ArrayList<Category>();
+        List<Category> categories = new ArrayList<>();
         SQLiteDatabase db = getWritableDatabase();
         String query = "SELECT * FROM " + TABLE_CATEGORIES + " WHERE 1";
         Cursor c = db.rawQuery(query,null);

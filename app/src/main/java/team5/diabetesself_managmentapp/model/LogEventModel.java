@@ -5,14 +5,27 @@ import android.os.Parcelable;
 
 public class LogEventModel implements Parcelable {
 
-    public final int type;
-
-    public final String modelContent;
+    public int type;
+    public String modelContent;
 
     public String description;
     public String value;
     public String date;
     public String time;
+
+    public LogEventModel()
+    {
+    }
+
+    public LogEventModel(int type, String modelContent, String description, String value, String date, String time)
+    {
+        this.type = type;
+        this.modelContent = modelContent;
+        this.description = description;
+        this.value = value;
+        this.date = date;
+        this.time = time;
+    }
 
     public LogEventModel(int type, String modelContent)
     {

@@ -1,15 +1,9 @@
 package team5.diabetesself_managmentapp.fragments;
 
-import android.app.Activity;
-import android.app.DatePickerDialog;
 import android.app.Fragment;
-import android.app.TimePickerDialog;
 import android.os.Bundle;
 
-import android.os.Parcelable;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,9 +12,7 @@ import android.widget.ImageButton;
 
 
 import java.util.ArrayList;
-import java.util.List;
 
-import team5.diabetesself_managmentapp.AddBGLHelper;
 import team5.diabetesself_managmentapp.MainActivity;
 import team5.diabetesself_managmentapp.R;
 import team5.diabetesself_managmentapp.adapter.BGLAdapter;
@@ -34,7 +26,7 @@ public class AddBGLFragment extends Fragment{
     public BGLAdapter bglAdapter;
     private LinearLayoutManager linearLayoutManager;
 
-    private String List_State = "LIST_STATE";
+    private final String List_State = "LIST_STATE";
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState){
@@ -77,7 +69,7 @@ public class AddBGLFragment extends Fragment{
         setValues.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainActivity)getActivity()).AddBGLtoDatabase();
+                ((MainActivity)getActivity()).saveBglData();
             }
         });
 

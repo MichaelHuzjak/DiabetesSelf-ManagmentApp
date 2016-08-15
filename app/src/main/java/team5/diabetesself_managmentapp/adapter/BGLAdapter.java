@@ -1,7 +1,5 @@
 package team5.diabetesself_managmentapp.adapter;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -22,20 +20,21 @@ import team5.diabetesself_managmentapp.R;
 import team5.diabetesself_managmentapp.model.BGLEntryModel;
 
 public class BGLAdapter extends RecyclerView.Adapter<BGLAdapter.ViewHolder>{
-    private ArrayList<BGLEntryModel> list;
+    private final ArrayList<BGLEntryModel> list;
     private int pos;
-    private ArrayList<BGLAdapter.ViewHolder> vh;
+    private final ArrayList<BGLAdapter.ViewHolder> vh;
 
     public BGLAdapter(ArrayList<BGLEntryModel> list){
         this.list = list;
-        vh = new ArrayList<ViewHolder>();
+        vh = new ArrayList<>();
     }
 
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-        public SeekBar seek;
-        public ImageButton remove;
-        private EditText etDate, etTime;
+        public final SeekBar seek;
+        public final ImageButton remove;
+        private final EditText etDate;
+        private final EditText etTime;
 
         public ViewHolder(View itemView){
             super(itemView);
@@ -115,7 +114,7 @@ public class BGLAdapter extends RecyclerView.Adapter<BGLAdapter.ViewHolder>{
 
     }
 
-    public void removeAt(int position) {
+    private void removeAt(int position) {
         if(position < 0)
             return;
         list.remove(position);

@@ -1,7 +1,6 @@
 package team5.diabetesself_managmentapp.fragments;
 
 import android.app.Fragment;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +14,6 @@ import team5.diabetesself_managmentapp.R;
  * Created by Michael on 8/7/2016.
  */
 public class MainQueryFragment extends Fragment {
-    View view;
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -48,7 +46,7 @@ public class MainQueryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        view = inflater.inflate(R.layout.query_fragment, container, false);
+        View view = inflater.inflate(R.layout.query_fragment, container, false);
         return view;
     }
     @Override

@@ -3,19 +3,12 @@ package team5.diabetesself_managmentapp.fragments;
 import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -25,75 +18,143 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.listener.ChartTouchListener;
-import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.Viewport;
-import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.LineGraphSeries;
-import com.jjoe64.graphview.series.PointsGraphSeries;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import team5.diabetesself_managmentapp.BGL;
 import team5.diabetesself_managmentapp.QueryActivity;
 import team5.diabetesself_managmentapp.R;
-import team5.diabetesself_managmentapp.adapter.BGLListAdapter;
+import team5.diabetesself_managmentapp.model.BGLEntryModel;
 
 /**
  * Created by Michael on 8/7/2016.
  */
 public class BGLGraphFragment extends Fragment implements OnChartValueSelectedListener{
-    LineChart chart;
-    LineData lineData;
-    List<Entry> data;
-    View view;
-    LineDataSet dataSet;
-    List<ILineDataSet> dataSets;
-    LinearLayout ButtonAndEditTextLayout;
+    private LineChart chart;
+    private LineData lineData;
+    private List<Entry> data;
+    private LineDataSet dataSet;
+    private List<ILineDataSet> dataSets;
+    private LinearLayout ButtonAndEditTextLayout;
+
+    private ArrayList<BGLEntryModel> list;
+    private ArrayList<String> bglID;
+
+    private int counter;
+
+    private DatabaseReference mFirebaseDatabaseReference;
+    private static final String BGL_CHILD = "bgl";
+    //private FirebaseDatabase mDatabase;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        //Graph();
+
+        System.out.println("BGLGraphFragment: onActivityCreated()");
+
+        // Initialize Firebase Auth
+        FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        String mUsername = mFirebaseUser != null ? mFirebaseUser.getDisplayName() : null;
+
+        //mDatabase = FirebaseDatabase.getInstance();
+        mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference("/users/" + mFirebaseUser.getUid());
+
+        System.out.println("USER ID: " + mFirebaseUser.getUid());
+        System.out.println("USER STRING: " + mUsername);
+
+        counter = 0;
+
+        list = new ArrayList<>();
+        bglID = new ArrayList<>();
+
+        readBglData();
+
         Chart();
 
     }
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        view = inflater.inflate(R.layout.bglgraph_fragment, container, false);
+    private void readBglData()
+    {
+        System.out.println("BGLGraphFragment: readBglData()");
+
+        DatabaseReference ref = mFirebaseDatabaseReference.child(BGL_CHILD);
+
+        // Add all polls in ref as rows
+        ref.addListenerForSingleValueEvent(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(DataSnapshot snapshot)
+            {
+                for(DataSnapshot child : snapshot.getChildren())
+                {
+                    BGLEntryModel bglModel = child.getValue(BGLEntryModel.class);
+                    System.out.println("BGLGraphFragment: Key: " + child.getKey() + " BGL: " + bglModel.getProgress() + " Date: " + bglModel.getDate() + " Time: " +  bglModel.getTime());
+                    list.add(bglModel);
+                    bglID.add(child.getKey());
+
+                    Entry bgl_entry = new Entry(counter++, bglModel.getProgress());
+
+                    // There is a data "Object" inside every Entry that is null by default.
+                    // I utilize it by setting it to be a BGL object, then I retrieve the BGL object
+                    // when the set button inside the graph is clicked to update the SQL!
+                    bgl_entry.setData(bglModel);
+
+                    data.add(bgl_entry);
+                }
+
+                dataSet = new LineDataSet(data,"Values");
+                //dataSets = new ArrayList<ILineDataSet>();
+
+                dataSet.setDrawValues(true);
+                dataSet.setCircleRadius(15);
+                dataSet.setValueTextSize(20);
+                dataSet.setHighlightEnabled(true);
+                dataSet.setDrawHighlightIndicators(true);
+                dataSet.setHighLightColor(Color.RED);
+
+                dataSets.add(dataSet);
+
+                lineData = new LineData(dataSets);
+                chart.setData(lineData);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        System.out.println("BGLGraphFragment: readBglData() returned.");
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
+        View view = inflater.inflate(R.layout.bglgraph_fragment, container, false);
         return view;
     }
+
     @Override
     public void onSaveInstanceState(Bundle outState){
         super.onSaveInstanceState(outState);
     }
-    public void Chart(){
-        // Get ALL BGL List
-//        ArrayList<BGL> list = new ArrayList<BGL>();
+
+    private void Chart()
+    {
         data = new ArrayList<>();
 
-        int counter = 0;
-        for(BGL bgl: ((QueryActivity)getActivity()).GetCompleteBGL()){
-            System.out.println("ID: " + bgl.get_id());
-//            list.add(bgl);
-            Entry bgl_entry = new Entry(counter++,bgl.get_value());
+        System.out.println("BGLGraphFragment:Chart()");
 
-            // There is a data "Object" inside every Entry that is null by default.
-            // I utilize it by setting it to be a BGL object, then I retrieve the BGL object
-            // when the set button inside the graph is clicked to update the SQL!
-            bgl_entry.setData(bgl);
-
-            data.add(bgl_entry);
-
-        }
-
-        chart = (LineChart)((QueryActivity)getActivity()).findViewById(R.id.graphExample);
+        chart = (LineChart) getActivity().findViewById(R.id.graphExample);
 
         chart.setTouchEnabled(true);
         chart.setScaleEnabled(true);
@@ -101,17 +162,9 @@ public class BGLGraphFragment extends Fragment implements OnChartValueSelectedLi
         chart.setDragEnabled(true);
         chart.setDrawGridBackground(false);
         chart.setOnChartValueSelectedListener(this);
-        //chart.setVisibleXRange(0,5);
-
-//        ArrayList<String> xdata = new ArrayList<>();
-
-//        for(int i=0;i<list.size();i++){
-//            Entry bgl_entry = new Entry(i,list.get(i).get_value());
-//            data.add(new Entry(i,list.get(i).get_value()));
-//        }
 
         dataSet = new LineDataSet(data,"Values");
-        dataSets = new ArrayList<ILineDataSet>();
+        dataSets = new ArrayList<>();
 
         dataSet.setDrawValues(true);
         dataSet.setCircleRadius(15);
@@ -129,58 +182,9 @@ public class BGLGraphFragment extends Fragment implements OnChartValueSelectedLi
         yaxis.setDrawGridLines(true);
 
         lineData = new LineData(dataSets);
+
         chart.setData(lineData);
-
-        ///chart.invalidate();
-        // chart.setData(lineData);
     }
-    public void Graph(){
-
-        // Get ALL BGL List
-        ArrayList<BGL> list = new ArrayList<BGL>();
-
-        for(BGL bgl: ((QueryActivity)getActivity()).GetCompleteBGL()){
-            System.out.println("ID: " + bgl.get_id());
-            list.add(bgl);
-        }
-        DataPoint[] bglDataPoints = new DataPoint[list.size()];
-        for(int i=0;i<bglDataPoints.length;i++){
-            bglDataPoints[i] = new DataPoint(i,list.get(i).get_value());
-        }
-
-        // Basic graph code from GraphView, Open Source Android Graph library
-        GraphView mGraph = (GraphView)((QueryActivity)getActivity()).findViewById(R.id.graphExample);
-        DataPoint[] data = new DataPoint[30];
-        for(int i = 0;i<30;i++){
-            data[i] = new DataPoint(i,100 + (i*3));
-        }
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(bglDataPoints);
-        PointsGraphSeries<DataPoint> series2 = new PointsGraphSeries<DataPoint>(bglDataPoints);
-        series2.setColor(Color.RED);
-        //series.setDrawValuesOnTop(true);
-        //series.setSpacing(1);
-
-        mGraph.addSeries(series);
-        mGraph.addSeries(series2);
-
-        Viewport vp = mGraph.getViewport();
-        vp.setScalable(true);
-        vp.setScrollable(true);
-        vp.setXAxisBoundsManual(true);
-        vp.setMaxX(bglDataPoints.length);
-        vp.setMinX(1);
-        vp.setMinY(1);
-        vp.setMaxY(20);
-        vp.calcCompleteRange();
-        vp.computeScroll();
-
-        mGraph.setTitle("Monthly BGL Example");
-        String[] labels = new String[30];
-        for(int i=0;i<30;i++){
-            labels[i] = "7/" + i;
-        }
-    }
-
 
     //Brings up the editTexts layout when the user clicks on a point.
     //It also shifts the view based on the location of the point that was clicked.
@@ -189,7 +193,7 @@ public class BGLGraphFragment extends Fragment implements OnChartValueSelectedLi
         ButtonAndEditTextLayout = (LinearLayout)getActivity().findViewById(R.id.LinearLayoutUpdateBGLQuery);
 
         ButtonAndEditTextLayout.setVisibility(View.VISIBLE);
-        graphDateTime.setText(((BGL)e.getData()).GetFormatedDate());
+        graphDateTime.setText(((BGLEntryModel)e.getData()).getDate());
 
         /////////////////////////////////////////////////////////
         // If the point is on the edge of the screen (left or top)
@@ -208,29 +212,38 @@ public class BGLGraphFragment extends Fragment implements OnChartValueSelectedLi
     }
 
     //Sets the functionality of the check button.
-    private void setEditLayoutFunction(final Entry e){
+    private void setEditLayoutFunction(final Entry e, final int index)
+    {
         final Button btn = (Button)getActivity().findViewById(R.id.ButtonSetGraphBGL);
         final EditText bglGraphEditText = (EditText)getActivity().findViewById(R.id.editTextNewBGLValue);
 
-        btn.setOnClickListener(new View.OnClickListener() {
+        btn.setOnClickListener(new View.OnClickListener()
+        {
             float new_value = 0;
+
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
 
-                try {
-
+                try{
                     new_value = Float.parseFloat(bglGraphEditText.getText().toString());
+
                     e.setY(new_value);
-                    BGL bgl = (BGL)e.getData();
-                    bgl.set_value((int)new_value);
-                    ((QueryActivity) getActivity()).UpdateBGL(((bgl)));
 
-                } catch (Exception e) {}
+                    BGLEntryModel bgl = (BGLEntryModel)e.getData();
 
+                    bgl.setProgress((int)new_value);
 
+                    // Retrieve the BGL ID from the list of unique BGL ID's per index
+                    final String bglId = bglID.get(index);
+
+                    ((QueryActivity) getActivity()).UpdateBGL(bgl, bglId);
+
+                }catch (Exception e) {
+                    return;
+                }
 
                 // Update the sql table with the new value.
-
 
                 ButtonAndEditTextLayout.setVisibility(View.INVISIBLE);
                 bglGraphEditText.setText("");
@@ -245,8 +258,14 @@ public class BGLGraphFragment extends Fragment implements OnChartValueSelectedLi
 
     @Override
     public void onValueSelected(Entry e, Highlight h) {
+
+        // get the position of this Entry object.
+        int index = (int)e.getX();
+
         BgingEditLayout(e,h);
-        setEditLayoutFunction(e);
+
+        setEditLayoutFunction(e, index);
+
         chart.setAlpha(0.3f); //Changes the opacity of the graph
     }
 
