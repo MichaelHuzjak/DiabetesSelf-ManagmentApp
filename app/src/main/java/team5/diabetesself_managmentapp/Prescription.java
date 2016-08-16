@@ -7,6 +7,8 @@ public class Prescription {
     private String _category;
     private String _repeat;
     private String _description;
+    private String _date;
+    private String _time;
 
     public int get_id() {
         return _id;
@@ -48,8 +50,24 @@ public class Prescription {
         this._description = _description;
     }
 
+    public void set_date(String _date) {
+        this._date = _date;
+    }
 
-    public Prescription(){}
+    public void set_time(String _time) {
+        this._time = _time;
+    }
+
+    public String get_date() {return _date;}
+
+    public String get_time() {return _time;}
+
+
+    public Prescription(){
+        _description = "";
+        _repeat = "";
+        _category = "";
+    }
     public Prescription(int id, int catid, String category, String desc, String repeat){
         _id = id;
         _categoryId = catid;
