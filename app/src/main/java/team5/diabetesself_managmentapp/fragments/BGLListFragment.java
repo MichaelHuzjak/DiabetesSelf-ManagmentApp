@@ -17,7 +17,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import team5.diabetesself_managmentapp.BGL;
+import team5.diabetesself_managmentapp.BGLQueryActivity;
+import team5.diabetesself_managmentapp.QueryActivity;
 import team5.diabetesself_managmentapp.R;
 import team5.diabetesself_managmentapp.adapter.BGLListAdapter;
 import team5.diabetesself_managmentapp.model.BGLEntryModel;
@@ -26,20 +30,21 @@ import team5.diabetesself_managmentapp.model.BGLEntryModel;
  * Created by Michael on 8/7/2016.
  */
 public class BGLListFragment extends Fragment {
-    private BGLListAdapter adapter;
-    private View view;
+    BGLListAdapter adapter;
+    RecyclerView holderView;
+    View view;
 
     private ArrayList<BGLEntryModel> list;
     private ArrayList<String> bglID;
 
     private DatabaseReference mFirebaseDatabaseReference;
     private static final String BGL_CHILD = "bgl";
-    //private FirebaseDatabase mDatabase;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
+
         System.out.println("BGLListFragment:onActivityCreated()");
         RecyclerView holderView = (RecyclerView) view.findViewById(R.id.RecyclerViewBGLListHolder);
 
@@ -56,7 +61,7 @@ public class BGLListFragment extends Fragment {
 
         list = new ArrayList<>();
         bglID = new ArrayList<>();
-        
+
         readBglData();
 
         adapter = new BGLListAdapter(list, bglID, getActivity());
@@ -64,6 +69,9 @@ public class BGLListFragment extends Fragment {
         holderView.setLayoutManager(new LinearLayoutManager(getActivity()));
         holderView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+
+        ((BGLQueryActivity)getActivity()).SetListFragment(this);
+
     }
 
     private void readBglData()

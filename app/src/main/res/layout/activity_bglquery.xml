@@ -12,11 +12,17 @@
         <fragment
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/MainQueryFragment"
-            android:name="team5.diabetesself_managmentapp.fragments.MainQueryFragment"
+            android:id="@+id/MainBGL"
+            android:name="team5.diabetesself_managmentapp.fragments.MainBGLFragment"
 
             />
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/ResultFragment"
+            android:name="team5.diabetesself_managmentapp.fragments.BGLResultFragment"
 
+            />
 
 
     </RelativeLayout>

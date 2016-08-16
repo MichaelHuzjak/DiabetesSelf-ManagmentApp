@@ -5,15 +5,34 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="List BGLs"
-        android:id="@+id/buttonListBGL"
+        android:text="BGL"
+        android:id="@+id/buttonBGLQuery"
         android:layout_gravity="center_horizontal" />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Graph"
-        android:id="@+id/buttonGraph"
+        android:text="Prescription"
+        android:id="@+id/buttonQueryPrescription"
         android:layout_gravity="center_horizontal" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Medication"
+        android:id="@+id/buttonQueryMed"
+        android:layout_gravity="center_horizontal" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Diet"
+        android:id="@+id/buttonQueryDiet"
+        android:layout_gravity="center_horizontal" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Exercise"
+        android:id="@+id/buttonQueryExercise"
+        android:layout_gravity="center_horizontal" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

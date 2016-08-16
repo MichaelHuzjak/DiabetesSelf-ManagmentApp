@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/BGLMenu"
+        android:name="team5.diabetesself_managmentapp.fragments.BGLMenuFragment"
+        />
+    <RelativeLayout
+        android:id="@+id/RelativeLayoutFragmentHolder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/BGLGraph"
+            android:name="team5.diabetesself_managmentapp.fragments.BGLGraphFragment"
+            />
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/BGLListFragment"
+            android:name="team5.diabetesself_managmentapp.fragments.BGLListFragment"
+            />
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/BGLStatsFragment"
+            android:name="team5.diabetesself_managmentapp.fragments.BGLStatsFragment"
+            />
+    </RelativeLayout>
+
+</LinearLayout>

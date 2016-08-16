@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -18,7 +19,14 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.listener.ChartTouchListener;
+import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.Viewport;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
+import com.jjoe64.graphview.series.PointsGraphSeries;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -27,23 +35,30 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import team5.diabetesself_managmentapp.BGL;
+import team5.diabetesself_managmentapp.BGLQueryActivity;
 import team5.diabetesself_managmentapp.QueryActivity;
 import team5.diabetesself_managmentapp.R;
+import team5.diabetesself_managmentapp.adapter.BGLListAdapter;
 import team5.diabetesself_managmentapp.model.BGLEntryModel;
 
 /**
  * Created by Michael on 8/7/2016.
  */
 public class BGLGraphFragment extends Fragment implements OnChartValueSelectedListener{
-    private LineChart chart;
-    private LineData lineData;
-    private List<Entry> data;
-    private LineDataSet dataSet;
-    private List<ILineDataSet> dataSets;
-    private LinearLayout ButtonAndEditTextLayout;
+    LineChart chart;
+    LineData lineData;
+    List<Entry> data;
+    View view;
+    LineDataSet dataSet;
+    List<ILineDataSet> dataSets;
+    LinearLayout ButtonAndEditTextLayout;
 
     private ArrayList<BGLEntryModel> list;
     private ArrayList<String> bglID;
@@ -52,7 +67,6 @@ public class BGLGraphFragment extends Fragment implements OnChartValueSelectedLi
 
     private DatabaseReference mFirebaseDatabaseReference;
     private static final String BGL_CHILD = "bgl";
-    //private FirebaseDatabase mDatabase;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -78,9 +92,11 @@ public class BGLGraphFragment extends Fragment implements OnChartValueSelectedLi
 
         readBglData();
 
-        Chart();
+        //Chart();
 
+        ((BGLQueryActivity)getActivity()).SetGraphFragment(this);
     }
+
 
     private void readBglData()
     {
@@ -276,5 +292,9 @@ public class BGLGraphFragment extends Fragment implements OnChartValueSelectedLi
         if(chart!=null) chart.setAlpha(1f);
         if(ButtonAndEditTextLayout!=null) ButtonAndEditTextLayout.setVisibility(View.INVISIBLE);
 
+    }
+
+    public void Test(){
+        System.out.println("Test!");
     }
 }

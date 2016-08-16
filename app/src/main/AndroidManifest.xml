@@ -35,6 +35,34 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
+        <activity android:name="BGLQueryActivity">
+            android:name=".BGLQueryActivity"
+            android:parentActivityName=".QueryActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".QueryActivity" />
+        </activity>
+        <activity android:name=".DietQueryActivity">
+            android:name=".DietQueryActivity"
+            android:parentActivityName=".QueryActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".QueryActivity" />
+        </activity>
+        <activity android:name=".MedicationQueryActivity">
+            android:name=".MedicationQueryActivity"
+            android:parentActivityName=".QueryActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".QueryActivity" />
+        </activity>
+        <activity android:name=".ExerciseQueryActivity">
+            android:name=".ExerciseQueryActivity"
+            android:parentActivityName=".QueryActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".QueryActivity" />
+        </activity>
         <activity
             android:name=".PrescribeActivity"
             android:parentActivityName=".MainActivity">

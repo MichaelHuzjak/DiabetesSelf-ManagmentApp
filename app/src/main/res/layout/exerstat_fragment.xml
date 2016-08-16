@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <FrameLayout
+        android:paddingLeft="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:text="@string/meanDefaultString"
+            android:gravity="center_horizontal"
+            android:id="@+id/editTextExerMean"
+            android:focusable="false"
+            android:clickable="false"
+            android:layout_gravity="left|top" />
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/meanString"
+            android:paddingTop="35dp"
+            android:gravity="center"
+            android:textColor="#ff0000"
+            android:id="@+id/textViewBGLMean"
+            android:visibility="visible"
+            android:layout_gravity="left|bottom" />
+    </FrameLayout>
+    <FrameLayout
+        android:paddingLeft="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:layout_gravity="left|top"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:clickable="false"
+            android:focusable="false"
+            android:text="@string/varDefaultString"
+            android:gravity="center_horizontal"
+            android:id="@+id/editTextExerVariance" />
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/varianceString"
+            android:paddingTop="35dp"
+            android:gravity="center_horizontal"
+            android:textColor="#ff0000"
+            android:id="@+id/textViewBGLVariant"
+            android:visibility="visible"
+            android:layout_gravity="right|top" />
+
+    </FrameLayout>
+</LinearLayout>

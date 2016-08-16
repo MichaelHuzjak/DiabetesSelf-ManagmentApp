@@ -1,8 +1,23 @@
 package team5.diabetesself_managmentapp;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Exercise {
+    public static final Parcelable.Creator<Exercise> CREATOR
+            = new Parcelable.Creator<Exercise>() {
+        public Exercise createFromParcel(Parcel in) {
+            return new Exercise(in.readInt(),in.readString(),in.readString(),in.readInt(),in.readInt());
+        }
+        public Exercise[] newArray(int size) {
+            return new Exercise[size];
+        }
+    };
     private int _id;
     private int _prescriptionId;
     private int _duration;
@@ -50,11 +65,59 @@ public class Exercise {
     }
 
     public Exercise(){}
+    public Exercise(int id,String desc,Date date,int duration){
+        _id = id;
+        _description = desc;
+        _duration = duration;
+        _dateTime = date;
+    }
     public Exercise(int id,String desc,Date date,int duration,int pres){
         _id = id;
         _prescriptionId = pres;
         _description = desc;
         _duration = duration;
         _dateTime = date;
+    }
+    public Exercise(int id,String desc,String date,int duration,int pres){
+        _id = id;
+        _prescriptionId = pres;
+        _description = desc;
+        _duration = duration;
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:aa");
+        try {
+            _dateTime = format.parse(date);
+        }catch(ParseException e){
+            e.printStackTrace();
+        }
+    }
+    public String GetDateToString(){
+        return new SimpleDateFormat("yyyy-MM-dd").format(_dateTime);
+    }
+    public String GetTimeToString(){
+        return new SimpleDateFormat("hh:mm:aa").format(_dateTime);
+    }
+    public void ChangeDate(String date){
+        String time = GetTimeToString();
+        String dateTime = date + " " + time;
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:aa");
+        try {
+            _dateTime = format.parse(dateTime);
+        }catch(ParseException e){
+            System.out.println("error with date");
+            e.printStackTrace();
+        }
+    }
+    public void ChangeTime(String time){
+        String dateTime = GetDateToString() + " " + time;
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:aa");
+        try {
+            _dateTime = format.parse(dateTime);
+        }catch(ParseException e){
+            e.printStackTrace();
+        }
+    }
+
+    public String GetFormatedDate(){
+        return new SimpleDateFormat("yyyy-MM-dd hh:mm:aa").format(_dateTime);
     }
 }

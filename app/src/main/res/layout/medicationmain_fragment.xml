@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Find All Medication Entries"
+        android:id="@+id/buttonMedAll"
+        android:layout_gravity="center_horizontal" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="4">
+
+        <TextView
+            android:layout_weight="1.1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/textViewTime" />
+        <EditText
+            android:layout_weight="1.2"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:id="@+id/editTextMedQueryDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:focusable="false"/>
+
+        <EditText
+            android:layout_weight="1"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:id="@+id/editTextMedQueryTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:focusable="false"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Find Medication Before Date"
+            android:id="@+id/buttonMedBefore"
+            android:layout_gravity="center_horizontal" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Find Medication After Date"
+            android:id="@+id/buttonMedAfter"
+            android:layout_gravity="center_horizontal" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <EditText
+            android:layout_weight="1.2"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:id="@+id/editTextMedKeyword"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            />
+    </LinearLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Find Medication by Keyword"
+        android:id="@+id/buttonMedKeyword"
+        android:layout_gravity="center_horizontal" />
+</LinearLayout>

@@ -12,9 +12,14 @@
         <fragment
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/MainQueryFragment"
-            android:name="team5.diabetesself_managmentapp.fragments.MainQueryFragment"
-
+            android:id="@+id/MainDietFragment"
+            android:name="team5.diabetesself_managmentapp.fragments.MainDietFragment"
+            />
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/DietResultFragment"
+            android:name="team5.diabetesself_managmentapp.fragments.DietResultFragment"
             />
 
 
