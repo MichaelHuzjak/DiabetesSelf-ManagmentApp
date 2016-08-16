@@ -123,11 +123,15 @@ public class ExerciseQueryActivity extends AppCompatActivity implements TimePick
         currentList = db.GetAllExercise();
     }
     public void GetBefore(Date date){
-        currentList = db.GetAllExercise();
+        currentList = db.GetAllExerciseBeforeDate(date);
     }
-    public void Getafter(Date date){
-        currentList = db.GetAllExercise();
+    public void GetAfter(Date date){
+        currentList = db.GetAllExerciseAfterDate(date);
     }
+    public void GetKeyword(String keyword){
+        currentList = db.GetExerByKeyword(keyword);
+    }
+
     public void BGLListShowDatePickerDialog(View v) {
 
         //etDate = (EditText)v.findViewById(R.id.EditTextBGLDate);
@@ -226,7 +230,14 @@ public class ExerciseQueryActivity extends AppCompatActivity implements TimePick
         ShowResult();
     }
     public void ShowAfter(Date date){
-        Getafter(date);
+        GetAfter(date);
+        GraphFragment.Chart();
+        ListFragment.BuildList();
+        StatsFragment.Calculate();
+        ShowResult();
+    }
+    public void ShowKeyword(String keyword){
+        GetKeyword(keyword);
         GraphFragment.Chart();
         ListFragment.BuildList();
         StatsFragment.Calculate();

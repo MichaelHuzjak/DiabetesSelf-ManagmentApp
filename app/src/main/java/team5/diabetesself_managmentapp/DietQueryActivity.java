@@ -232,6 +232,13 @@ public class DietQueryActivity extends AppCompatActivity implements TimePickerDi
         StatsFragment.Calculate();
         ShowResult();
     }
+    public void ShowKeyword(String keyword){
+        currentList = db.GetDietByKeyword(keyword);
+        GraphFragment.Chart();
+        ListFragment.BuildList();
+        StatsFragment.Calculate();
+        ShowResult();
+    }
 
     public void ShowResult(){
         ShowFragment(getFragmentManager(), ResultFragment,true);

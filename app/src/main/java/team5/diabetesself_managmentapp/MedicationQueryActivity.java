@@ -124,11 +124,15 @@ public class MedicationQueryActivity extends AppCompatActivity implements TimePi
         currentList = db.GetAllMedication();
     }
     public void GetBefore(Date date){
-        currentList = db.GetAllMedication();
+        currentList = db.GetAllMedicationBeforeDate(date);
     }
     public void Getafter(Date date){
-        currentList = db.GetAllMedication();
+        currentList = db.GetAllMedicationAfterDate(date);
     }
+    public void GetKeyword(String keyword){
+        currentList = db.GetMedByKeyword(keyword);
+    }
+
     public void ClearDatabase(){
         db.ClearDatabase();
     }
@@ -231,6 +235,13 @@ public class MedicationQueryActivity extends AppCompatActivity implements TimePi
     }
     public void ShowAfter(Date date){
         Getafter(date);
+        GraphFragment.Chart();
+        ListFragment.BuildList();
+        StatsFragment.Calculate();
+        ShowResult();
+    }
+    public void ShowKeyword(String keyword){
+        GetKeyword(keyword);
         GraphFragment.Chart();
         ListFragment.BuildList();
         StatsFragment.Calculate();

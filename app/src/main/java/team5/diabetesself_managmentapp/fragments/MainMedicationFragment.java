@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import team5.diabetesself_managmentapp.BGLQueryActivity;
+import team5.diabetesself_managmentapp.DietQueryActivity;
 import team5.diabetesself_managmentapp.LogeventActivity;
 import team5.diabetesself_managmentapp.MedicationQueryActivity;
 import team5.diabetesself_managmentapp.QueryActivity;
@@ -33,6 +34,7 @@ import team5.diabetesself_managmentapp.R;
 public class MainMedicationFragment extends Fragment {
     EditText etTime;
     EditText etDate;
+    EditText etKeyword;
 
     View view;
     @Override
@@ -62,6 +64,14 @@ public class MainMedicationFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 onAfter();
+            }
+        });
+        etKeyword = (EditText)getActivity().findViewById(R.id.editTextMedKeyword);
+        Button keywordButton = (Button)getActivity().findViewById(R.id.buttonMedKeyword);
+        keywordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onKeyword();
             }
         });
 
@@ -138,5 +148,11 @@ public class MainMedicationFragment extends Fragment {
     public void onAfter(){
         Date date = GetCombinedDate();
         ((MedicationQueryActivity)getActivity()).ShowAfter(date);
+    }
+    public void onKeyword(){
+        String keyword = "" + etKeyword.getText();
+        if(keyword != "") {
+            ((MedicationQueryActivity) getActivity()).ShowKeyword(keyword);
+        }
     }
 }

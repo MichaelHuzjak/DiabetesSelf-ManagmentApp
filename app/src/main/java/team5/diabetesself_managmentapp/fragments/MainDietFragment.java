@@ -33,6 +33,7 @@ import team5.diabetesself_managmentapp.R;
 public class MainDietFragment extends Fragment {
     EditText etTime;
     EditText etDate;
+    EditText etKeyword;
 
     View view;
     @Override
@@ -64,6 +65,15 @@ public class MainDietFragment extends Fragment {
                 onAfter();
             }
         });
+        etKeyword = (EditText)getActivity().findViewById(R.id.editTextDietKeyword);
+        Button keywordButton = (Button)getActivity().findViewById(R.id.buttonDietKeyword);
+        keywordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onKeyword();
+            }
+        });
+
 
         //listButton.
     }
@@ -138,5 +148,11 @@ public class MainDietFragment extends Fragment {
     public void onAfter(){
         Date date = GetCombinedDate();
         ((DietQueryActivity)getActivity()).ShowAfter(date);
+    }
+    public void onKeyword(){
+        String keyword = "" + etKeyword.getText();
+        if(keyword != "") {
+            ((DietQueryActivity) getActivity()).ShowKeyword(keyword);
+        }
     }
 }
