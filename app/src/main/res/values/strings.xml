@@ -88,5 +88,10 @@
     <string name="end_date">Enter End Date</string>
     <string name="search">Search</string>
 
+    <string name="addPrescEntry">Add New Entry</string>
+    <string name="setPresc">Set Prescription</string>
+    <string name="daily">Daily</string>
+    <string name="weekly">Weekly</string>
+
 
 </resources>
