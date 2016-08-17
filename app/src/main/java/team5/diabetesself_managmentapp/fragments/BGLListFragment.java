@@ -13,6 +13,7 @@ import java.util.List;
 
 import team5.diabetesself_managmentapp.BGL;
 import team5.diabetesself_managmentapp.BGLQueryActivity;
+import team5.diabetesself_managmentapp.DatabaseHelper;
 import team5.diabetesself_managmentapp.QueryActivity;
 import team5.diabetesself_managmentapp.R;
 import team5.diabetesself_managmentapp.adapter.BGLListAdapter;
@@ -29,7 +30,6 @@ public class BGLListFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         ((BGLQueryActivity)getActivity()).SetListFragment(this);
-
         holderView = (RecyclerView)view.findViewById(R.id.RecyclerViewBGLListHolder);
         list = new ArrayList<BGL>();
 
@@ -55,4 +55,5 @@ public class BGLListFragment extends Fragment {
         super.onSaveInstanceState(outState);
         //outState.putParcelableArrayList(List_State, bglAdapter.getList());
     }
+
 }

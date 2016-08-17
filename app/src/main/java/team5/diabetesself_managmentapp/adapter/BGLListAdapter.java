@@ -21,6 +21,7 @@ import java.util.GregorianCalendar;
 
 
 import team5.diabetesself_managmentapp.BGL;
+import team5.diabetesself_managmentapp.BGLQueryActivity;
 import team5.diabetesself_managmentapp.QueryActivity;
 import team5.diabetesself_managmentapp.R;
 import team5.diabetesself_managmentapp.fragments.BGLListFragment;
@@ -173,8 +174,9 @@ public class BGLListAdapter extends RecyclerView.Adapter<BGLListAdapter.ViewHold
 
     public void UpdateBGL(int position){
         final BGL bgl = list.get(position);
-        if(Context instanceof QueryActivity) {
-            ((QueryActivity) Context).UpdateBGL(bgl);
+        if(Context instanceof BGLQueryActivity) {
+            ((BGLQueryActivity) Context).UpdateBGL(bgl);
+            System.out.println(bgl.get_value()+" VALUE");
         }
     }
 }
