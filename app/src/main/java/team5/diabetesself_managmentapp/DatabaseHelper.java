@@ -143,9 +143,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             CreateCategory("Diet", db);
             CreateCategory("Exercise", db);
             CreateCategory("Medication", db);
-            CreateCategory("BGL", db);
         }
-
+//        // Test code, DELETE ME
+//        CreatePrescription(1,"D","Repeat");
+//        CreatePrescription(2,"E","Repeat");
+//        CreatePrescription(3,"M","Repeat");
+//        CreatePrescription(1,"D 2","Repeat");
 
         System.out.println("DatabaseHelper onCreate() COMPLETE");
     }

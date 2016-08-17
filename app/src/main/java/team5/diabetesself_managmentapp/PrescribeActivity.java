@@ -2,7 +2,6 @@ package team5.diabetesself_managmentapp;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.NavUtils;
@@ -36,8 +35,6 @@ import team5.diabetesself_managmentapp.fragments.TimePickerFragment;
  */
 public class PrescribeActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener
 {
-	DatabaseHelper db;
-	NotificationHelper nh;
 	private EditText etDate, etTime;
 	private String catType;
 
@@ -50,7 +47,7 @@ public class PrescribeActivity extends AppCompatActivity implements TimePickerDi
 		setContentView(R.layout.prescribe_activity);
 
 		prescRecyclerView = (RecyclerView)findViewById(R.id.recyclerViewPresc);
-		//etDate = (EditText)findViewById(R.id.editTextPrescDate);
+		etDate = (EditText)findViewById(R.id.editTextPrescDate);
 		etTime = (EditText)findViewById(R.id.editTextPrescTime);
 		prescList = new ArrayList<>();
 		prescAdapter = new PrescriptionAdapter(this, prescList);
@@ -59,8 +56,8 @@ public class PrescribeActivity extends AppCompatActivity implements TimePickerDi
 		prescRecyclerView.setAdapter(prescAdapter);
 		prescAdapter.notifyDataSetChanged();
 		prescRecyclerView = (RecyclerView)findViewById(R.id.recyclerViewPresc);
-		db = new DatabaseHelper(this,null,null,1);
-		nh = new NotificationHelper(this);
+
+
 	}
 
 	public void onAddPrescClicked(View v){
@@ -70,15 +67,13 @@ public class PrescribeActivity extends AppCompatActivity implements TimePickerDi
 	public void onSetPrescClicked(View v){
 		for(Prescription p: prescList){
 			if(p!=null)
-
-				System.out.println("Category: " + p.get_categoryId());
+				System.out.println("Category: " + p.get_category());
 				System.out.println("Description: " + p.get_description());
 				System.out.println("Repeat: " + p.get_repeat());
+				System.out.println("Date: " + p.get_date());
+				System.out.println("Time: " + p.get_time());
 				System.out.println("----------------------------");
-			db.CreatePrescription(p.get_categoryId(),p.get_description(),p.get_repeat());
 		}
-		nh.EnsureNotifications(db.GetAllPrescriptions());
-		startActivity(new Intent(getApplicationContext(), MainActivity.class));
 	}
 
 	@Override

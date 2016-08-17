@@ -1,20 +1,12 @@
 package team5.diabetesself_managmentapp;
 
-import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,7 +24,6 @@ import com.github.lzyzsd.circleprogress.ArcProgress;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.tasks.Task;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -71,8 +62,6 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
     private BGLAdapter bglAdapter;
 
     private DatabaseHelper db;
-    NotificationHelper nh;
-    private int not = 0;
 
     private final String BGL_FRAG_STATE = "BGL_STATE";
 
@@ -84,7 +73,6 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
 
         // Create Helper
         db = new DatabaseHelper(this,null,null,1);
-        nh = new NotificationHelper(this);
 
         if(savedInstanceState==null)
             AddBGLHelper.hideFragment(getFragmentManager(), AddBGLFragment);
@@ -132,25 +120,13 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
                 startActivity(new Intent(getApplicationContext(), PrescribeActivity.class));
             }
         });
-        Button notButton = (Button) findViewById(R.id.notButton);
-        notButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Alarm();
-            }
-        });
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
-    @Override
-    public void onResume(){
-        super.onResume();
-        //System.out.println("Resume");
 
-    }
 
 
     @Override
@@ -321,28 +297,4 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
 
         AddBGLFragment.bglAdapter.clearList();
     }
-    public void showNot(){
-
-    }
-    public void stopNot(){
-
-    }
-    public void Alarm(){
-//        Long alertTime = 0l;
-//        Intent alertIntent = new Intent(this,PrescribeNotificationReceiver.class);
-//
-//        AlarmManager alarmManager = (AlarmManager)
-//                getSystemService(Context.ALARM_SERVICE);
-//        alarmManager.set(AlarmManager.RTC_WAKEUP,alertTime,PendingIntent.getBroadcast(this,1,alertIntent,PendingIntent.FLAG_UPDATE_CURRENT));
-//        System.out.println("Notification");
-        nh.CreateNotification("test 2",500);
-        nh.CreateNotification("test 3",5000);
-        nh.CreateNotification("test 1",10);
-        Calendar calendar = Calendar.getInstance();        calendar.set(Calendar.HOUR_OF_DAY, 3);
-        calendar.set(Calendar.MINUTE, 32);
-        System.out.println("TIME TEST "+calendar.getTimeInMillis());
-
-
-    }
-
 }
