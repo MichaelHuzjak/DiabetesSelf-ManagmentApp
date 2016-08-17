@@ -255,7 +255,7 @@ public class BGLGraphFragment extends Fragment implements OnChartValueSelectedLi
 
     @Override
     public void onNothingSelected() {
-        //When the user touchs somewhere else, set the opacity of the graph back to 1 and make
+        //When the user touches somewhere else, set the opacity of the graph back to 1 and make
         //the edit view invisible.
         if(chart!=null) chart.setAlpha(1f);
         if(ButtonAndEditTextLayout!=null) ButtonAndEditTextLayout.setVisibility(View.INVISIBLE);
