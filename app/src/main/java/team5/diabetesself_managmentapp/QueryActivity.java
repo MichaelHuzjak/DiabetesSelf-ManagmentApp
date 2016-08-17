@@ -213,13 +213,6 @@ public class QueryActivity extends AppCompatActivity implements TimePickerDialog
     }
 
 
-
-    @Override
-    public void onBackPressed() {
-        //super.onBackPressed();
-        System.out.println("Here");
-    }
-
     public void ShowFragment(FragmentManager fm, android.app.Fragment fr, boolean show){
 
         FragmentTransaction ft = fm.beginTransaction();

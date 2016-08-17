@@ -65,6 +65,8 @@ public class BGLGraphFragment extends Fragment implements OnChartValueSelectedLi
         //Chart();
 
     }
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 

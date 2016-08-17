@@ -204,7 +204,6 @@ public class BGLQueryActivity extends AppCompatActivity implements TimePickerDia
         ShowFragment(getFragmentManager(),MainFragment,true);
         ShowFragment(getFragmentManager(),CurrentFragment,false);
     }
-
     public void ShowFragment(FragmentManager fm, android.app.Fragment fr, boolean show){
 
         FragmentTransaction ft = fm.beginTransaction();

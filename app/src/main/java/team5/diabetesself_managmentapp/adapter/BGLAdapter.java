@@ -91,15 +91,15 @@ public class BGLAdapter extends RecyclerView.Adapter<BGLAdapter.ViewHolder>{
             etTime.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    list.get(position).setTime(charSequence.toString());
+                    list.get(getAdapterPosition()).setTime(charSequence.toString());
                 }
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    list.get(position).setTime(charSequence.toString());
+                    list.get(getAdapterPosition()).setTime(charSequence.toString());
                 }
                 @Override
                 public void afterTextChanged(Editable editable) {
-                    list.get(position).setTime(editable.toString());
+                    list.get(getAdapterPosition()).setTime(editable.toString());
                 }
             });
         }

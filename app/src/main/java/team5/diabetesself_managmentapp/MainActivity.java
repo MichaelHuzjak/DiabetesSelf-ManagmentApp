@@ -139,6 +139,11 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         }
     }
 
+    @Override
+    public void onBackPressed(){
+        if(AddBGLFragment.isVisible())
+            ShowHome();
+    }
     public void UpdateMainScreenValues(){
         BGL latestBGL = getLatestBGL();
         int differenceSum = 0;
@@ -173,8 +178,9 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
 
         for(BGL bgl: bglList){
             sum += bgl.get_value();
-            if(latestBGL==null || bgl.get_date().compareTo(latestBGL.get_date())>0)
+            if(latestBGL==null || bgl.get_date().compareTo(latestBGL.get_date())>0) {
                 latestBGL = bgl;
+            }
         }
         if(listSize!=0)
             average = sum/listSize;

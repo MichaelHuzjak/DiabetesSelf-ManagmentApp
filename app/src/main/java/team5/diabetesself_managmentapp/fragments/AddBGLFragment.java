@@ -68,6 +68,7 @@ public class AddBGLFragment extends Fragment{
                 });
                 bglEntryList.add(new BGLEntryModel());
                 bglAdapter.notifyItemInserted(bglAdapter.getItemCount());
+
             }
         });
 
