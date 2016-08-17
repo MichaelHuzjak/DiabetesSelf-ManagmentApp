@@ -524,8 +524,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(PRE_DESC, desc);
         values.put(PRE_REPEAT, repeat);
         SQLiteDatabase db = getWritableDatabase();
-        long l = db.insert(TABLE_PRESCRIPTION,null,values);
-        System.out.println("This is the long: " + l);
+        db.insert(TABLE_PRESCRIPTION,null,values);
         db.close();
     }
     // Update Prescription
@@ -554,11 +553,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 ;
         Cursor c = db.rawQuery(query,null);
         Prescription prescription;
-        System.out.println("Prescription Count: " + c.getCount());
         int i = 0;
         if(c.getCount() > 0){
             while(c.moveToNext()){
-                System.out.println("Get all i="+i++);
                 prescription = new Prescription(Integer.valueOf(c.getString(0)),Integer.valueOf(c.getString(3)),c.getString(4),c.getString(1),c.getString(2));
                 prescriptions.add(prescription);
             }

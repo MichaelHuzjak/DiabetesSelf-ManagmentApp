@@ -59,8 +59,8 @@ public class NotificationHelper {
         final int _id = (int) System.currentTimeMillis();
         // Set the alarm to start at 8:30 a.m.
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.setTime(date);
+        calendar.setTimeInMillis(System.currentTimeMillis());
 
         notificationIntent.putExtra(PrescribeNotificationReceiver.NOTIFICATION_ID, id);
         notificationIntent.putExtra(PrescribeNotificationReceiver.NOTIFICATION, notification);
