@@ -77,6 +77,7 @@ public class AddBGLFragment extends Fragment{
             @Override
             public void onClick(View view) {
                 ((MainActivity)getActivity()).AddBGLtoDatabase();
+                ((MainActivity)getActivity()).UpdateMainScreenValues();
             }
         });
 

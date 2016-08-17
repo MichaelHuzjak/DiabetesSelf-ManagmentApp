@@ -32,6 +32,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import team5.diabetesself_managmentapp.adapter.BGLAdapter;
 import team5.diabetesself_managmentapp.fragments.AddBGLFragment;
@@ -51,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
     private AddBGLFragment AddBGLFragment;
     private Fragment ButtonsFragment;
     static ArcProgress arc;
-    static EditText meanEditText;
+    static EditText meanET, varianceET;
     static TextView meanTextView, addBGLTextView,time, low, mid, norm, high, extreme, doc;
 
     private EditText etDate;
@@ -62,6 +65,8 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
     private BGLAdapter bglAdapter;
 
     private DatabaseHelper db;
+
+    private int average = 0;
 
     private final String BGL_FRAG_STATE = "BGL_STATE";
 
@@ -86,6 +91,10 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         }
 
         setSupportActionBar(toolbar);
+
+        //sets the arc latest bgl entry, mean and variance.
+        UpdateMainScreenValues();
+
 
         Button buttonAddBGLEvent = (Button)findViewById(R.id.ButtonShowBGLFragment);
         buttonAddBGLEvent.setOnClickListener(new View.OnClickListener() {
@@ -130,7 +139,47 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         }
     }
 
+    public void UpdateMainScreenValues(){
+        BGL latestBGL = getLatestBGL();
+        int differenceSum = 0;
+        int variance = 0;
+        if(latestBGL!=null){
+            AddBGLHelper.AddNewBGL(latestBGL.get_value());
+            time.setText(latestBGL.GetFormatedDate());
+        }
+        String mean = ""+average+" mg/dL";
 
+        List<BGL> bglList = db.GetAllBGL();
+        int listSize = bglList.size();
+
+        meanET.setText(mean);
+        for(BGL bgl: db.GetAllBGL()){
+            differenceSum += Math.pow(bgl.get_value()-average, 2);
+        }
+        if(listSize-1 != 0)
+            variance = differenceSum/(listSize-1);
+
+        String var = ""+variance;
+        varianceET.setText(var);
+
+    }
+    private BGL getLatestBGL(){
+        int sum = 0;
+
+
+        BGL latestBGL = null;
+        List<BGL> bglList = db.GetAllBGL();
+        int listSize = bglList.size();
+
+        for(BGL bgl: bglList){
+            sum += bgl.get_value();
+            if(latestBGL==null || bgl.get_date().compareTo(latestBGL.get_date())>0)
+                latestBGL = bgl;
+        }
+        if(listSize!=0)
+            average = sum/listSize;
+        return latestBGL;
+    }
 
 
     @Override
@@ -165,7 +214,8 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         time = (TextView) findViewById(R.id.textViewLastEnteredTime);
         addBGLTextView = (TextView) findViewById(R.id.textViewAddBGL);
-        meanEditText = (EditText) findViewById(R.id.editTextMean);
+        meanET = (EditText) findViewById(R.id.editTextMean);
+        varianceET = (EditText) findViewById(R.id.editTextVariant);
         meanTextView = (TextView) findViewById(R.id.textViewMean);
         arc = (ArcProgress) findViewById(R.id.arc_progress);
         low =(TextView)findViewById(R.id.textViewLowNotice);

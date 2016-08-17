@@ -25,6 +25,8 @@
                 android:layout_height="match_parent">
 
                 <EditText
+                    android:textSize="15sp"
+                    android:textColor="#00a6ff"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:inputType="number"
@@ -116,6 +118,8 @@
                 android:layout_height="match_parent">
 
                 <EditText
+                    android:textSize="15sp"
+                    android:textColor="#00a6ff"
                     android:layout_gravity="left|top"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"

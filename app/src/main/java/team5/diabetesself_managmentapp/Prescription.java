@@ -149,7 +149,7 @@ public class Prescription {
     }
     public String GetTime(){
         String[] parts = _repeat.split(",",2);
-        return parts[1];
+        return parts[0];
     }
     public Date GetCombinedCurrentDateandRepeatTime(){
         Calendar cal = Calendar.getInstance();

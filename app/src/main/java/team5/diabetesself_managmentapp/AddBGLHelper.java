@@ -71,8 +71,6 @@ public class AddBGLHelper extends MainActivity{
         if(progress!=0){
         arc.setProgress(progress);
         toggleNoticePerProgress(progress);}
-        String date = DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
-        time.setText(date);
     }
 
 
