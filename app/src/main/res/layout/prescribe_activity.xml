@@ -17,27 +17,19 @@
         android:id="@+id/relativeLayoutRecyclerViewPresc"
         >
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerViewPresc"
+            android:id="@+id/recyclerViewPrescList"
             android:layout_width="match_parent"
-            android:layout_weight="8"
+            android:layout_weight="9"
             android:layout_height="0dp"
             />
 
         <Button
             android:layout_weight="1"
-            android:id="@+id/buttonAddPresc"
+            android:id="@+id/buttonAddPrescEntries"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:text="@string/addPrescEntry"
-            android:background="#ff5354"
-            android:onClick="onAddPrescClicked"/>
-        <Button
-            android:layout_weight="1"
-            android:id="@+id/buttonSetPresc"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:text="@string/setPresc"
-            android:background="#17b5fe"
-            android:onClick="onSetPrescClicked"/>
+            android:text="Add New Entries"
+            android:background="#ff5354"/>
+
     </LinearLayout>
 </RelativeLayout>

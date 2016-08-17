@@ -85,6 +85,12 @@ public class PrescriptionAdapter extends RecyclerView.Adapter<PrescriptionAdapte
             setRemoveFunction();
 
         }
+        private void syncEntries(String desc,int catid, int day,String time){
+            description.setText(desc);
+            //cat.setSelection(catid);
+
+            etTime.setText(time);
+        }
         public void setListeners(){
 
             //Set the date and time of the model initially in case the user doesn't edit any of them
@@ -97,7 +103,8 @@ public class PrescriptionAdapter extends RecyclerView.Adapter<PrescriptionAdapte
                 @Override
                 public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                     // your code here
-                    list.get(getAdapterPosition()).set_categoryId(position);
+                    System.out.println("Changing!");
+                    list.get(getAdapterPosition()).set_categoryId(position+1);
                     list.get(getAdapterPosition()).set_category(catArray[position]);
                 }
 
@@ -108,10 +115,12 @@ public class PrescriptionAdapter extends RecyclerView.Adapter<PrescriptionAdapte
                 }
 
             });
-            cat.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+            day.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                     // your code here
+                    System.out.println("Changing!");
+
                     list.get(getAdapterPosition()).ChangeDay(position);
                 }
 
@@ -243,6 +252,12 @@ public class PrescriptionAdapter extends RecyclerView.Adapter<PrescriptionAdapte
     @Override
     public void onBindViewHolder(final PrescriptionAdapter.ViewHolder viewHolder, int position) {
 
+        if(list.size()!=0 ){
+            Prescription p = list.get(position);
+            if(p.get_description() != null && p.get_repeat() != null && p.get_repeat().length() > 0 && p.GetTime() != null){
+                viewHolder.syncEntries(p.get_description(),p.get_categoryId(),0,p.GetTime());
+            }
+        }
         viewHolder.setListeners();
 
     }

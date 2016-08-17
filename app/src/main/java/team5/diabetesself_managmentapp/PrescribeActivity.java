@@ -27,6 +27,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import team5.diabetesself_managmentapp.adapter.PrescriptionAdapter;
+import team5.diabetesself_managmentapp.fragments.AddBGLFragment;
 import team5.diabetesself_managmentapp.fragments.DatePickerFragment;
 import team5.diabetesself_managmentapp.fragments.TimePickerFragment;
 
@@ -48,19 +49,29 @@ public class PrescribeActivity extends AppCompatActivity implements TimePickerDi
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.prescribe_activity);
-
-		prescRecyclerView = (RecyclerView)findViewById(R.id.recyclerViewPresc);
+		db = new DatabaseHelper(this,null,null,1);
+		nh = new NotificationHelper(this);
+		prescRecyclerView = (RecyclerView)findViewById(R.id.recyclerViewPrescList);
 		//etDate = (EditText)findViewById(R.id.editTextPrescDate);
 		etTime = (EditText)findViewById(R.id.editTextPrescTime);
 		prescList = new ArrayList<>();
+		for(Prescription p:db.GetAllPrescriptions()){
+			prescList.add(p);
+		}
 		prescAdapter = new PrescriptionAdapter(this, prescList);
 
 		prescRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 		prescRecyclerView.setAdapter(prescAdapter);
 		prescAdapter.notifyDataSetChanged();
 		prescRecyclerView = (RecyclerView)findViewById(R.id.recyclerViewPresc);
-		db = new DatabaseHelper(this,null,null,1);
-		nh = new NotificationHelper(this);
+
+		Button buttonAddEntries = (Button) findViewById(R.id.buttonAddPrescEntries);
+		buttonAddEntries.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				onAddEntries();
+			}
+		});
 	}
 
 	public void onAddPrescClicked(View v){
@@ -76,6 +87,8 @@ public class PrescribeActivity extends AppCompatActivity implements TimePickerDi
 			System.out.println("Repeat: " + p.get_repeat());
 			System.out.println("----------------------------");
 			db.CreatePrescription(p.get_categoryId(),p.get_description(),p.get_repeat());
+
+
 		}
 		nh.EnsureNotifications(db.GetAllPrescriptions());
 		startActivity(new Intent(getApplicationContext(), MainActivity.class));
@@ -144,6 +157,10 @@ public class PrescribeActivity extends AppCompatActivity implements TimePickerDi
 		Calendar cal = new GregorianCalendar(year, month, dayOfMonth);
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 		etDate.setText(sdf.format(cal.getTime()));
+	}
+
+	public void onAddEntries(){
+		startActivity(new Intent(getApplicationContext(), AddPrescriptionActivity.class));
 	}
 
 }
