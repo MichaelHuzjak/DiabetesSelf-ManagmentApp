@@ -11,12 +11,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.Spinner;
 import android.widget.TimePicker;
 
 import java.text.SimpleDateFormat;
@@ -33,21 +36,22 @@ import team5.diabetesself_managmentapp.fragments.TimePickerFragment;
  * Created by Joshua on 7/10/2016.
  * Activity class for adding prescriptions (diet, exercise and medication) entries.
  */
-public class PrescribeActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener
+public class PrescribeActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener
 {
-	private EditText etDate, etTime;
-	private String catType;
-
-	RecyclerView prescRecyclerView;
-	PrescriptionAdapter prescAdapter;
-	ArrayList<Prescription> prescList;
+	private EditText etTime;
+	private RecyclerView prescRecyclerView;
+	private PrescriptionAdapter prescAdapter;
+	private ArrayList<Prescription> prescList;
+	DatabaseHelper db;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.prescribe_activity);
 
+
+
 		prescRecyclerView = (RecyclerView)findViewById(R.id.recyclerViewPresc);
-		etDate = (EditText)findViewById(R.id.editTextPrescDate);
+//		etDate = (EditText)findViewById(R.id.editTextPrescDate);
 		etTime = (EditText)findViewById(R.id.editTextPrescTime);
 		prescList = new ArrayList<>();
 		prescAdapter = new PrescriptionAdapter(this, prescList);
@@ -56,6 +60,7 @@ public class PrescribeActivity extends AppCompatActivity implements TimePickerDi
 		prescRecyclerView.setAdapter(prescAdapter);
 		prescAdapter.notifyDataSetChanged();
 		prescRecyclerView = (RecyclerView)findViewById(R.id.recyclerViewPresc);
+		db = new DatabaseHelper(this,null,null,1);
 
 
 	}
@@ -64,16 +69,22 @@ public class PrescribeActivity extends AppCompatActivity implements TimePickerDi
 		prescList.add(new Prescription());
 		prescAdapter.notifyItemInserted(prescAdapter.getItemCount());
 	}
+
 	public void onSetPrescClicked(View v){
-		for(Prescription p: prescList){
-			if(p!=null)
-				System.out.println("Category: " + p.get_category());
-				System.out.println("Description: " + p.get_description());
-				System.out.println("Repeat: " + p.get_repeat());
-				System.out.println("Date: " + p.get_date());
-				System.out.println("Time: " + p.get_time());
-				System.out.println("----------------------------");
+		int cnt = 0;
+		for(Prescription q: prescList) {
+//			System.out.println("Description: " + q.get_description());
+//			System.out.println("Repeat: " + q.get_repeat());
+//			System.out.println("----------------------------");}
+			db.CreatePrescription(cnt, q.get_description(), q.get_repeat());
+			++cnt;
 		}
+
+//		for(Prescription p: db.GetAllPrescriptions()){
+//			System.out.println("Description: " + p.get_description());
+//			System.out.println("Repeat: " + p.get_repeat());
+//			System.out.println("----------------------------");}
+
 	}
 
 	@Override
@@ -101,17 +112,7 @@ public class PrescribeActivity extends AppCompatActivity implements TimePickerDi
 		}
 	}
 
-	/* WHEN THE USER CLICKS THE DATE BUTTON IN THE UI,
-	CREATE AN INSTANCE OF A DIALOGFRAGMENT AND SHOW IT
-	VIA THE FRAGMENT MANAGER
-	 */
-	public void showDatePickerDialog(View v) {
 
-		etDate = (EditText)v.findViewById(v.getId());
-
-		DialogFragment newFragment = new DatePickerFragment();
-		newFragment.show(getSupportFragmentManager(), "datePicker");
-	}
 
 	/* WHEN THE USER CLICKS THE TIME BUTTON IN THE UI,
 	CREATE AN INSTANCE OF A DIALOGFRAGMENT AND SHOW IT
@@ -133,12 +134,6 @@ public class PrescribeActivity extends AppCompatActivity implements TimePickerDi
 		etTime.setText(sdf.format(cal.getTime()));
 	}
 
-	@Override
-	public void onDateSet(DatePicker view, int year, int month, int dayOfMonth)
-	{
-		Calendar cal = new GregorianCalendar(year, month, dayOfMonth);
-		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-		etDate.setText(sdf.format(cal.getTime()));
-	}
+
 
 }

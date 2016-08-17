@@ -72,7 +72,6 @@ public class AddBGLFragment extends Fragment{
         });
 
 
-        //Currently prints to STDOUT
         ImageButton setValues = (ImageButton)view.findViewById(R.id.ImageButtonSetBGL);
         setValues.setOnClickListener(new View.OnClickListener() {
             @Override

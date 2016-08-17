@@ -7,7 +7,8 @@ public class Prescription {
     private String _category;
     private String _repeat;
     private String _description;
-    private String _date;
+
+    private String _day;
     private String _time;
 
     public int get_id() {
@@ -50,15 +51,15 @@ public class Prescription {
         this._description = _description;
     }
 
-    public void set_date(String _date) {
-        this._date = _date;
+    public void set_day(String _date) {
+        this._day = _date;
     }
 
     public void set_time(String _time) {
         this._time = _time;
     }
 
-    public String get_date() {return _date;}
+    public String get_day() {return _day;}
 
     public String get_time() {return _time;}
 
