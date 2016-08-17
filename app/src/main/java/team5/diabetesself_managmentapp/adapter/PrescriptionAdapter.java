@@ -10,12 +10,15 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 
 
 import java.text.SimpleDateFormat;
@@ -35,11 +38,13 @@ public class PrescriptionAdapter extends RecyclerView.Adapter<PrescriptionAdapte
     private SimpleDateFormat formatter;
     private Date cal;
     private Button setPresc;
+    Context context;
 
     public PrescriptionAdapter(Context c, ArrayList<Prescription> list){
         this.list = list;
         vh = new ArrayList<ViewHolder>();
         cal = new GregorianCalendar().getTime();
+        context = c;
         inflater = LayoutInflater.from(c);
 
     }
@@ -50,26 +55,42 @@ public class PrescriptionAdapter extends RecyclerView.Adapter<PrescriptionAdapte
         private EditText etDate, etTime;
         private ImageButton remove;
         private RadioGroup cat, repeat;
+        private Spinner days_spinner;
+        private ArrayAdapter<CharSequence> adapter;
 
         public ViewHolder(View itemView){
             super(itemView);
             description = (EditText)itemView.findViewById(R.id.editTextPrescDescription);
-            etDate = (EditText)itemView.findViewById(R.id.editTextPrescDate);
             etTime = (EditText)itemView.findViewById(R.id.editTextPrescTime);
             remove = (ImageButton)itemView.findViewById(R.id.imageButtonRemovePresc);
             cat = (RadioGroup)itemView.findViewById(R.id.radioGroupCatType);
             repeat = (RadioGroup)itemView.findViewById(R.id.radioGroupRepeat);
+
+            days_spinner = (Spinner)itemView.findViewById(R.id.spinnerDayPicker);
+            adapter = ArrayAdapter.createFromResource(context, R.array.weak_days, R.layout.spinner_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            days_spinner.setAdapter(adapter);
+
             setRemoveFunction();
 
         }
         public void setListeners(){
 
-            //Set the date and time of the model initially in case the user doesn't edit any of them
-            //and wants to leave them as default.
-
-            list.get(getAdapterPosition()).set_date(etDate.getText().toString());
             list.get(getAdapterPosition()).set_time(etTime.getText().toString());
+            list.get(getAdapterPosition()).set_day(days_spinner.getSelectedItem().toString());
+            list.get(getAdapterPosition()).set_repeat("Daily"); // Selected by default
 
+            days_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    list.get(getAdapterPosition()).set_day(days_spinner.getSelectedItem().toString());
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
 
             // Listens for category change.
             cat.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -100,9 +121,11 @@ public class PrescriptionAdapter extends RecyclerView.Adapter<PrescriptionAdapte
                     switch(radioGroup.getCheckedRadioButtonId()){
                         case R.id.radioButtonDaily:
                             new_repeat="Daily";
+                            days_spinner.setVisibility(View.INVISIBLE);
                             break;
                         case R.id.radioButtonWeekly:
                             new_repeat="Weekly";
+                            days_spinner.setVisibility(View.VISIBLE);
                             break;
                         default:
                             break;
@@ -124,20 +147,20 @@ public class PrescriptionAdapter extends RecyclerView.Adapter<PrescriptionAdapte
                     list.get(getAdapterPosition()).set_description(editable.toString());
                 }
             });
-            etDate.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    list.get(getAdapterPosition()).set_date(charSequence.toString());
-                }
-
-                @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-
-                @Override
-                public void afterTextChanged(Editable editable) {
-                    list.get(getAdapterPosition()).set_date(editable.toString());
-                }
-            });
+//            etDate.addTextChangedListener(new TextWatcher() {
+//                @Override
+//                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//                    list.get(getAdapterPosition()).set_date(charSequence.toString());
+//                }
+//
+//                @Override
+//                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+//
+//                @Override
+//                public void afterTextChanged(Editable editable) {
+//                    list.get(getAdapterPosition()).set_date(editable.toString());
+//                }
+//            });
             etTime.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -178,8 +201,8 @@ public class PrescriptionAdapter extends RecyclerView.Adapter<PrescriptionAdapte
         ViewHolder viewHolder = new ViewHolder(view);
 
 
-        formatter = new SimpleDateFormat("MM/dd/yyyy");
-        viewHolder.etDate.setText(formatter.format(cal.getTime()));
+//        formatter = new SimpleDateFormat("MM/dd/yyyy");
+//        viewHolder.etDate.setText(formatter.format(cal.getTime()));
 
         formatter = new SimpleDateFormat("hh:mm:aa");
         viewHolder.etTime.setText(formatter.format(cal.getTime()));
