@@ -38,15 +38,14 @@ public class PrescriptionAdapter extends RecyclerView.Adapter<PrescriptionAdapte
     private SimpleDateFormat formatter;
     private Date cal;
     private Button setPresc;
-    Context context;
+    private Context context;
 
     public PrescriptionAdapter(Context c, ArrayList<Prescription> list){
         this.list = list;
         vh = new ArrayList<ViewHolder>();
         cal = new GregorianCalendar().getTime();
-        context = c;
         inflater = LayoutInflater.from(c);
-
+        context = c;
     }
 
 
@@ -54,85 +53,114 @@ public class PrescriptionAdapter extends RecyclerView.Adapter<PrescriptionAdapte
         public EditText description;
         private EditText etDate, etTime;
         private ImageButton remove;
-        private RadioGroup cat, repeat;
-        private Spinner days_spinner;
-        private ArrayAdapter<CharSequence> adapter;
+        //private RadioGroup cat, repeat;
+        private Spinner day,cat;
+        String[] arraySpinner;
+        String[] catArray;
 
         public ViewHolder(View itemView){
             super(itemView);
             description = (EditText)itemView.findViewById(R.id.editTextPrescDescription);
+            // etDate = (EditText)itemView.findViewById(R.id.editTextPrescDate);
             etTime = (EditText)itemView.findViewById(R.id.editTextPrescTime);
             remove = (ImageButton)itemView.findViewById(R.id.imageButtonRemovePresc);
-            cat = (RadioGroup)itemView.findViewById(R.id.radioGroupCatType);
-            repeat = (RadioGroup)itemView.findViewById(R.id.radioGroupRepeat);
+            //cat = (RadioGroup)itemView.findViewById(R.id.radioGroupCatType);
+            //repeat = (RadioGroup)itemView.findViewById(R.id.radioGroupRepeat);
+            this.arraySpinner = new String[] {
+                    "Daily", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday","Friday","Saturday"
+            };
+            day = (Spinner)itemView.findViewById(R.id.spinnerPrescription);
+            this.catArray = new String[] {
+                    "Diet", "Exercise", "Medication", "BGL"
+            };
+            cat = (Spinner)itemView.findViewById(R.id.spinnerPrescriptionCat);
 
-            days_spinner = (Spinner)itemView.findViewById(R.id.spinnerDayPicker);
-            adapter = ArrayAdapter.createFromResource(context, R.array.weak_days, R.layout.spinner_item);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            days_spinner.setAdapter(adapter);
+            ArrayAdapter<String> dayAdapter = new ArrayAdapter<String>(context,
+                    android.R.layout.simple_spinner_item, arraySpinner);
 
+            ArrayAdapter<String> catAdapter = new ArrayAdapter<String>(context,
+                    android.R.layout.simple_spinner_item, catArray);
+            day.setAdapter(dayAdapter);
+            cat.setAdapter(catAdapter);
             setRemoveFunction();
 
         }
         public void setListeners(){
 
+            //Set the date and time of the model initially in case the user doesn't edit any of them
+            //and wants to leave them as default.
+
+//            list.get(getAdapterPosition()).set_date(etDate.getText().toString());
             list.get(getAdapterPosition()).set_time(etTime.getText().toString());
-            list.get(getAdapterPosition()).set_day(days_spinner.getSelectedItem().toString());
-            list.get(getAdapterPosition()).set_repeat("Daily"); // Selected by default
 
-            days_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            cat.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
                 @Override
-                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    list.get(getAdapterPosition()).set_day(days_spinner.getSelectedItem().toString());
+                public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                    // your code here
+                    list.get(getAdapterPosition()).set_categoryId(position);
+                    list.get(getAdapterPosition()).set_category(catArray[position]);
                 }
 
                 @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {
+                public void onNothingSelected(AdapterView<?> parentView) {
+                    // your code here
 
                 }
+
+            });
+            cat.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                    // your code here
+                    list.get(getAdapterPosition()).ChangeDay(position);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parentView) {
+                    // your code here
+                }
+
             });
 
             // Listens for category change.
-            cat.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                    String new_catagory = "None";
-                    switch(radioGroup.getCheckedRadioButtonId()){
-                        case R.id.radioButtonDiet:
-                            new_catagory="Diet";
-                            break;
-                        case R.id.radioButtonExer:
-                            new_catagory="Exercise";
-                            break;
-                        case R.id.radioButtonMed:
-                            new_catagory="Medication";
-                            break;
-                        default:
-                            break;
-                    }
-                    list.get(getAdapterPosition()).set_category(new_catagory);
-                }
-            });
+//            cat.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+//                @Override
+//                public void onCheckedChanged(RadioGroup radioGroup, int i) {
+//                    String new_catagory = "None";
+//                    switch(radioGroup.getCheckedRadioButtonId()){
+//                        case R.id.radioButtonDiet:
+//                            new_catagory="Diet";
+//                            break;
+//                        case R.id.radioButtonExer:
+//                            new_catagory="Exercise";
+//                            break;
+//                        case R.id.radioButtonMed:
+//                            new_catagory="Medication";
+//                            break;
+//                        default:
+//                            break;
+//                    }
+//                    list.get(getAdapterPosition()).set_category(new_catagory);
+//                }
+//            });
 
-            repeat.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                    String new_repeat = "None";
-                    switch(radioGroup.getCheckedRadioButtonId()){
-                        case R.id.radioButtonDaily:
-                            new_repeat="Daily";
-                            days_spinner.setVisibility(View.INVISIBLE);
-                            break;
-                        case R.id.radioButtonWeekly:
-                            new_repeat="Weekly";
-                            days_spinner.setVisibility(View.VISIBLE);
-                            break;
-                        default:
-                            break;
-                    }
-                    list.get(getAdapterPosition()).set_repeat(new_repeat);
-                }
-            });
+//            repeat.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+//                @Override
+//                public void onCheckedChanged(RadioGroup radioGroup, int i) {
+//                    String new_repeat = "None";
+//                    switch(radioGroup.getCheckedRadioButtonId()){
+//                        case R.id.radioButtonDaily:
+//                            new_repeat="Daily";
+//                            break;
+//                        case R.id.radioButtonWeekly:
+//                            new_repeat="Weekly";
+//                            break;
+//                        default:
+//                            break;
+//                    }
+//                    list.get(getAdapterPosition()).set_repeat(new_repeat);
+//                }
+//            });
 
             // Listens for description change and sets the corresponding model variables.
             description.addTextChangedListener(new TextWatcher() {
@@ -164,7 +192,7 @@ public class PrescriptionAdapter extends RecyclerView.Adapter<PrescriptionAdapte
             etTime.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    list.get(getAdapterPosition()).set_time(charSequence.toString());
+                    list.get(getAdapterPosition()).ChangeTime(charSequence.toString());
                 }
 
                 @Override
@@ -172,7 +200,7 @@ public class PrescriptionAdapter extends RecyclerView.Adapter<PrescriptionAdapte
 
                 @Override
                 public void afterTextChanged(Editable editable) {
-                    list.get(getAdapterPosition()).set_time(editable.toString());
+                    list.get(getAdapterPosition()).ChangeTime(editable.toString());
                 }
             });
         }
@@ -201,7 +229,7 @@ public class PrescriptionAdapter extends RecyclerView.Adapter<PrescriptionAdapte
         ViewHolder viewHolder = new ViewHolder(view);
 
 
-//        formatter = new SimpleDateFormat("MM/dd/yyyy");
+        formatter = new SimpleDateFormat("MM/dd/yyyy");
 //        viewHolder.etDate.setText(formatter.format(cal.getTime()));
 
         formatter = new SimpleDateFormat("hh:mm:aa");
