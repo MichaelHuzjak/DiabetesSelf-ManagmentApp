@@ -261,7 +261,6 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth)
     {
-
         Calendar cal = new GregorianCalendar(year, month, dayOfMonth);
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
         etDate.setText(sdf.format(cal.getTime()));
@@ -283,6 +282,7 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         }
 
         AddBGLFragment.bglAdapter.clearList();
+
         ShowHome();
     }
 
@@ -292,8 +292,8 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         Fragment addBGL = (Fragment)getFragmentManager().findFragmentById(R.id.FragmentBGL);
         Fragment bgl_frag = (Fragment)getFragmentManager().findFragmentByTag("BGL_FRAGMENT");
 //                getFragmentManager().beginTransaction().remove(bgl_frag).commit();
-        AddBGLHelper.showFragment(getFragmentManager(),buttons);
         AddBGLHelper.hideFragment(getFragmentManager(),addBGL);
+        AddBGLHelper.showFragment(getFragmentManager(),buttons);
 
         AddBGLFragment.bglAdapter.clearList();
     }

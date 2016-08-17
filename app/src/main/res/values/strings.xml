@@ -93,5 +93,15 @@
     <string name="daily">Daily</string>
     <string name="weekly">Weekly</string>
 
+    <string name="textEditBloodGL">BGL</string>
 
+    <string-array name="weak_days">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+    </string-array>
 </resources>

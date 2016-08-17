@@ -66,8 +66,9 @@
             android:layout_weight="1.8"
             android:layout_height="match_parent">
             <com.github.lzyzsd.circleprogress.ArcProgress
-                app:arc_bottom_text="Average"
-                app:arc_text_color="#ff5b5b"
+
+                app:arc_bottom_text="Latest BGL"
+                app:arc_text_color="#00abf4"
                 android:id="@+id/arc_progress"
                 android:layout_width="170dp"
                 android:layout_height="170dp"

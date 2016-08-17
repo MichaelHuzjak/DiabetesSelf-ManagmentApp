@@ -11,7 +11,14 @@
         android:id="@+id/radioGroupCatType"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
+        <RadioButton
+            android:id="@+id/radioButtonBGL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/textEditBloodGL"
+            android:textStyle="bold"
+            android:checked="true"
+            />
         <RadioButton
             android:id="@+id/radioButtonMed"
             android:layout_width="wrap_content"
@@ -64,24 +71,27 @@
         <TextView
             android:layout_gravity="center_vertical"
             android:layout_width="0dp"
-            android:layout_weight=".6"
+            android:layout_weight=".5"
             android:layout_height="wrap_content"
             android:text="Repeat"/>
 
         <RadioGroup
             android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_weight=".9"
             android:layout_height="wrap_content"
             android:id="@+id/radioGroupRepeat">
 
             <RadioButton
+                android:textSize="13sp"
                 android:id="@+id/radioButtonDaily"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/daily"
                 android:textStyle="bold"
+                android:checked="true"
                 />
             <RadioButton
+                android:textSize="13sp"
                 android:id="@+id/radioButtonWeekly"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -90,21 +100,17 @@
                 />
         </RadioGroup>
         <LinearLayout
-            android:layout_weight="2"
-            android:gravity="center"
+            android:layout_weight="2.2"
             android:layout_gravity="center_vertical"
             android:orientation="horizontal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/linearLayoutPrescDateTime">
-            <EditText
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:textSize="14sp"
+            <Spinner
+                android:id="@+id/spinnerDayPicker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/editTextPrescDate"
-                android:onClick="showDatePickerDialog"/>
+                android:visibility="invisible"/>
             <EditText
                 android:focusable="false"
                 android:focusableInTouchMode="false"
