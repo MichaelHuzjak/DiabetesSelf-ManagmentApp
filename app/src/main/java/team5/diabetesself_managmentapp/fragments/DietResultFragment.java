@@ -12,7 +12,7 @@ import team5.diabetesself_managmentapp.R;
  */
 public class DietResultFragment extends Fragment {
 
-    View view;
+    private View view;
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);

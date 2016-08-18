@@ -9,21 +9,18 @@ import android.widget.EditText;
 
 import java.util.List;
 
-import team5.diabetesself_managmentapp.BGL;
-import team5.diabetesself_managmentapp.BGLQueryActivity;
-import team5.diabetesself_managmentapp.Diet;
 import team5.diabetesself_managmentapp.DietQueryActivity;
-import team5.diabetesself_managmentapp.Medication;
-import team5.diabetesself_managmentapp.MedicationQueryActivity;
 import team5.diabetesself_managmentapp.R;
+import team5.diabetesself_managmentapp.model.LogEventModel;
 
 /**
  * Created by Michael on 8/7/2016.
  */
 public class DietStatFragment extends Fragment {
-    EditText etMean;
-    EditText etVariance;
-    View view;
+    private EditText etMean;
+    private EditText etVariance;
+    private View view;
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -36,6 +33,7 @@ public class DietStatFragment extends Fragment {
         view = inflater.inflate(R.layout.dietstat_fragment, container, false);
         return view;
     }
+
     @Override
     public void onSaveInstanceState(Bundle outState){
         super.onSaveInstanceState(outState);
@@ -45,17 +43,17 @@ public class DietStatFragment extends Fragment {
 
         etVariance = (EditText)getActivity().findViewById(R.id.editTextDietVariance);
         etMean = (EditText)getActivity().findViewById(R.id.editTextDietMean);
-        List<Diet> list = ((DietQueryActivity)getActivity()).GetList();
+        List<LogEventModel> list = ((DietQueryActivity)getActivity()).GetList();
         float mean = 0;
-        for(Diet diet: list){
-            mean += diet.get_amount();
+        for(LogEventModel diet: list){
+            mean +=(float)diet.getValue();
         }
         mean = mean / list.size();
 
         float variance = 0;
-        for(Diet diet: list){
+        for(LogEventModel diet: list){
             System.out.println(""+variance);
-            float value = diet.get_amount() - mean;
+            float value = (float)diet.getValue() - mean;
             variance += Math.pow(value,2);
 
         }

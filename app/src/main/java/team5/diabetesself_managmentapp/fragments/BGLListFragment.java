@@ -17,11 +17,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import team5.diabetesself_managmentapp.BGL;
 import team5.diabetesself_managmentapp.BGLQueryActivity;
-import team5.diabetesself_managmentapp.QueryActivity;
 import team5.diabetesself_managmentapp.R;
 import team5.diabetesself_managmentapp.adapter.BGLListAdapter;
 import team5.diabetesself_managmentapp.model.BGLEntryModel;
@@ -30,9 +27,9 @@ import team5.diabetesself_managmentapp.model.BGLEntryModel;
  * Created by Michael on 8/7/2016.
  */
 public class BGLListFragment extends Fragment {
-    BGLListAdapter adapter;
-    RecyclerView holderView;
-    View view;
+    private BGLListAdapter adapter;
+    private RecyclerView holderView;
+    private View view;
 
     private ArrayList<BGLEntryModel> list;
     private ArrayList<String> bglID;
@@ -43,10 +40,10 @@ public class BGLListFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState)
     {
+        System.out.println("BGLListFragment:onActivityCreated()");
         super.onActivityCreated(savedInstanceState);
 
-        System.out.println("BGLListFragment:onActivityCreated()");
-        RecyclerView holderView = (RecyclerView) view.findViewById(R.id.RecyclerViewBGLListHolder);
+        holderView = (RecyclerView) view.findViewById(R.id.RecyclerViewBGLListHolder);
 
         // Initialize Firebase Auth
         FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
@@ -56,22 +53,39 @@ public class BGLListFragment extends Fragment {
         //mDatabase = FirebaseDatabase.getInstance();
         mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference("/users/" + mFirebaseUser.getUid());
 
-        System.out.println("USER ID: " + mFirebaseUser.getUid());
-        System.out.println("USER STRING: " + mUsername);
+        System.out.println("BGLListFragment USER ID: " + mFirebaseUser.getUid());
+        System.out.println("BGLListFragment USER STRING: " + mUsername);
 
         list = new ArrayList<>();
         bglID = new ArrayList<>();
 
+        ((BGLQueryActivity)getActivity()).SetListFragment(this);
+    }
+
+    public void BuildList()
+    {
+        System.out.println("BGLListFragment:BuildList()");
+
         readBglData();
 
-        adapter = new BGLListAdapter(list, bglID, getActivity());
+        adapter = new BGLListAdapter(list, bglID, (BGLQueryActivity)getActivity());
 
         holderView.setLayoutManager(new LinearLayoutManager(getActivity()));
         holderView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+    }
 
-        ((BGLQueryActivity)getActivity()).SetListFragment(this);
+    public void BuildList(ArrayList<BGLEntryModel> list, ArrayList<String> bglID)
+    {
+        System.out.println("BGLListFragment:BuildList()");
 
+        readBglData();
+
+        adapter = new BGLListAdapter(list, bglID, (BGLQueryActivity)getActivity());
+
+        holderView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        holderView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
     private void readBglData()
@@ -90,7 +104,7 @@ public class BGLListFragment extends Fragment {
                 for(DataSnapshot child : snapshot.getChildren())
                 {
                     BGLEntryModel bglModel = child.getValue(BGLEntryModel.class);
-                    System.out.println("Key: " + child.getKey() + " BGL: " + bglModel.getProgress() + " Date: " + bglModel.getDate() + " Time: " +  bglModel.getTime());
+                    System.out.println("BGLListFragment: Key: " + child.getKey() + " BGL: " + bglModel.getProgress() + " Date: " + bglModel.getDate() + " Time: " +  bglModel.getTime());
                     list.add(bglModel);
                     bglID.add(child.getKey());
                     adapter.notifyDataSetChanged();
@@ -108,10 +122,11 @@ public class BGLListFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+        System.out.println("BGLListFragment: onCreateView()");
         view = inflater.inflate(R.layout.bgllist_fragment, container, false);
         return view;
     }
+
     @Override
     public void onSaveInstanceState(Bundle outState){
         super.onSaveInstanceState(outState);

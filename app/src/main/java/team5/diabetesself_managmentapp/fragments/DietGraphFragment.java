@@ -3,19 +3,12 @@ package team5.diabetesself_managmentapp.fragments;
 import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -25,59 +18,125 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.listener.ChartTouchListener;
-import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.Viewport;
-import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.LineGraphSeries;
-import com.jjoe64.graphview.series.PointsGraphSeries;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import team5.diabetesself_managmentapp.Diet;
 import team5.diabetesself_managmentapp.DietQueryActivity;
 import team5.diabetesself_managmentapp.R;
+import team5.diabetesself_managmentapp.model.LogEventModel;
 
 /**
  * Created by Michael on 8/7/2016.
  */
 public class DietGraphFragment extends Fragment implements OnChartValueSelectedListener{
-    LineChart chart;
-    LineData lineData;
-    List<Entry> data;
-    View view;
-    LineDataSet dataSet;
-    List<ILineDataSet> dataSets;
-    LinearLayout ButtonAndEditTextLayout;
+    private LineChart chart;
+    private LineData lineData;
+    private static List<Entry> data;
+    private View view;
+    private LineDataSet dataSet;
+    private List<ILineDataSet> dataSets;
+    private LinearLayout ButtonAndEditTextLayout;
+
+    private ArrayList<LogEventModel> list;
+    private ArrayList<String> dietID;
+
+    private int counter;
+
+    private DatabaseReference mFirebaseDatabaseReference;
+    private static final String DIET_CHILD = "diet";
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        System.out.println("DietGraphFragment: onActivityCreated()");
+
+        // Initialize Firebase Auth
+        FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        String mUsername = mFirebaseUser != null ? mFirebaseUser.getDisplayName() : null;
+
+        //mDatabase = FirebaseDatabase.getInstance();
+        mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference("/users/" + mFirebaseUser.getUid());
+
+        System.out.println("USER ID: " + mFirebaseUser.getUid());
+        System.out.println("USER STRING: " + mUsername);
+
+        counter = 0;
+
+        list = new ArrayList<>();
+        dietID = new ArrayList<>();
+        data = new ArrayList<>();
+
+        readDietData();
+
         ((DietQueryActivity)getActivity()).SetGraphFragment(this);
     }
+
+    private void readDietData()
+    {
+        System.out.println("DietGraphFragment: readDietData()");
+
+        DatabaseReference ref = mFirebaseDatabaseReference.child(DIET_CHILD);
+
+        // Add all polls in ref as rows
+        ref.addListenerForSingleValueEvent(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(DataSnapshot snapshot)
+            {
+                for(DataSnapshot child : snapshot.getChildren())
+                {
+                    LogEventModel logEventModel = child.getValue(LogEventModel.class);
+                    System.out.println("BGLGraphFragment: Key: " + child.getKey() + " Diet: " + logEventModel.getDescription() + " Date: " + logEventModel.getDate() + " Time: " +  logEventModel.getTime());
+                    list.add(logEventModel);
+                    dietID.add(child.getKey());
+
+                    Entry bgl_entry = new Entry(counter++, logEventModel.getValue());
+                    // There is a data "Object" inside every Entry that is null by default.
+                    // I utilize it by setting it to be a BGL object, then I retrieve the BGL object
+                    // when the set button inside the graph is clicked to update the SQL!
+                    bgl_entry.setData(logEventModel);
+
+                    data.add(bgl_entry);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        System.out.println("DietGraphFragment: readDietData() returned.");
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.dietgraph_fragment, container, false);
         return view;
     }
     @Override
-    public void onSaveInstanceState(Bundle outState){
+    public void onSaveInstanceState(Bundle outState)
+    {
         super.onSaveInstanceState(outState);
     }
-    public void Chart(){
-        data = new ArrayList<>();
 
-        int counter = 0;
-        for(Diet diet: ((DietQueryActivity)getActivity()).GetList()){
-            Entry diet_entry = new Entry(counter++,diet.get_amount());
-            diet_entry.setData(diet);
-            data.add(diet_entry);
-        }
+    public void Chart()
+    {
+        System.out.println("DietGraphFragment:Chart()");
 
         chart = (LineChart)((DietQueryActivity)getActivity()).findViewById(R.id.graphDiet);
 
@@ -89,7 +148,7 @@ public class DietGraphFragment extends Fragment implements OnChartValueSelectedL
         chart.setOnChartValueSelectedListener(this);
 
         dataSet = new LineDataSet(data,"Values");
-        dataSets = new ArrayList<ILineDataSet>();
+        dataSets = new ArrayList<>();
 
         dataSet.setDrawValues(true);
         dataSet.setCircleRadius(15);
@@ -107,10 +166,8 @@ public class DietGraphFragment extends Fragment implements OnChartValueSelectedL
         yaxis.setDrawGridLines(true);
 
         lineData = new LineData(dataSets);
-        chart.setData(lineData);
 
-        ///chart.invalidate();
-        // chart.setData(lineData);
+        chart.setData(lineData);
     }
 
 
@@ -140,29 +197,37 @@ public class DietGraphFragment extends Fragment implements OnChartValueSelectedL
     }
 
     //Sets the functionality of the check button.
-    private void setEditLayoutFunction(final Entry e){
+    private void setEditLayoutFunction(final Entry e, final int index)
+    {
         final Button btn = (Button)getActivity().findViewById(R.id.ButtonSetGraphDietAmount);
         final EditText GraphEditText = (EditText)getActivity().findViewById(R.id.editTextNewDietValue);
 
-        btn.setOnClickListener(new View.OnClickListener() {
+        btn.setOnClickListener(new View.OnClickListener()
+        {
             float new_value = 0;
+
             @Override
             public void onClick(View view) {
 
                 try {
 
                     new_value = Float.parseFloat(GraphEditText.getText().toString());
+
                     e.setY(new_value);
-                    Diet diet = (Diet)e.getData();
-                    diet.set_amount((int)new_value);
-                    ((DietQueryActivity) getActivity()).UpdateDiet(((diet)));
 
-                } catch (Exception e) {}
+                    LogEventModel diet = (LogEventModel)e.getData();
 
+                    diet.setValue((int)(new_value));
 
+                    final String dietId = dietID.get(index);
+
+                    updateDiet(diet, dietId);
+
+                } catch (Exception e) {
+                    return;
+                }
 
                 // Update the sql table with the new value.
-
 
                 ButtonAndEditTextLayout.setVisibility(View.INVISIBLE);
                 GraphEditText.setText("");
@@ -177,8 +242,14 @@ public class DietGraphFragment extends Fragment implements OnChartValueSelectedL
 
     @Override
     public void onValueSelected(Entry e, Highlight h) {
+
+        // get the position of this Entry object.
+        int index = (int)e.getX();
+
         BgingEditLayout(e,h);
-        setEditLayoutFunction(e);
+
+        setEditLayoutFunction(e, index);
+
         chart.setAlpha(0.3f); //Changes the opacity of the graph
     }
 
@@ -189,5 +260,20 @@ public class DietGraphFragment extends Fragment implements OnChartValueSelectedL
         if(chart!=null) chart.setAlpha(1f);
         if(ButtonAndEditTextLayout!=null) ButtonAndEditTextLayout.setVisibility(View.INVISIBLE);
 
+    }
+
+    private void updateDiet(LogEventModel diet, String dietID)
+    {
+        Map<String, Object> updatedValues = diet.toMap();
+        Map<String, Object> childUpdates = new HashMap<>();
+
+        childUpdates.put("/" + DIET_CHILD + "/" + dietID, updatedValues);
+
+        mFirebaseDatabaseReference.updateChildren(childUpdates);
+    }
+
+    public static void setData(List<Entry> setTo)
+    {
+        data = setTo;
     }
 }

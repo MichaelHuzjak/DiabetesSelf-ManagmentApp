@@ -12,27 +12,28 @@ import android.widget.ImageButton;
 import java.util.ArrayList;
 
 
-import team5.diabetesself_managmentapp.Exercise;
 import team5.diabetesself_managmentapp.ExerciseQueryActivity;
-import team5.diabetesself_managmentapp.Medication;
-import team5.diabetesself_managmentapp.MedicationQueryActivity;
-import team5.diabetesself_managmentapp.QueryActivity;
 import team5.diabetesself_managmentapp.R;
+import team5.diabetesself_managmentapp.model.LogEventModel;
 
 public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHolder>{
-    private ArrayList<Exercise> list;
+    private final ArrayList<LogEventModel> list;
     private int pos;
-    private ArrayList<ExerciseAdapter.ViewHolder> vh;
-    Context Context;
-    public ExerciseAdapter(ArrayList<Exercise> list,Context context){
+    private final ArrayList<ExerciseAdapter.ViewHolder> vh;
+    private final Context Context;
+    private final ArrayList<String> exerciseID;
+
+    public ExerciseAdapter(ArrayList<LogEventModel> list, ArrayList<String> exerciseID, Context context)
+    {
         this.list = list;
+        this.exerciseID = exerciseID;
         vh = new ArrayList<ViewHolder>();
         Context = context;
     }
 
-
-    public class ViewHolder extends RecyclerView.ViewHolder{
-        private EditText etDate, etTime, etValue,etDesc;
+    public class ViewHolder extends RecyclerView.ViewHolder
+    {
+        private final EditText etDate, etTime, etValue,etDesc;
 
         public ViewHolder(View itemView){
             super(itemView);
@@ -49,84 +50,93 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
             etDate.setText(date);
             etTime.setText(time);
         }
+
         private void setListeners(final int position){
 
             etValue.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                     if(!charSequence.toString().equals(""))
-                        list.get(position).set_duration(Integer.parseInt(charSequence.toString()));
+                        list.get(position).setValue(Integer.parseInt(charSequence.toString()));
+                    else
+                        list.get(position).setValue(0);
                 }
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                     if(!charSequence.toString().equals(""))
-                        list.get(position).set_duration(Integer.parseInt(charSequence.toString()));
+                        list.get(position).setValue(Integer.parseInt(charSequence.toString()));
+                    else
+                        list.get(position).setValue(0);
                 }
                 @Override
                 public void afterTextChanged(Editable editable) {
                     if(!editable.toString().equals(""))
-                        list.get(position).set_duration(Integer.parseInt(editable.toString()));
+                        list.get(position).setValue(Integer.parseInt(editable.toString()));
+                    else
+                        list.get(position).setValue(0);
                 }
             });
+
             etDesc.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    list.get(position).set_description(charSequence.toString());
+                    list.get(position).setDescription(charSequence.toString());
 
                 }
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    list.get(position).set_description(charSequence.toString());
+                    list.get(position).setDescription(charSequence.toString());
                 }
                 @Override
                 public void afterTextChanged(Editable editable) {
-                    list.get(position).set_description(editable.toString());
+                    list.get(position).setDescription(editable.toString());
                 }
             });
 
             etDate.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    list.get(position).ChangeDate(charSequence.toString());
+                    list.get(position).setDate(charSequence.toString());
 
                 }
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    list.get(position).ChangeDate(charSequence.toString());
+                    list.get(position).setDate(charSequence.toString());
                 }
                 @Override
                 public void afterTextChanged(Editable editable) {
-                    list.get(position).ChangeDate(editable.toString());
+                    list.get(position).setDate(editable.toString());
                 }
             });
-            etDesc.addTextChangedListener(new TextWatcher() {
+
+            etDate.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    list.get(position).set_description(charSequence.toString());
+                    list.get(position).setDate(charSequence.toString());
 
                 }
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    list.get(position).set_description(charSequence.toString());
+                    list.get(position).setDate(charSequence.toString());
                 }
                 @Override
                 public void afterTextChanged(Editable editable) {
-                    list.get(position).set_description(editable.toString());
+                    list.get(position).setDate(editable.toString());
                 }
             });
 
             etTime.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    list.get(position).ChangeTime(charSequence.toString());
+                    list.get(position).setTime(charSequence.toString());
                 }
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    list.get(position).ChangeTime(charSequence.toString());
+                    list.get(position).setTime(charSequence.toString());
                 }
                 @Override
                 public void afterTextChanged(Editable editable) {
-                    list.get(position).ChangeTime(editable.toString());
+                    list.get(position).setTime(editable.toString());
                 }
             });
         }
@@ -135,19 +145,24 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
             updateButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    UpdateMedication(getAdapterPosition());
+                    UpdateExercise(getAdapterPosition());
                 }
             });
         }
 
     }
 
-    public void removeAt(int position) {
+    private void removeAt(int position)
+    {
         if(position < 0)
             return;
+
         list.remove(position);
+        exerciseID.remove(position);
+
         notifyItemRemoved(position);
     }
+
     @Override
     public ExerciseAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
@@ -162,10 +177,12 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
     public void onBindViewHolder(final ExerciseAdapter.ViewHolder viewHolder, int position) {
         // If the input item is not empty, then set the editTexts and the seekbar
         // to the specified values inside the item.
-        if(list.size()!=0 ){
-            Exercise exer = list.get(position);
-            viewHolder.syncEntries(exer.get_description(),exer.GetDateToString(),exer.GetTimeToString(),exer.get_duration());
+        if(list.size()!=0 )
+        {
+            LogEventModel exer = list.get(position);
+            viewHolder.syncEntries(exer.getDescription(),exer.getDate(),exer.getTime(), exer.getValue());
         }
+
         viewHolder.setListeners(position);
     }
 
@@ -176,7 +193,8 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
         return list.size();
     }
 
-    public ArrayList<Exercise> getList(){
+    public ArrayList<LogEventModel> getList()
+    {
         return list;
     }
 
@@ -188,11 +206,15 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
         vh.removeAll(vh);
     }
 
-    public void UpdateMedication(int position){
-        final Exercise exer = list.get(position);
-        if(Context instanceof QueryActivity) {
-            ((ExerciseQueryActivity) Context).UpdateExercise(exer);
-        }
+    private void UpdateExercise(int position)
+    {
+        System.out.println("DietAdapter: UpdateExercise()");
+
+        final LogEventModel exer = list.get(position);
+        final String exerciseId = exerciseID.get(position);
+
+        ((ExerciseQueryActivity) Context).UpdateExercise(exer, exerciseId);
+
     }
 
 }

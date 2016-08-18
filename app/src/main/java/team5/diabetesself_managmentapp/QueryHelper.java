@@ -1,9 +1,5 @@
 package team5.diabetesself_managmentapp;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-
 /**
  * Created by Michael on 8/7/2016.
  */

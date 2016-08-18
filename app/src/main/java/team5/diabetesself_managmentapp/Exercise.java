@@ -78,28 +78,28 @@ public class Exercise {
         _duration = duration;
         _dateTime = date;
     }
-    public Exercise(int id,String desc,String date,int duration,int pres){
+    private Exercise(int id, String desc, String date, int duration, int pres){
         _id = id;
         _prescriptionId = pres;
         _description = desc;
         _duration = duration;
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:aa");
+        DateFormat format = new SimpleDateFormat("MM-dd-yyyy hh:mm:aa");
         try {
             _dateTime = format.parse(date);
         }catch(ParseException e){
             e.printStackTrace();
         }
     }
-    public String GetDateToString(){
-        return new SimpleDateFormat("yyyy-MM-dd").format(_dateTime);
+    private String GetDateToString(){
+        return new SimpleDateFormat("MM-dd-yyyy").format(_dateTime);
     }
-    public String GetTimeToString(){
+    private String GetTimeToString(){
         return new SimpleDateFormat("hh:mm:aa").format(_dateTime);
     }
     public void ChangeDate(String date){
         String time = GetTimeToString();
         String dateTime = date + " " + time;
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:aa");
+        DateFormat format = new SimpleDateFormat("MM-dd-yyyy hh:mm:aa");
         try {
             _dateTime = format.parse(dateTime);
         }catch(ParseException e){
@@ -109,7 +109,7 @@ public class Exercise {
     }
     public void ChangeTime(String time){
         String dateTime = GetDateToString() + " " + time;
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:aa");
+        DateFormat format = new SimpleDateFormat("MM-dd-yyyy hh:mm:aa");
         try {
             _dateTime = format.parse(dateTime);
         }catch(ParseException e){
@@ -118,6 +118,6 @@ public class Exercise {
     }
 
     public String GetFormatedDate(){
-        return new SimpleDateFormat("yyyy-MM-dd hh:mm:aa").format(_dateTime);
+        return new SimpleDateFormat("MM-dd-yyyy hh:mm:aa").format(_dateTime);
     }
 }

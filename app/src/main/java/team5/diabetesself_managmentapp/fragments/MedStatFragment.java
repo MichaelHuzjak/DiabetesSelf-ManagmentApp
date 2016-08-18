@@ -9,19 +9,18 @@ import android.widget.EditText;
 
 import java.util.List;
 
-import team5.diabetesself_managmentapp.BGL;
-import team5.diabetesself_managmentapp.BGLQueryActivity;
-import team5.diabetesself_managmentapp.Medication;
 import team5.diabetesself_managmentapp.MedicationQueryActivity;
 import team5.diabetesself_managmentapp.R;
+import team5.diabetesself_managmentapp.model.LogEventModel;
 
 /**
  * Created by Michael on 8/7/2016.
  */
 public class MedStatFragment extends Fragment {
-    EditText etMean;
-    EditText etVariance;
-    View view;
+    private EditText etMean;
+    private EditText etVariance;
+    private View view;
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -34,6 +33,7 @@ public class MedStatFragment extends Fragment {
         view = inflater.inflate(R.layout.medstat_fragment, container, false);
         return view;
     }
+
     @Override
     public void onSaveInstanceState(Bundle outState){
         super.onSaveInstanceState(outState);
@@ -43,17 +43,17 @@ public class MedStatFragment extends Fragment {
 
         etVariance = (EditText)getActivity().findViewById(R.id.editTextMedVariance);
         etMean = (EditText)getActivity().findViewById(R.id.editTextMedMean);
-        List<Medication> list = ((MedicationQueryActivity)getActivity()).GetList();
+        List<LogEventModel> list = ((MedicationQueryActivity)getActivity()).GetList();
         float mean = 0;
-        for(Medication med: list){
-            mean += med.get_amount();
+        for(LogEventModel med: list){
+            mean += (float)med.getValue();
         }
         mean = mean / list.size();
 
         float variance = 0;
-        for(Medication med: list){
+        for(LogEventModel med: list){
             System.out.println(""+variance);
-            float value = med.get_amount() - mean;
+            float value = (float)med.getValue() - mean;
             variance += Math.pow(value,2);
 
         }

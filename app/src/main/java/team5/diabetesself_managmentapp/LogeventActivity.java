@@ -2,7 +2,6 @@ package team5.diabetesself_managmentapp;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -23,7 +22,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TimePicker;
 import android.widget.Toast;
-import java.text.ParseException;
+
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -49,7 +48,7 @@ import team5.diabetesself_managmentapp.utils.LogEventConstant;
  * Created by Joshua on 7/7/2016.
  * Activity class for adding diet, exercise and medication event entries.
  */
-public class LogeventActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener{
+public class LogeventActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener, GoogleApiClient.OnConnectionFailedListener {
 
 	private final String KEY_RECYCLER_STATE = "recycler_state";
 	private final String KEY_LIST_STATE = "list_state";
@@ -304,7 +303,7 @@ public class LogeventActivity extends AppCompatActivity implements TimePickerDia
 	public void onDateSet(DatePicker view, int year, int month, int dayOfMonth)
 	{
 		Calendar cal = new GregorianCalendar(year, month, dayOfMonth);
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
 		etDate.setText(sdf.format(cal.getTime()));
 	}
 

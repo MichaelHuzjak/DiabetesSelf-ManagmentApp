@@ -129,7 +129,7 @@ public class BGLAdapter extends RecyclerView.Adapter<BGLAdapter.ViewHolder>{
         Date cal = new GregorianCalendar().getTime();
         SimpleDateFormat formatter;
 
-        formatter = new SimpleDateFormat("MM/dd/yyyy");
+        formatter = new SimpleDateFormat("MM-dd-yyyy");
         viewHolder.etDate.setText(formatter.format(cal.getTime()));
 
         formatter = new SimpleDateFormat("hh:mm:aa");

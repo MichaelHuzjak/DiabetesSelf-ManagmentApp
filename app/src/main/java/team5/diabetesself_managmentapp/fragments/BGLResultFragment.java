@@ -12,18 +12,21 @@ import team5.diabetesself_managmentapp.R;
  */
 public class BGLResultFragment extends Fragment {
 
-    View view;
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
+    private View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+        System.out.println("BGLResultFragment: onCreateView()");
         view = inflater.inflate(R.layout.bglresult_fragment, container, false);
         return view;
     }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        System.out.println("BGLResultFragment: onActivityCreated()");
+        super.onActivityCreated(savedInstanceState);
+    }
+
     @Override
     public void onSaveInstanceState(Bundle outState){
         super.onSaveInstanceState(outState);

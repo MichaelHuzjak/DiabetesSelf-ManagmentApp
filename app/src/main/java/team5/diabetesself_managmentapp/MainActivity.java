@@ -168,6 +168,7 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         buttonQuery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                System.out.println("MainActivity: onClick() -> QueryActivity.class");
                 startActivity(new Intent(getApplicationContext(), QueryActivity.class));
             }
         });
@@ -328,7 +329,7 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
     {
 
         Calendar cal = new GregorianCalendar(year, month, dayOfMonth);
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
         etDate.setText(sdf.format(cal.getTime()));
     }
 

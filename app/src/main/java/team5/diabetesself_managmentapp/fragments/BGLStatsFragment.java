@@ -9,26 +9,28 @@ import android.widget.EditText;
 
 import java.util.List;
 
-import team5.diabetesself_managmentapp.BGL;
 import team5.diabetesself_managmentapp.BGLQueryActivity;
 import team5.diabetesself_managmentapp.R;
+import team5.diabetesself_managmentapp.model.BGLEntryModel;
 
 /**
  * Created by Michael on 8/7/2016.
  */
 public class BGLStatsFragment extends Fragment {
-    EditText etMean;
-    EditText etVariance;
-    View view;
+    private EditText etMean;
+    private EditText etVariance;
+    private View view;
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
+        System.out.println("BGLStatsFragment:onActivityCreated()");
         super.onActivityCreated(savedInstanceState);
         ((BGLQueryActivity)getActivity()).SetStatsFragment(this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+        System.out.println("BGLStatsFragment:onCreateView()");
         view = inflater.inflate(R.layout.bglstats_fragment, container, false);
         return view;
     }
@@ -41,17 +43,17 @@ public class BGLStatsFragment extends Fragment {
 
         etVariance = (EditText)getActivity().findViewById(R.id.editTextBGLVariant);
         etMean = (EditText)getActivity().findViewById(R.id.editTextBGLMean);
-        List<BGL> list = ((BGLQueryActivity)getActivity()).GetList();
+        List<BGLEntryModel> list = ((BGLQueryActivity)getActivity()).GetList();
         float mean = 0;
-        for(BGL bgl: list){
-            mean += bgl.get_value();
+        for(BGLEntryModel bgl: list){
+            mean += bgl.getProgress();
         }
         mean = mean / list.size();
 
         float variance = 0;
-        for(BGL bgl: list){
+        for(BGLEntryModel bgl: list){
             System.out.println(""+variance);
-            float value = bgl.get_value() - mean;
+            float value = bgl.getProgress() - mean;
             variance += Math.pow(value,2);
 
         }

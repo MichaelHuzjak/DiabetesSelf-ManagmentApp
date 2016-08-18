@@ -86,7 +86,7 @@ public class LogEventAdapter extends RecyclerView.Adapter<LogEventViewHolder>
 			cal.getTime();
 		}
 
-		sdf = new SimpleDateFormat("yyyy-MM-dd");
+		sdf = new SimpleDateFormat("MM-dd-yyyy");
 		etDate.setText(sdf.format(cal.getTime()));
 		logEventModelList.get(count).setDate(sdf.format(cal.getTime()));
 
@@ -117,13 +117,13 @@ public class LogEventAdapter extends RecyclerView.Adapter<LogEventViewHolder>
 
 		holder.multipleContent.setText(logEventModelList.get(position).modelContent);
 		holder.description.setText(logEventModelList.get(position).description);
-		holder.value.setText(logEventModelList.get(position).value);
+		holder.value.setText(""+logEventModelList.get(position).value);
 
 		/* CHECK IF FOR SOME REASON, THE ONCREATEVIEW WAS SKIPPED
 		 */
 		if(logEventModelList.get(position).date == null || logEventModelList.get(position).time == null )
 		{
-			sdf = new SimpleDateFormat("yyyy-MM-dd");
+			sdf = new SimpleDateFormat("MM-dd-yyyy");
 			holder.date.setText(sdf.format(cal.getTime()));
 
 			sdf = new SimpleDateFormat("hh:mm:aa");
@@ -215,7 +215,7 @@ public class LogEventAdapter extends RecyclerView.Adapter<LogEventViewHolder>
 			}
 			else if (type == LogEventConstant.VALUE)
 			{
-				logEventModelList.get(position).setValue(editable.toString());
+				logEventModelList.get(position).setValue(Integer.parseInt(editable.toString()));
 			}
 			else if (type == LogEventConstant.DATE)
 			{

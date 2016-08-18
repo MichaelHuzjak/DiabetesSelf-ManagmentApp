@@ -56,7 +56,7 @@ public class BGL {
     }
     private BGL(int id, String date, int value){
         _id = id;
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:aa");
+        DateFormat format = new SimpleDateFormat("MM-dd-yyyy hh:mm:aa");
         try {
             _date = format.parse(date);
         }catch(ParseException e){
@@ -65,7 +65,7 @@ public class BGL {
         _value = value;
     }
     private String GetDateToString(){
-        return new SimpleDateFormat("yyyy-MM-dd").format(_date);
+        return new SimpleDateFormat("MM-dd-yyyy").format(_date);
     }
     private String GetTimeToString(){
         return new SimpleDateFormat("hh:mm:aa").format(_date);
@@ -73,7 +73,7 @@ public class BGL {
     public void ChangeDate(String date){
         String time = GetTimeToString();
         String dateTime = date + " " + time;
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:aa");
+        DateFormat format = new SimpleDateFormat("MM-dd-yyyy hh:mm:aa");
         try {
             _date = format.parse(dateTime);
         }catch(ParseException e){
@@ -83,7 +83,7 @@ public class BGL {
     }
     public void ChangeTime(String time){
         String dateTime = GetDateToString() + " " + time;
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:aa");
+        DateFormat format = new SimpleDateFormat("MM-dd-yyyy hh:mm:aa");
         try {
             _date = format.parse(dateTime);
         }catch(ParseException e){
@@ -92,7 +92,7 @@ public class BGL {
     }
 
     public String GetFormatedDate(){
-        return new SimpleDateFormat("yyyy-MM-dd hh:mm:aa").format(_date);
+        return new SimpleDateFormat("MM-dd-yyyy hh:mm:aa").format(_date);
     }
 
 }

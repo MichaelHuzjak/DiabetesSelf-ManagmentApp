@@ -3,13 +3,18 @@ package team5.diabetesself_managmentapp.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.firebase.database.Exclude;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class LogEventModel implements Parcelable {
 
     public int type;
     public String modelContent;
 
     public String description;
-    public String value;
+    public int value;
     public String date;
     public String time;
 
@@ -17,7 +22,7 @@ public class LogEventModel implements Parcelable {
     {
     }
 
-    public LogEventModel(int type, String modelContent, String description, String value, String date, String time)
+    public LogEventModel(int type, String modelContent, String description, int value, String date, String time)
     {
         this.type = type;
         this.modelContent = modelContent;
@@ -32,7 +37,7 @@ public class LogEventModel implements Parcelable {
         this.type = type;
         this.modelContent = modelContent;
         this.description = null;
-        this.value = null;
+        this.value = 0;
         this.date = null;
         this.time = null;
     }
@@ -42,7 +47,7 @@ public class LogEventModel implements Parcelable {
         type = in.readInt();
         modelContent = in.readString();
         description = in.readString();
-        value = in.readString();
+        value = in.readInt();
         date = in.readString();
         time = in.readString();
     }
@@ -73,7 +78,7 @@ public class LogEventModel implements Parcelable {
         parcel.writeInt(type);
         parcel.writeString(modelContent);
         parcel.writeString(description);
-        parcel.writeString(value);
+        parcel.writeInt(value);
         parcel.writeString(date);
         parcel.writeString(time);
     }
@@ -88,7 +93,7 @@ public class LogEventModel implements Parcelable {
         return date;
     }
 
-    public String getValue()
+    public int getValue()
     {
         return value;
     }
@@ -108,7 +113,7 @@ public class LogEventModel implements Parcelable {
         this.date = date;
     }
 
-    public void setValue(String value)
+    public void setValue(int value)
     {
         this.value = value;
     }
@@ -116,5 +121,19 @@ public class LogEventModel implements Parcelable {
     public void setDescription(String description)
     {
         this.description = description;
+    }
+
+    @Exclude
+    public Map<String, Object> toMap()
+    {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("date", date);
+        result.put("description", description);
+        result.put("time", time);
+        result.put("value", value);
+
+        result.put("type", type);
+        result.put("modelContent", modelContent);
+        return result;
     }
 }

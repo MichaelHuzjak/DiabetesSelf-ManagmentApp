@@ -13,7 +13,7 @@ import android.widget.ImageButton;
 import java.util.ArrayList;
 
 
-import team5.diabetesself_managmentapp.QueryActivity;
+import team5.diabetesself_managmentapp.BGLQueryActivity;
 import team5.diabetesself_managmentapp.R;
 import team5.diabetesself_managmentapp.model.BGLEntryModel;
 
@@ -176,14 +176,12 @@ public class BGLListAdapter extends RecyclerView.Adapter<BGLListAdapter.ViewHold
 
     private void UpdateBGL(int position)
     {
-        System.out.println("BGLListAdapter: UpdateBGL()");
+        System.out.println("BGLListAdapter: UpdateBGL(): Position " + position);
 
         final BGLEntryModel bgl = list.get(position);
         final String bglId = bglID.get(position);
 
-        if(Context instanceof QueryActivity)
-        {
-            ((QueryActivity) Context).UpdateBGL(bgl, bglId);
-        }
+        ((BGLQueryActivity) Context).updateBgl(bgl, bglId);
+
     }
 }

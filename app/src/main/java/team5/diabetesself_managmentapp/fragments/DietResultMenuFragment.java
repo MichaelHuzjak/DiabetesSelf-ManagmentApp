@@ -1,30 +1,13 @@
 package team5.diabetesself_managmentapp.fragments;
 
-import android.app.DatePickerDialog;
 import android.app.Fragment;
-import android.app.TimePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.TimePicker;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-
-import team5.diabetesself_managmentapp.BGLQueryActivity;
 import team5.diabetesself_managmentapp.DietQueryActivity;
-import team5.diabetesself_managmentapp.LogeventActivity;
-import team5.diabetesself_managmentapp.QueryActivity;
 import team5.diabetesself_managmentapp.R;
 
 /**
@@ -32,7 +15,7 @@ import team5.diabetesself_managmentapp.R;
  */
 public class DietResultMenuFragment extends Fragment {
 
-    View view;
+    private View view;
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);

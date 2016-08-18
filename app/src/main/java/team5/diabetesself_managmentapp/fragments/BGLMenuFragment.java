@@ -1,29 +1,13 @@
 package team5.diabetesself_managmentapp.fragments;
 
-import android.app.DatePickerDialog;
 import android.app.Fragment;
-import android.app.TimePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.TimePicker;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 
 import team5.diabetesself_managmentapp.BGLQueryActivity;
-import team5.diabetesself_managmentapp.LogeventActivity;
-import team5.diabetesself_managmentapp.QueryActivity;
 import team5.diabetesself_managmentapp.R;
 
 /**
@@ -31,17 +15,20 @@ import team5.diabetesself_managmentapp.R;
  */
 public class BGLMenuFragment extends Fragment {
 
-    View view;
+    private View view;
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
+        System.out.println("BGLMenuFragment: onActivityCreated()");
         super.onActivityCreated(savedInstanceState);
         CreateButtons();
     }
     private void CreateButtons(){
+        System.out.println("BGLMenuFragment: CreateButtons()");
         Button graphButton = (Button)getActivity().findViewById(R.id.buttonBGLGraph);
         graphButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                System.out.println("BGLMenuFragment: onClick() -> (BGLQueryActivity)getActivity()).ShowGraph()");
                 ((BGLQueryActivity)getActivity()).ShowGraph();
             }
         });
@@ -49,6 +36,7 @@ public class BGLMenuFragment extends Fragment {
         buttonList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                System.out.println("BGLMenuFragment: onClick() -> (BGLQueryActivity)getActivity()).ShowList()");
                 ((BGLQueryActivity)getActivity()).ShowList();
             }
         });
@@ -56,6 +44,7 @@ public class BGLMenuFragment extends Fragment {
         buttonStats.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                System.out.println("BGLMenuFragment: onClick() -> (BGLQueryActivity)getActivity()).ShowStats()");
                 ((BGLQueryActivity)getActivity()).ShowStats();
             }
         });
@@ -64,7 +53,7 @@ public class BGLMenuFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+        System.out.println("BGLMenuFragment: onCreateView()");
         view = inflater.inflate(R.layout.bglmenu_fragment, container, false);
         return view;
     }

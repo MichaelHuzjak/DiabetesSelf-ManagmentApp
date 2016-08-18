@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class DatabaseHelper extends SQLiteOpenHelper {
+class DatabaseHelper extends SQLiteOpenHelper {
 
     // region Variables
     private static final int DATABASE_VERSION = 1;
@@ -22,46 +22,46 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     Context context;
 
     // Category Variables
-    public static final String TABLE_CATEGORIES = "categories";
-    public static final String CATEGORY_ID = "cat_id";
-    public static final String CATEGORY_NAME = "cat_name";
+    private static final String TABLE_CATEGORIES = "categories";
+    private static final String CATEGORY_ID = "cat_id";
+    private static final String CATEGORY_NAME = "cat_name";
 
     // Prescription Variables
-    public static final String TABLE_PRESCRIPTION = "prescriptions";
-    public static final String PRE_ID = "pre_id";
-    public static final String PRE_DESC = "pre_desc";
-    public static final String PRE_REPEAT = "pre_repeat";
-    public static final String PRE_CAT = "pre_cat";
+    private static final String TABLE_PRESCRIPTION = "prescriptions";
+    private static final String PRE_ID = "pre_id";
+    private static final String PRE_DESC = "pre_desc";
+    private static final String PRE_REPEAT = "pre_repeat";
+    private static final String PRE_CAT = "pre_cat";
 
     // BGL Variables
-    public static final String TABLE_BGL = "bgl_value";
-    public static final String BGL_ID = "bgl_id";
-    public static final String BGL_DateTime = "bgl_datetime";
-    public static final String BGL_Value = "bgl_value";
+    private static final String TABLE_BGL = "bgl_value";
+    private static final String BGL_ID = "bgl_id";
+    private static final String BGL_DateTime = "bgl_datetime";
+    private static final String BGL_Value = "bgl_value";
 
     // Medication Variables
-    public static final String TABLE_MED = "medications";
-    public static final String MED_ID = "med_id";
-    public static final String MED_DESC = "med_desc";
-    public static final String MED_AMOUNT = "med_amount";
-    public static final String MED_DATETIME = "med_datetime";
-    public static final String MED_PRES = "med_pres";
+    private static final String TABLE_MED = "medications";
+    private static final String MED_ID = "med_id";
+    private static final String MED_DESC = "med_desc";
+    private static final String MED_AMOUNT = "med_amount";
+    private static final String MED_DATETIME = "med_datetime";
+    private static final String MED_PRES = "med_pres";
 
     // Diet Variables
-    public static final String TABLE_DIET = "diets";
-    public static final String DIET_ID = "diet_id";
-    public static final String DIET_DESC = "diet_desc";
-    public static final String DIET_AMOUNT = "diet_amount";
-    public static final String DIET_DATETIME = "diet_datetime";
-    public static final String DIET_PRES = "diet_pres";
+    private static final String TABLE_DIET = "diets";
+    private static final String DIET_ID = "diet_id";
+    private static final String DIET_DESC = "diet_desc";
+    private static final String DIET_AMOUNT = "diet_amount";
+    private static final String DIET_DATETIME = "diet_datetime";
+    private static final String DIET_PRES = "diet_pres";
 
     // Exercise
-    public static final String TABLE_EXERCISE = "exercise";
-    public static final String EXER_ID = "exer_id";
-    public static final String EXER_DESC = "exer_desc";
-    public static final String EXER_DATETIME = "exer_datetime";
-    public static final String EXER_DURATION = "exer_duration";
-    public static final String EXER_PRES = "exer_pres";
+    private static final String TABLE_EXERCISE = "exercise";
+    private static final String EXER_ID = "exer_id";
+    private static final String EXER_DESC = "exer_desc";
+    private static final String EXER_DATETIME = "exer_datetime";
+    private static final String EXER_DURATION = "exer_duration";
+    private static final String EXER_PRES = "exer_pres";
 
     // endregion
 
@@ -194,80 +194,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.insert(TABLE_DIET,null,values);
         db.close();
     }
-    // Create Diet
-    public void CreateDiet( String desc, int amount, String date){
-        System.out.println("Creating!");
-        ContentValues values = new ContentValues();
-        values.put(DIET_DESC, desc);
-        values.put(DIET_AMOUNT, amount);
-        values.put(DIET_DATETIME, date);
-        SQLiteDatabase db = getWritableDatabase();
-        db.insert(TABLE_DIET,null,values);
-        db.close();
-    }
-    // Search Diet by Keyword
-    public List<Diet> GetAllDiet(){
-        List<Diet> diets = new ArrayList<Diet>();
-        SQLiteDatabase db = getWritableDatabase();
-        String query = "SELECT * FROM " + TABLE_DIET + " WHERE 1;";
-        Cursor c = db.rawQuery(query,null);
-        Diet diet;
-        System.out.println("Diet " + c.getCount());
-
-        if(c.getCount() > 0){
-            while(c.moveToNext()){
-                DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:aa");
-                try {
-                    diet = new Diet(Integer.valueOf(c.getString(0)),c.getString(1),format.parse(c.getString(2)),Integer.valueOf(c.getString(3)));
-                    diets.add(diet);
-                }catch(ParseException e){
-                    e.printStackTrace();
-                }
-            }
-        }
-        db.close();
-        return diets;
-    }
-    // Get All Diet after a date
-    public List<Diet> GetAllDietAfterDate(Date date){
-        List<Diet> after = new ArrayList<Diet>();
-        for(Diet diet: GetAllDiet()){
-            if(diet.get_date().after(date)){
-                after.add(diet);
-            }
-        }
-        return after;
-    }
-    // Get All Diet after a date
-    public List<Diet> GetAllDietBeforeDate(Date date){
-        List<Diet> after = new ArrayList<Diet>();
-        for(Diet diet: GetAllDiet()){
-            if(diet.get_date().before(date)){
-                after.add(diet);
-            }
-        }
-        return after;
-    }
     // Search Diet by Keyword
     public List<Diet> GetDietByKeyword(String keyword){
         List<Diet> diets = new ArrayList<Diet>();
         SQLiteDatabase db = getWritableDatabase();
         String query = "SELECT * FROM " + TABLE_DIET +
                 " WHERE " +
-                DIET_DESC + "='" + keyword + "';"
+                TABLE_DIET + "." + DIET_DESC + " = " + keyword
                 ;
         Cursor c = db.rawQuery(query,null);
         Diet diet;
-        if(c != null) {
-            if (c.getCount() > 0) {
-                while (c.moveToNext()) {
-                    DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:aa");
-                    try {
-                        diet = new Diet(Integer.valueOf(c.getString(0)), c.getString(1), format.parse(c.getString(2)), Integer.valueOf(c.getString(3)) );
-                        diets.add(diet);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
+        if(c.getCount() > 0){
+            while(c.moveToNext()){
+                DateFormat format = new SimpleDateFormat("MM-dd-yyyy hh:mm:aa");
+                try {
+                    diet = new Diet(Integer.valueOf(c.getString(0)),c.getString(1),format.parse(c.getString(2)),Integer.valueOf(c.getString(3)),Integer.valueOf(c.getString(4)));
+                    diets.add(diet);
+                }catch(ParseException e){
+                    e.printStackTrace();
                 }
             }
         }
@@ -281,7 +225,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor c = db.rawQuery("SELECT * FROM " + TABLE_DIET + " WHERE " + DIET_ID + " = " + id, null);
         if(c!=null){
             c.moveToFirst();
-            DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:aa");
+            DateFormat format = new SimpleDateFormat("MM-dd-yyyy hh:mm:aa");
             try {
                 Diet diet = new Diet(Integer.valueOf(c.getString(0)),c.getString(1),format.parse(c.getString(2)),Integer.valueOf(c.getString(3)),Integer.valueOf(c.getString(4)));
                 db.close();
@@ -302,7 +246,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(DIET_PRES, diet.get_prescriptionId());
         values.put(DIET_DESC, diet.get_description());
         values.put(DIET_AMOUNT, diet.get_amount());
-        values.put(DIET_DATETIME, new SimpleDateFormat("yyyy-MM-dd hh:mm:aa").format(diet.get_date()));
+        values.put(DIET_DATETIME, new SimpleDateFormat("MM-dd-yyyy hh:mm:aa").format(diet.get_date()));
         SQLiteDatabase db = getWritableDatabase();
         db.update(TABLE_DIET,values,DIET_ID+"="+diet.get_id(),null);
         db.close();
@@ -334,13 +278,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         String query = "SELECT * FROM " + TABLE_EXERCISE +
                 " WHERE " +
-                  EXER_DESC + " = " + keyword
+                TABLE_EXERCISE + "." + EXER_DESC + " = " + keyword
                 ;
         Cursor c = db.rawQuery(query,null);
         Exercise exer;
         if(c.getCount() > 0){
             while(c.moveToNext()){
-                DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:aa");
+                DateFormat format = new SimpleDateFormat("MM-dd-yyyy hh:mm:aa");
                 try {
                     exer = new Exercise(Integer.valueOf(c.getString(0)),c.getString(1),format.parse(c.getString(2)),Integer.valueOf(c.getString(3)),Integer.valueOf(c.getString(4)));
                     exercises.add(exer);
@@ -359,7 +303,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor c = db.rawQuery("SELECT * FROM " + TABLE_EXERCISE + " WHERE " + EXER_ID + " = " + id, null);
         if(c!=null){
             c.moveToFirst();
-            DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:aa");
+            DateFormat format = new SimpleDateFormat("MM-dd-yyyy hh:mm:aa");
             try {
                 Exercise exer = new Exercise(Integer.valueOf(c.getString(0)),c.getString(1),format.parse(c.getString(2)),Integer.valueOf(c.getString(3)),Integer.valueOf(c.getString(4)));
                 db.close();
@@ -380,7 +324,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(EXER_PRES, exer.get_prescriptionId());
         values.put(EXER_DESC, exer.get_description());
         values.put(EXER_DURATION, exer.get_duration());
-        values.put(MED_DATETIME, new SimpleDateFormat("yyyy-MM-dd hh:mm:aa").format(exer.get_dateTime()));
+        values.put(MED_DATETIME, new SimpleDateFormat("MM-dd-yyyy hh:mm:aa").format(exer.get_dateTime()));
         SQLiteDatabase db = getWritableDatabase();
         db.update(TABLE_EXERCISE,values,MED_ID+"="+exer.get_id(),null);
         db.close();
@@ -406,55 +350,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.insert(TABLE_MED,null,values);
         db.close();
     }
-    // Search for all Medication
-    public List<Medication> GetAllMedication(){
-        List<Medication> medications = new ArrayList<Medication>();
-        SQLiteDatabase db = getWritableDatabase();
-        String query = "SELECT * FROM " + TABLE_MED + " WHERE 1;";
-        Cursor c = db.rawQuery(query,null);
-        Medication med;
-        System.out.println("Diet " + c.getCount());
-
-        if(c.getCount() > 0){
-            while(c.moveToNext()){
-                DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:aa");
-                try {
-                    med = new Medication(Integer.valueOf(c.getString(0)),c.getString(1),format.parse(c.getString(2)),Integer.valueOf(c.getString(3)));
-                    medications.add(med);
-                }catch(ParseException e){
-                    e.printStackTrace();
-                }
-            }
-        }
-        db.close();
-        return medications;
-    }
-    // Search Med by Keyword
-    public List<Medication> GetMedByKeyword(String keyword){
-        List<Medication> medications = new ArrayList<Medication>();
-        SQLiteDatabase db = getWritableDatabase();
-        String query = "SELECT * FROM " + TABLE_MED +
-                " WHERE " +
-                MED_DESC + "='" + keyword + "';"
-                ;
-        Cursor c = db.rawQuery(query,null);
-        Medication med;
-        if(c != null) {
-            if (c.getCount() > 0) {
-                while (c.moveToNext()) {
-                    DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:aa");
-                    try {
-                        med = new Medication(Integer.valueOf(c.getString(0)), c.getString(1), format.parse(c.getString(2)), Integer.valueOf(c.getString(3)) );
-                        medications.add(med);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
-        db.close();
-        return medications;
-    }
     // Get Medication by id
     public Medication GetMedication(int id){
         SQLiteDatabase db = getWritableDatabase();
@@ -462,7 +357,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor c = db.rawQuery("SELECT * FROM " + TABLE_MED + " WHERE " + MED_ID + " = " + id, null);
         if(c!=null){
             c.moveToFirst();
-            DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:aa");
+            DateFormat format = new SimpleDateFormat("MM-dd-yyyy hh:mm:aa");
             try {
                 Medication med = new Medication(Integer.valueOf(c.getString(0)),c.getString(1),format.parse(c.getString(2)),Integer.valueOf(c.getString(3)),Integer.valueOf(c.getString(4)));
                 db.close();
@@ -477,33 +372,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return null;
         }
     }
-    // Get All Medication before a date
-    public List<Medication> GetAllMedicationBeforeDate(Date date){
-        List<Medication> after = new ArrayList<Medication>();
-        for(Medication med: GetAllMedication()){
-            if(med.get_datetime().before(date)){
-                after.add(med);
-            }
-        }
-        return after;
-    }
-    // Get All Medication after a date
-    public List<Medication> GetAllMedicationAfterDate(Date date){
-        List<Medication> after = new ArrayList<Medication>();
-        for(Medication med: GetAllMedication()){
-            if(med.get_datetime().after(date)){
-                after.add(med);
-            }
-        }
-        return after;
-    }
     // Update Medication
     public void UpdateMedication(Medication med){
         ContentValues values = new ContentValues();
         values.put(MED_PRES, med.get_prescriptionId());
         values.put(MED_DESC, med.get_description());
         values.put(MED_AMOUNT, med.get_amount());
-        values.put(MED_DATETIME, new SimpleDateFormat("yyyy-MM-dd hh:mm:aa").format(med.get_datetime()));
+        values.put(MED_DATETIME, new SimpleDateFormat("MM-dd-yyyy hh:mm:aa").format(med.get_datetime()));
         SQLiteDatabase db = getWritableDatabase();
         db.update(TABLE_MED,values,MED_ID+"="+med.get_id(),null);
         db.close();
@@ -602,7 +477,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Medication med;
         if(c.getCount() > 0){
             while(c.moveToNext()){
-                DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:aa");
+                DateFormat format = new SimpleDateFormat("MM-dd-yyyy hh:mm:aa");
                 try {
                     med = new Medication(Integer.valueOf(c.getString(0)),c.getString(1),format.parse(c.getString(2)),Integer.valueOf(c.getString(3)),Integer.valueOf(c.getString(4)));
                     medications.add(med);
@@ -626,7 +501,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Diet diet;
         if(c.getCount() > 0){
             while(c.moveToNext()){
-                DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:aa");
+                DateFormat format = new SimpleDateFormat("MM-dd-yyyy hh:mm:aa");
                 try {
                     diet = new Diet(Integer.valueOf(c.getString(0)),c.getString(1),format.parse(c.getString(2)),Integer.valueOf(c.getString(3)),Integer.valueOf(c.getString(4)));
                     diets.add(diet);
@@ -637,73 +512,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         db.close();
         return diets;
-    }
-    // Search Diet by Keyword
-    public List<Exercise> GetExerByKeyword(String keyword){
-        List<Exercise> exercises = new ArrayList<Exercise>();
-        SQLiteDatabase db = getWritableDatabase();
-        String query = "SELECT * FROM " + TABLE_MED +
-                " WHERE " +
-                MED_DESC + "='" + keyword + "';"
-                ;
-        Cursor c = db.rawQuery(query,null);
-        Exercise exer;
-        if(c != null) {
-            if (c.getCount() > 0) {
-                while (c.moveToNext()) {
-                    DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:aa");
-                    try {
-                        exer = new Exercise(Integer.valueOf(c.getString(0)), c.getString(1), format.parse(c.getString(2)), Integer.valueOf(c.getString(3)) );
-                        exercises.add(exer);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
-        db.close();
-        return exercises;
-    }
-    public List<Exercise> GetAllExercise(){
-        List<Exercise> exercises = new ArrayList<Exercise>();
-        SQLiteDatabase db = getWritableDatabase();
-        String query = "SELECT * FROM " + TABLE_EXERCISE + " WHERE 1;";
-        Cursor c = db.rawQuery(query,null);
-        Exercise exer;
-
-        if(c.getCount() > 0){
-            while(c.moveToNext()){
-                DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:aa");
-                try {
-                    exer = new Exercise(Integer.valueOf(c.getString(0)),c.getString(1),format.parse(c.getString(2)),Integer.valueOf(c.getString(3)));
-                    exercises.add(exer);
-                }catch(ParseException e){
-                    e.printStackTrace();
-                }
-            }
-        }
-        db.close();
-        return exercises;
-    }
-    // Get All Medication after a date
-    public List<Exercise> GetAllExerciseBeforeDate(Date date){
-        List<Exercise> after = new ArrayList<Exercise>();
-        for(Exercise exer: GetAllExercise()){
-            if(exer.get_dateTime().before(date)){
-                after.add(exer);
-            }
-        }
-        return after;
-    }
-    // Get All Medication after a date
-    public List<Exercise> GetAllExerciseAfterDate(Date date){
-        List<Exercise> after = new ArrayList<Exercise>();
-        for(Exercise exer: GetAllExercise()){
-            if(exer.get_dateTime().after(date)){
-                after.add(exer);
-            }
-        }
-        return after;
     }
     // Get All Exercises Associated with Prescription
     public List<Exercise> GetExercisesFromPrescription(int id){
@@ -717,7 +525,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Exercise exer;
         if(c.getCount() > 0){
             while(c.moveToNext()){
-                DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:aa");
+                DateFormat format = new SimpleDateFormat("MM-dd-yyyy hh:mm:aa");
                 try {
                     exer = new Exercise(Integer.valueOf(c.getString(0)),c.getString(1),format.parse(c.getString(2)),Integer.valueOf(c.getString(3)),Integer.valueOf(c.getString(4)));
                     exercises.add(exer);
@@ -741,7 +549,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Create a BGL Entry
     public void CreateBGL(Date date,int value){
         ContentValues values = new ContentValues();
-        String dateString = new SimpleDateFormat("yyyy-MM-dd hh:mm:aa").format(date);
+        String dateString = new SimpleDateFormat("MM-dd-yyyy hh:mm:aa").format(date);
         values.put(BGL_DateTime, dateString);
         values.put(BGL_Value, value);
         SQLiteDatabase db = getWritableDatabase();
@@ -755,7 +563,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor c = db.rawQuery("SELECT * FROM " + TABLE_BGL + " WHERE " + BGL_ID + " = " + id, null);
         if(c!=null){
             c.moveToFirst();
-            DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:aa");
+            DateFormat format = new SimpleDateFormat("MM-dd-yyyy hh:mm:aa");
             try {
                 BGL bgl = new BGL(Integer.valueOf(c.getString(0)),format.parse(c.getString(1)),Integer.valueOf(c.getString(2)));
                 db.close();
@@ -788,15 +596,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DELETE FROM " + TABLE_BGL + " WHERE " + BGL_ID + " = " + id + " ;");
         db.close();
     }
-    public List<BGL> GetAllBGL(){
+    private List<BGL> GetAllBGL(){
         List<BGL> bgls = new ArrayList<BGL>();
         SQLiteDatabase db = getWritableDatabase();
-        String query = "SELECT * FROM " + TABLE_BGL + " WHERE 1;";
+        String query = "SELECT * FROM " + TABLE_BGL + " WHERE 1";
         Cursor c = db.rawQuery(query,null);
         BGL bgl;
         if(c.getCount() > 0){
             while(c.moveToNext()){
-                DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:aa");
+                DateFormat format = new SimpleDateFormat("MM-dd-yyyy hh:mm:aa");
                 try {
                     bgl = new BGL(Integer.valueOf(c.getString(0)), format.parse(c.getString(1)),Integer.valueOf(c.getString(2)));
                     bgls.add(bgl);
@@ -834,7 +642,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // region Category
     // Create a Category
-    public void CreateCategory(String categoryName, SQLiteDatabase db){
+    private void CreateCategory(String categoryName, SQLiteDatabase db){
         ContentValues values = new ContentValues();
         values.put(CATEGORY_NAME, categoryName);
         db.insert(TABLE_CATEGORIES,null,values);

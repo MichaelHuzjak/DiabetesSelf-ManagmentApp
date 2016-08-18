@@ -9,23 +9,18 @@ import android.widget.EditText;
 
 import java.util.List;
 
-import team5.diabetesself_managmentapp.BGL;
-import team5.diabetesself_managmentapp.BGLQueryActivity;
-import team5.diabetesself_managmentapp.Diet;
-import team5.diabetesself_managmentapp.DietQueryActivity;
-import team5.diabetesself_managmentapp.Exercise;
 import team5.diabetesself_managmentapp.ExerciseQueryActivity;
-import team5.diabetesself_managmentapp.Medication;
-import team5.diabetesself_managmentapp.MedicationQueryActivity;
 import team5.diabetesself_managmentapp.R;
+import team5.diabetesself_managmentapp.model.LogEventModel;
 
 /**
  * Created by Michael on 8/7/2016.
  */
 public class ExerStatFragment extends Fragment {
-    EditText etMean;
-    EditText etVariance;
-    View view;
+    private EditText etMean;
+    private EditText etVariance;
+    private View view;
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -47,17 +42,17 @@ public class ExerStatFragment extends Fragment {
 
         etVariance = (EditText)getActivity().findViewById(R.id.editTextExerVariance);
         etMean = (EditText)getActivity().findViewById(R.id.editTextExerMean);
-        List<Exercise> list = ((ExerciseQueryActivity)getActivity()).GetList();
+        List<LogEventModel> list = ((ExerciseQueryActivity)getActivity()).GetList();
         float mean = 0;
-        for(Exercise exer: list){
-            mean += exer.get_duration();
+        for(LogEventModel exer: list){
+            mean += (float)exer.getValue();
         }
         mean = mean / list.size();
 
         float variance = 0;
-        for(Exercise exer: list){
+        for(LogEventModel exer: list){
             System.out.println(""+variance);
-            float value = exer.get_duration() - mean;
+            float value = (float)exer.getValue() - mean;
             variance += Math.pow(value,2);
 
         }

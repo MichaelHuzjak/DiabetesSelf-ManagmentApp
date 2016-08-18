@@ -3,19 +3,12 @@ package team5.diabetesself_managmentapp.fragments;
 import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -25,59 +18,124 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.listener.ChartTouchListener;
-import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.Viewport;
-import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.LineGraphSeries;
-import com.jjoe64.graphview.series.PointsGraphSeries;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import team5.diabetesself_managmentapp.Exercise;
 import team5.diabetesself_managmentapp.ExerciseQueryActivity;
 import team5.diabetesself_managmentapp.R;
+import team5.diabetesself_managmentapp.model.LogEventModel;
 
 /**
  * Created by Michael on 8/7/2016.
  */
 public class ExerGraphFragment extends Fragment implements OnChartValueSelectedListener{
-    LineChart chart;
-    LineData lineData;
-    List<Entry> data;
-    View view;
-    LineDataSet dataSet;
-    List<ILineDataSet> dataSets;
-    LinearLayout ButtonAndEditTextLayout;
+    private LineChart chart;
+    private LineData lineData;
+    private static List<Entry> data;
+    private View view;
+    private LineDataSet dataSet;
+    private List<ILineDataSet> dataSets;
+    private LinearLayout ButtonAndEditTextLayout;
+
+    private ArrayList<LogEventModel> list;
+    private ArrayList<String> exerciseID;
+
+    private int counter;
+
+    private DatabaseReference mFirebaseDatabaseReference;
+    private static final String EXERCISE_CHILD = "exercise";
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        // Initialize Firebase Auth
+        FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        String mUsername = mFirebaseUser != null ? mFirebaseUser.getDisplayName() : null;
+
+        //mDatabase = FirebaseDatabase.getInstance();
+        mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference("/users/" + mFirebaseUser.getUid());
+
+        System.out.println("BGLGraphFragment USER ID: " + mFirebaseUser.getUid());
+        System.out.println("BGLGraphFragment USER STRING: " + mUsername);
+
+        counter = 0;
+
+        list = new ArrayList<>();
+        exerciseID = new ArrayList<>();
+        data = new ArrayList<>();
+
+        readExerciseData();
+
         ((ExerciseQueryActivity)getActivity()).SetGraphFragment(this);
     }
+
+    private void readExerciseData()
+    {
+        System.out.println("BGLGraphFragment: readBglData()");
+
+        DatabaseReference ref = mFirebaseDatabaseReference.child(EXERCISE_CHILD);
+
+        // Add all polls in ref as rows
+        ref.addListenerForSingleValueEvent(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(DataSnapshot snapshot)
+            {
+                for(DataSnapshot child : snapshot.getChildren())
+                {
+                    LogEventModel logEventModel = child.getValue(LogEventModel.class);
+                    System.out.println("BGLGraphFragment: Key: " + child.getKey() + " BGL: " + logEventModel.getValue() + " Date: " + logEventModel.getDate() + " Time: " +  logEventModel.getTime());
+                    list.add(logEventModel);
+                    exerciseID.add(child.getKey());
+
+                    Entry bgl_entry = new Entry(counter++, logEventModel.getValue());
+
+                    // There is a data "Object" inside every Entry that is null by default.
+                    // I utilize it by setting it to be a BGL object, then I retrieve the BGL object
+                    // when the set button inside the graph is clicked to update the SQL!
+                    bgl_entry.setData(logEventModel);
+
+                    data.add(bgl_entry);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        System.out.println("BGLGraphFragment: readBglData() returned.");
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.exergraph_fragment, container, false);
         return view;
     }
+
     @Override
     public void onSaveInstanceState(Bundle outState){
         super.onSaveInstanceState(outState);
     }
-    public void Chart(){
-        data = new ArrayList<>();
 
-        int counter = 0;
-        for(Exercise exer: ((ExerciseQueryActivity)getActivity()).GetList()){
-            Entry exer_entry = new Entry(counter++,exer.get_duration());
-            exer_entry.setData(exer);
-            data.add(exer_entry);
-        }
+    public void Chart()
+    {
+        System.out.println("ExerGraphFragment:Chart()");
 
         chart = (LineChart)((ExerciseQueryActivity)getActivity()).findViewById(R.id.graphExer);
 
@@ -89,7 +147,7 @@ public class ExerGraphFragment extends Fragment implements OnChartValueSelectedL
         chart.setOnChartValueSelectedListener(this);
 
         dataSet = new LineDataSet(data,"Values");
-        dataSets = new ArrayList<ILineDataSet>();
+        dataSets = new ArrayList<>();
 
         dataSet.setDrawValues(true);
         dataSet.setCircleRadius(15);
@@ -107,10 +165,8 @@ public class ExerGraphFragment extends Fragment implements OnChartValueSelectedL
         yaxis.setDrawGridLines(true);
 
         lineData = new LineData(dataSets);
-        chart.setData(lineData);
 
-        ///chart.invalidate();
-        // chart.setData(lineData);
+        chart.setData(lineData);
     }
 
 
@@ -140,29 +196,37 @@ public class ExerGraphFragment extends Fragment implements OnChartValueSelectedL
     }
 
     //Sets the functionality of the check button.
-    private void setEditLayoutFunction(final Entry e){
+    private void setEditLayoutFunction(final Entry e, final int index)
+    {
         final Button btn = (Button)getActivity().findViewById(R.id.ButtonSetGraphExerAmount);
         final EditText GraphEditText = (EditText)getActivity().findViewById(R.id.editTextNewExerValue);
 
-        btn.setOnClickListener(new View.OnClickListener() {
+        btn.setOnClickListener(new View.OnClickListener()
+        {
             float new_value = 0;
+
             @Override
             public void onClick(View view) {
 
                 try {
 
                     new_value = Float.parseFloat(GraphEditText.getText().toString());
+
                     e.setY(new_value);
-                    Exercise exer= (Exercise)e.getData();
-                    exer.set_duration((int)new_value);
-                    ((ExerciseQueryActivity) getActivity()).UpdateExercise(((exer)));
 
-                } catch (Exception e) {}
+                    LogEventModel exer = (LogEventModel)e.getData();
 
+                    exer.setValue((int)(new_value));
 
+                    final String exceriseId = exerciseID.get(index);
+
+                    updateExercise(exer, exceriseId);
+
+                } catch (Exception e) {
+                    return;
+                }
 
                 // Update the sql table with the new value.
-
 
                 ButtonAndEditTextLayout.setVisibility(View.INVISIBLE);
                 GraphEditText.setText("");
@@ -177,8 +241,14 @@ public class ExerGraphFragment extends Fragment implements OnChartValueSelectedL
 
     @Override
     public void onValueSelected(Entry e, Highlight h) {
+
+        // get the position of this Entry object.
+        int index = (int)e.getX();
+
         BgingEditLayout(e,h);
-        setEditLayoutFunction(e);
+
+        setEditLayoutFunction(e, index);
+
         chart.setAlpha(0.3f); //Changes the opacity of the graph
     }
 
@@ -189,5 +259,20 @@ public class ExerGraphFragment extends Fragment implements OnChartValueSelectedL
         if(chart!=null) chart.setAlpha(1f);
         if(ButtonAndEditTextLayout!=null) ButtonAndEditTextLayout.setVisibility(View.INVISIBLE);
 
+    }
+
+    private void updateExercise(LogEventModel excerise, String exerciselID)
+    {
+        Map<String, Object> updatedValues = excerise.toMap();
+        Map<String, Object> childUpdates = new HashMap<>();
+
+        childUpdates.put("/" + EXERCISE_CHILD + "/" + exerciselID, updatedValues);
+
+        mFirebaseDatabaseReference.updateChildren(childUpdates);
+    }
+
+    public static void setData(List<Entry> setTo)
+    {
+        data = setTo;
     }
 }

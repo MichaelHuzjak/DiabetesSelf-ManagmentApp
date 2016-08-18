@@ -78,28 +78,28 @@ public class Medication {
         _amount = amount;
         _datetime =date;
     }
-    public Medication(int id,String desc,String date, int amount,int pres){
+    private Medication(int id, String desc, String date, int amount, int pres){
         _id = id;
         _prescriptionId = pres;
         _description = desc;
         _amount = amount;
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:aa");
+        DateFormat format = new SimpleDateFormat("MM-dd-yyyy hh:mm:aa");
         try {
             _datetime = format.parse(date);
         }catch(ParseException e){
             e.printStackTrace();
         }
     }
-    public String GetDateToString(){
-        return new SimpleDateFormat("yyyy-MM-dd").format(_datetime);
+    private String GetDateToString(){
+        return new SimpleDateFormat("MM-dd-yyyy").format(_datetime);
     }
-    public String GetTimeToString(){
+    private String GetTimeToString(){
         return new SimpleDateFormat("hh:mm:aa").format(_datetime);
     }
     public void ChangeDate(String date){
         String time = GetTimeToString();
         String dateTime = date + " " + time;
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:aa");
+        DateFormat format = new SimpleDateFormat("MM-dd-yyyy hh:mm:aa");
         try {
             _datetime = format.parse(dateTime);
         }catch(ParseException e){
@@ -109,7 +109,7 @@ public class Medication {
     }
     public void ChangeTime(String time){
         String dateTime = GetDateToString() + " " + time;
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:aa");
+        DateFormat format = new SimpleDateFormat("MM-dd-yyyy hh:mm:aa");
         try {
             _datetime = format.parse(dateTime);
         }catch(ParseException e){
@@ -118,7 +118,7 @@ public class Medication {
     }
 
     public String GetFormatedDate(){
-        return new SimpleDateFormat("yyyy-MM-dd hh:mm:aa").format(_datetime);
+        return new SimpleDateFormat("MM-dd-yyyy hh:mm:aa").format(_datetime);
     }
 
 

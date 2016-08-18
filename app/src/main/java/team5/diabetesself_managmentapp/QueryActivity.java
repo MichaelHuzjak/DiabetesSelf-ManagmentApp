@@ -14,18 +14,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
-import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.series.BarGraphSeries;
-import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.LineGraphSeries;
-import com.jjoe64.graphview.series.PointsGraphSeries;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.ConnectionResult;
@@ -38,28 +30,22 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
 
 import team5.diabetesself_managmentapp.firebase.SignInActivity;
-import team5.diabetesself_managmentapp.fragments.BGLGraphFragment;
 import team5.diabetesself_managmentapp.fragments.BGLListFragment;
 import team5.diabetesself_managmentapp.fragments.DatePickerFragment;
 import team5.diabetesself_managmentapp.fragments.MainQueryFragment;
 import team5.diabetesself_managmentapp.fragments.TimePickerFragment;
-import team5.diabetesself_managmentapp.model.BGLEntryModel;
 
 
-public class QueryActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener{
+public class QueryActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener, GoogleApiClient.OnConnectionFailedListener {
 
     static final int DIALOG_ID = 0;
     boolean isStart;
     //private DatabaseHelper db;
     private BGLListFragment ListFragment;
     private MainQueryFragment MainFragment;
-    private BGLGraphFragment GraphFragment;
-    public android.app.Fragment CurrentFragment;
+    private android.app.Fragment CurrentFragment;
     private EditText etDate;
     private EditText etTime;
 
@@ -71,11 +57,9 @@ public class QueryActivity extends AppCompatActivity implements TimePickerDialog
     private DatabaseReference mFirebaseDatabaseReference;
     private static final String BGL_CHILD = "bgl";
 
-    EditText etDate;
-    EditText etTime;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        System.out.println("QueryActivity: onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_query);
 
@@ -91,18 +75,17 @@ public class QueryActivity extends AppCompatActivity implements TimePickerDialog
 
         mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference("/users/" + mFirebaseUser.getUid());
 
-        System.out.println("USER ID: " + mFirebaseUser.getUid());
-        System.out.println("USER STRING: " + mUsername);
+        //System.out.println("USER ID: " + mFirebaseUser.getUid());
+        //System.out.println("USER STRING: " + mUsername);
 
         //db = new DatabaseHelper(this,null,null,1);
         //DisplayBGL();
 
 
+        System.out.println("QueryActivity: starting ShowFragment for MainQueryFragment");
         MainFragment = (MainQueryFragment) getFragmentManager().findFragmentById(R.id.MainQueryFragment);
         CurrentFragment = MainFragment;
         ShowFragment(getFragmentManager(), MainFragment,true);
-
-
 
     }
 
@@ -143,9 +126,9 @@ public class QueryActivity extends AppCompatActivity implements TimePickerDialog
         ShowFragment(getFragmentManager(),MainFragment,false);
     }
 
-    public List<BGL> GetCompleteBGL(){
-        return db.GetAllBGL();
-    }
+//    public List<BGL> GetCompleteBGL(){
+//        //return db.GetAllBGL();
+//    }
 
     public void ClearDatabase(){
         //db.ClearDatabase();
@@ -183,24 +166,9 @@ public class QueryActivity extends AppCompatActivity implements TimePickerDialog
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth)
     {
         Calendar cal = new GregorianCalendar(year, month, dayOfMonth);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
         etDate.setText(sdf.format(cal.getTime()));
     }
-
-    public void UpdateBGL(BGLEntryModel bgl, String bglID)
-    {
-        System.out.println("UpdateBGL()");
-        //db.UpdateBGL(bgl);
-        updateBgl(bgl, bglID);
-    }
-
-
-    public void ShowMain(){
-        ShowFragment(getFragmentManager(),MainFragment,true);
-        ShowFragment(getFragmentManager(),CurrentFragment,false);
-    }
-
-
 
     @Override
     public void onBackPressed() {
@@ -208,8 +176,8 @@ public class QueryActivity extends AppCompatActivity implements TimePickerDialog
         System.out.println("Here");
     }
 
-    public void ShowFragment(FragmentManager fm, android.app.Fragment fr, boolean show){
-
+    private void ShowFragment(FragmentManager fm, android.app.Fragment fr, boolean show){
+        System.out.println("QueryActivity: ShowFragment()");
         FragmentTransaction ft = fm.beginTransaction();
         //ft.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
 
@@ -217,22 +185,10 @@ public class QueryActivity extends AppCompatActivity implements TimePickerDialog
             ft.hide(fr);
         else
             ft.show(fr);
-        if(show)        CurrentFragment = fr;
+        if(show)
+            CurrentFragment = fr;
 
         ft.commit();
-    }
-
-    /* Update the BGL values on the UI resulting in a update
-     * of the entry in the firebase database
-     */
-    private void updateBgl(BGLEntryModel bglModel, String bglID)
-    {
-        Map<String, Object> updatedValues = bglModel.toMap();
-        Map<String, Object> childUpdates = new HashMap<>();
-
-        childUpdates.put("/" + BGL_CHILD + "/" + bglID, updatedValues);
-
-        mFirebaseDatabaseReference.updateChildren(childUpdates);
     }
 
     @Override
