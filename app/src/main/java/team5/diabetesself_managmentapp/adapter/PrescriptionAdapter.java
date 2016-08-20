@@ -227,7 +227,7 @@ public class PrescriptionAdapter extends RecyclerView.Adapter<PrescriptionAdapte
     }
 
     public void removeAt(int position) {
-        if(position <= 0 || position >= list.size())
+        if(position < 0 || position >= list.size())
             return;
         list.remove(position);
         notifyItemRemoved(position);
