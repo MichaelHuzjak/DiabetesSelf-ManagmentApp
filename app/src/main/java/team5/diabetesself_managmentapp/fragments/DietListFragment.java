@@ -34,12 +34,12 @@ public class DietListFragment extends Fragment {
         ((DietQueryActivity)getActivity()).SetListFragment(this);
 
         holderView = (RecyclerView)view.findViewById(R.id.RecyclerViewDietListHolder);
-        list = new ArrayList<Diet>();
+
 
     }
     public void BuildList(){
         System.out.println("Diet Count: " + ((DietQueryActivity)getActivity()).GetList().size());
-
+        list = new ArrayList<Diet>();
         for(Diet diet: ((DietQueryActivity)getActivity()).GetList()){
             System.out.println("Listing Diet: " + diet.get_id());
             list.add(diet);

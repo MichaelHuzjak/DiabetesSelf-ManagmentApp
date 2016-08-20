@@ -31,10 +31,11 @@ public class BGLListFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         ((BGLQueryActivity)getActivity()).SetListFragment(this);
         holderView = (RecyclerView)view.findViewById(R.id.RecyclerViewBGLListHolder);
-        list = new ArrayList<BGL>();
 
     }
     public void BuildList(){
+        list = new ArrayList<BGL>();
+
         for(BGL bgl: ((BGLQueryActivity)getActivity()).GetList()){
             System.out.println("ID: " + bgl.get_id());
             list.add(bgl);

@@ -35,7 +35,7 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Vi
 
         public ViewHolder(View itemView){
             super(itemView);
-            etDesc = (EditText)itemView.findViewById(R.id.EditTextMedListDate);
+            etDesc = (EditText)itemView.findViewById(R.id.EditTextMedDescription);
             etDate = (EditText)itemView.findViewById(R.id.EditTextMedListDate);
             etTime = (EditText)itemView.findViewById(R.id.EditTextMedListTime);
             etValue = (EditText)itemView.findViewById(R.id.textMedtListValue);
@@ -49,7 +49,21 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Vi
             etTime.setText(time);
         }
         private void setListeners(final int position){
+            etDesc.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    list.get(position).set_description(charSequence.toString());
 
+                }
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    list.get(position).set_description(charSequence.toString());
+                }
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    list.get(position).set_description(editable.toString());
+                }
+            });
             etValue.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -159,7 +173,7 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Vi
 
     public void UpdateMedication(int position){
         final Medication med = list.get(position);
-        if(Context instanceof QueryActivity) {
+        if(Context instanceof MedicationQueryActivity) {
             ((MedicationQueryActivity) Context).UpdateMedication(med);
         }
     }

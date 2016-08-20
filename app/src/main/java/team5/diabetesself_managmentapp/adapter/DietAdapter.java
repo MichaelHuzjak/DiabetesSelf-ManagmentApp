@@ -175,7 +175,7 @@ public class DietAdapter extends RecyclerView.Adapter<DietAdapter.ViewHolder>{
 
     public void UpdateDiet(int position){
         final Diet diet = list.get(position);
-        if(Context instanceof QueryActivity) {
+        if(Context instanceof DietQueryActivity) {
             ((DietQueryActivity) Context).UpdateDiet(diet);
         }
     }

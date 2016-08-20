@@ -52,8 +52,8 @@ public class BGLAdapter extends RecyclerView.Adapter<BGLAdapter.ViewHolder>{
         }
         private void setListeners(final int position){
 
-            list.get(position).setTime(etTime.getText().toString());
-            list.get(position).setDate(etDate.getText().toString());
+            list.get(getAdapterPosition()).setTime(etTime.getText().toString());
+            list.get(getAdapterPosition()).setDate(etDate.getText().toString());
 
             seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
@@ -62,12 +62,12 @@ public class BGLAdapter extends RecyclerView.Adapter<BGLAdapter.ViewHolder>{
                 }
                 @Override
                 public void onStartTrackingTouch(SeekBar seekBar) {
-                    list.get(position).setProgress(seekBar.getProgress());
+                    list.get(getAdapterPosition()).setProgress(seekBar.getProgress());
                     AddBGLHelper.AddNewBGL(seekBar.getProgress());
                 }
                 @Override
                 public void onStopTrackingTouch(SeekBar seekBar) {
-                    list.get(position).setProgress(seekBar.getProgress());
+                    list.get(getAdapterPosition()).setProgress(seekBar.getProgress());
                     AddBGLHelper.AddNewBGL(seekBar.getProgress());
                 }
             });
@@ -75,16 +75,16 @@ public class BGLAdapter extends RecyclerView.Adapter<BGLAdapter.ViewHolder>{
             etDate.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    list.get(position).setDate(charSequence.toString());
+                    list.get(getAdapterPosition()).setDate(charSequence.toString());
 
                 }
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    list.get(position).setDate(charSequence.toString());
+                    list.get(getAdapterPosition()).setDate(charSequence.toString());
                 }
                 @Override
                 public void afterTextChanged(Editable editable) {
-                    list.get(position).setDate(editable.toString());
+                    list.get(getAdapterPosition()).setDate(editable.toString());
                 }
             });
 
@@ -116,8 +116,9 @@ public class BGLAdapter extends RecyclerView.Adapter<BGLAdapter.ViewHolder>{
     }
 
     public void removeAt(int position) {
-        if(position < 0)
+        if(position < 0) {
             return;
+        }
         list.remove(position);
         notifyItemRemoved(position);
     }

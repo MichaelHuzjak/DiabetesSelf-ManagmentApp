@@ -37,11 +37,11 @@ public class MedicationListFragment extends Fragment {
         ((MedicationQueryActivity)getActivity()).SetListFragment(this);
 
         holderView = (RecyclerView)view.findViewById(R.id.RecyclerViewMedListHolder);
-        list = new ArrayList<Medication>();
+
 
     }
     public void BuildList(){
-
+        list = new ArrayList<Medication>();
         for(Medication med: ((MedicationQueryActivity)getActivity()).GetList()){
             list.add(med);
         }

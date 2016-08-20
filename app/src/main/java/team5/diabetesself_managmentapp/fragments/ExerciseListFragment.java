@@ -37,11 +37,11 @@ public class ExerciseListFragment extends Fragment {
         ((ExerciseQueryActivity)getActivity()).SetListFragment(this);
 
         holderView = (RecyclerView)view.findViewById(R.id.RecyclerViewExerListHolder);
-        list = new ArrayList<Exercise>();
+
 
     }
     public void BuildList(){
-
+        list = new ArrayList<Exercise>();
         for(Exercise exer: ((ExerciseQueryActivity)getActivity()).GetList()){
             System.out.println("Listing Diet: " + exer.get_id());
             list.add(exer);

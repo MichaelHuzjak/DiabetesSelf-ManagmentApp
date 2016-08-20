@@ -68,21 +68,6 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
                         list.get(position).set_duration(Integer.parseInt(editable.toString()));
                 }
             });
-            etDesc.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    list.get(position).set_description(charSequence.toString());
-
-                }
-                @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    list.get(position).set_description(charSequence.toString());
-                }
-                @Override
-                public void afterTextChanged(Editable editable) {
-                    list.get(position).set_description(editable.toString());
-                }
-            });
 
             etDate.addTextChangedListener(new TextWatcher() {
                 @Override
@@ -190,7 +175,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
 
     public void UpdateMedication(int position){
         final Exercise exer = list.get(position);
-        if(Context instanceof QueryActivity) {
+        if(Context instanceof ExerciseQueryActivity) {
             ((ExerciseQueryActivity) Context).UpdateExercise(exer);
         }
     }

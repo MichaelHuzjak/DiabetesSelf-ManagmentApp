@@ -149,6 +149,8 @@ public class Prescription {
     }
     public String GetTime(){
         String[] parts = _repeat.split(",",2);
+        if(parts.length <= 1)
+            return _time;
         return parts[1];
     }
     public Date GetCombinedCurrentDateandRepeatTime(){

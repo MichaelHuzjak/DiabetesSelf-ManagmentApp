@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.ListFragment;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -169,16 +170,19 @@ public class DietQueryActivity extends AppCompatActivity implements TimePickerDi
     }
 
     public void ShowGraph(){
+        GraphFragment.Chart();
         ShowFragment(getFragmentManager(),GraphFragment,true);
         ShowFragment(getFragmentManager(),CurrentFragment,false);
         CurrentFragment=GraphFragment;
     }
     public void ShowList(){
+        ListFragment.BuildList();
         ShowFragment(getFragmentManager(),ListFragment,true);
         ShowFragment(getFragmentManager(),CurrentFragment,false);
         CurrentFragment=ListFragment;
     }
     public void ShowStats(){
+        StatsFragment.Calculate();
         ShowFragment(getFragmentManager(),StatsFragment,true);
         ShowFragment(getFragmentManager(),CurrentFragment,false);
         CurrentFragment=StatsFragment;
