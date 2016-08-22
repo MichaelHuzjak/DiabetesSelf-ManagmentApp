@@ -17,9 +17,18 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import team5.diabetesself_managmentapp.BGL;
+import team5.diabetesself_managmentapp.BGLQueryActivity;
+import team5.diabetesself_managmentapp.Diet;
+import team5.diabetesself_managmentapp.DietQueryActivity;
+import team5.diabetesself_managmentapp.Exercise;
 import team5.diabetesself_managmentapp.ExerciseQueryActivity;
+import team5.diabetesself_managmentapp.QueryActivity;
 import team5.diabetesself_managmentapp.R;
+import team5.diabetesself_managmentapp.adapter.BGLListAdapter;
+import team5.diabetesself_managmentapp.adapter.DietAdapter;
 import team5.diabetesself_managmentapp.adapter.ExerciseAdapter;
 import team5.diabetesself_managmentapp.model.LogEventModel;
 
@@ -74,6 +83,7 @@ public class ExerciseListFragment extends Fragment {
         holderView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
+
 
     public void BuildList(ArrayList<LogEventModel> list, ArrayList<String> exerciseID)
     {

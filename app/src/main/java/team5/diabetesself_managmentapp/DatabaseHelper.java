@@ -143,12 +143,9 @@ class DatabaseHelper extends SQLiteOpenHelper {
             CreateCategory("Diet", db);
             CreateCategory("Exercise", db);
             CreateCategory("Medication", db);
+            CreateCategory("BGL", db);
         }
-//        // Test code, DELETE ME
-//        CreatePrescription(1,"D","Repeat");
-//        CreatePrescription(2,"E","Repeat");
-//        CreatePrescription(3,"M","Repeat");
-//        CreatePrescription(1,"D 2","Repeat");
+
 
         System.out.println("DatabaseHelper onCreate() COMPLETE");
     }
@@ -396,6 +393,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
     // Create Prescription
     public void CreatePrescription(int catid,String desc,String repeat){
+        System.out.println("Creating a Prescription");
         ContentValues values = new ContentValues();
         values.put(PRE_CAT, catid);
         values.put(PRE_DESC, desc);
@@ -430,6 +428,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 ;
         Cursor c = db.rawQuery(query,null);
         Prescription prescription;
+        int i = 0;
         if(c.getCount() > 0){
             while(c.moveToNext()){
                 prescription = new Prescription(Integer.valueOf(c.getString(0)),Integer.valueOf(c.getString(3)),c.getString(4),c.getString(1),c.getString(2));

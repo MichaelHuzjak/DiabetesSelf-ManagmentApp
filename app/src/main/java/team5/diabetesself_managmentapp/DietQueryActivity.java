@@ -1,24 +1,34 @@
 package team5.diabetesself_managmentapp;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.NavUtils;
+import android.support.v4.media.MediaBrowserServiceCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.series.BarGraphSeries;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
+import com.jjoe64.graphview.series.PointsGraphSeries;
 
 import com.github.mikephil.charting.data.Entry;
 import com.google.android.gms.auth.api.Auth;
@@ -42,12 +52,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import team5.diabetesself_managmentapp.fragments.BGLGraphFragment;
+import team5.diabetesself_managmentapp.fragments.BGLListFragment;
+import team5.diabetesself_managmentapp.fragments.BGLResultFragment;
+import team5.diabetesself_managmentapp.fragments.BGLStatsFragment;
 import team5.diabetesself_managmentapp.fragments.DatePickerFragment;
 import team5.diabetesself_managmentapp.fragments.DietGraphFragment;
 import team5.diabetesself_managmentapp.fragments.DietListFragment;
 import team5.diabetesself_managmentapp.fragments.DietResultFragment;
+import team5.diabetesself_managmentapp.fragments.DietResultMenuFragment;
 import team5.diabetesself_managmentapp.fragments.DietStatFragment;
+import team5.diabetesself_managmentapp.fragments.MainBGLFragment;
 import team5.diabetesself_managmentapp.fragments.MainDietFragment;
+import team5.diabetesself_managmentapp.fragments.MainQueryFragment;
 import team5.diabetesself_managmentapp.fragments.TimePickerFragment;
 import team5.diabetesself_managmentapp.model.LogEventModel;
 
@@ -376,9 +393,11 @@ public class DietQueryActivity extends AppCompatActivity implements TimePickerDi
     public void DialogHelper(DialogFragment frag, String name){
         frag.show(getSupportFragmentManager(), name);
     }
+
     public void SetDateEdit(EditText et){
         etDate = et;
     }
+
     public void SetTimeEdit(EditText et){
         etTime = et;
     }
@@ -391,6 +410,7 @@ public class DietQueryActivity extends AppCompatActivity implements TimePickerDi
         StatsFragment.Calculate();
         ShowResult();
     }
+
     public void ShowBefore(Date date){
         System.out.println("DietQueryActivity: ShowBefore() date:" + date);
         GetBefore(date);
@@ -399,6 +419,7 @@ public class DietQueryActivity extends AppCompatActivity implements TimePickerDi
         StatsFragment.Calculate();
         ShowResult();
     }
+
     public void ShowAfter(Date date){
         System.out.println("DietQueryActivity: ShowAfter() date:" + date);
         GetAfter(date);
@@ -407,6 +428,7 @@ public class DietQueryActivity extends AppCompatActivity implements TimePickerDi
         StatsFragment.Calculate();
         ShowResult();
     }
+
     public void ShowKeyword(String keyword){
         System.out.println("DietQueryActivity: ShowKeyword(): keyword: " + keyword);
         GetKeyword(keyword);

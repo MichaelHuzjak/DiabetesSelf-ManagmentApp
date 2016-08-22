@@ -3,8 +3,10 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="#17b5fe"
         android:text="Find All Exercise Entries"
         android:id="@+id/buttonExerAll"
         android:layout_gravity="center_horizontal" />
@@ -39,25 +41,25 @@
             android:focusable="false"/>
 
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="2">
+
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="#17b5fe"
             android:text="Find Exercise Before Date"
             android:id="@+id/buttonExerBefore"
             android:layout_gravity="center_horizontal" />
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="#17b5fe"
             android:text="Find Exercise After Date"
             android:id="@+id/buttonExerAfter"
             android:layout_gravity="center_horizontal" />
-    </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -72,8 +74,10 @@
             />
     </LinearLayout>
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="#17b5fe"
         android:text="Find Exercise by Keyword"
         android:id="@+id/buttonExerciseKeyword"
         android:layout_gravity="center_horizontal" />

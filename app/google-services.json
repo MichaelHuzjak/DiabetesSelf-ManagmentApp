@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "752661749476",
+    "firebase_url": "https://diabetesself-managment.firebaseio.com",
+    "project_id": "diabetesself-managment",
+    "storage_bucket": "diabetesself-managment.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:752661749476:android:2ac476f794681b08",
+        "android_client_info": {
+          "package_name": "team5.diabetesself_managmentapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "752661749476-13i3b4onikci8k03nk8dnhnpjndn6uln.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "team5.diabetesself_managmentapp",
+            "certificate_hash": "02877447F5843C507D98F0E81951AA3E7B2D5B50"
+          }
+        },
+        {
+          "client_id": "752661749476-e9qfk3nes1jd9btq9dq99dpgj4jac5dm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFhar0V0FbwWVvneoL4swpIqQTscNUfhI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "752661749476-e9qfk3nes1jd9btq9dq99dpgj4jac5dm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

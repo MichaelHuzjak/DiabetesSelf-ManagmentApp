@@ -12,9 +12,13 @@ import android.widget.ImageButton;
 import java.util.ArrayList;
 
 
+import team5.diabetesself_managmentapp.Exercise;
 import team5.diabetesself_managmentapp.ExerciseQueryActivity;
-import team5.diabetesself_managmentapp.R;
+import team5.diabetesself_managmentapp.Medication;
+import team5.diabetesself_managmentapp.MedicationQueryActivity;
+import team5.diabetesself_managmentapp.QueryActivity;
 import team5.diabetesself_managmentapp.model.LogEventModel;
+import team5.diabetesself_managmentapp.R;
 
 public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHolder>{
     private final ArrayList<LogEventModel> list;
@@ -23,8 +27,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
     private final Context Context;
     private final ArrayList<String> exerciseID;
 
-    public ExerciseAdapter(ArrayList<LogEventModel> list, ArrayList<String> exerciseID, Context context)
-    {
+    public ExerciseAdapter(ArrayList<Exercise> list,Context context){
         this.list = list;
         this.exerciseID = exerciseID;
         vh = new ArrayList<ViewHolder>();
@@ -90,22 +93,6 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
                 @Override
                 public void afterTextChanged(Editable editable) {
                     list.get(position).setDescription(editable.toString());
-                }
-            });
-
-            etDate.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    list.get(position).setDate(charSequence.toString());
-
-                }
-                @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    list.get(position).setDate(charSequence.toString());
-                }
-                @Override
-                public void afterTextChanged(Editable editable) {
-                    list.get(position).setDate(editable.toString());
                 }
             });
 

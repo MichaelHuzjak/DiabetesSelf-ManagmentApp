@@ -1,20 +1,29 @@
 package team5.diabetesself_managmentapp.adapter;
 
 import android.content.Context;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.SeekBar;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import team5.diabetesself_managmentapp.BGLQueryActivity;
+import team5.diabetesself_managmentapp.BGL;
+import team5.diabetesself_managmentapp.QueryActivity;
 import team5.diabetesself_managmentapp.R;
+import team5.diabetesself_managmentapp.fragments.BGLListFragment;
 import team5.diabetesself_managmentapp.model.BGLEntryModel;
 
 public class BGLListAdapter extends RecyclerView.Adapter<BGLListAdapter.ViewHolder>{
@@ -31,6 +40,7 @@ public class BGLListAdapter extends RecyclerView.Adapter<BGLListAdapter.ViewHold
         Context = context;
     }
 
+
     public class ViewHolder extends RecyclerView.ViewHolder{
         private final EditText etDate;
         private final EditText etTime;
@@ -44,11 +54,13 @@ public class BGLListAdapter extends RecyclerView.Adapter<BGLListAdapter.ViewHold
             setUpdateButton();
             //setRemoveFunction();
         }
+
         private void syncEntries(String date, String time, int value){
             etValue.setText(""+value);
             etDate.setText(date);
             etTime.setText(time);
         }
+
         private void setListeners(final int position){
 
             etValue.addTextChangedListener(new TextWatcher() {

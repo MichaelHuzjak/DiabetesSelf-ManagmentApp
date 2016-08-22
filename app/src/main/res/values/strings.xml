@@ -12,6 +12,7 @@
     <string name="normalRangeString">Normal.\nThis is an\nIdeal Range</string>
     <string name="possiblyLowString">Possibly low.\nGet sugar if\nyou feel weak.</string>
     <string name="tooLowString">Too low!\nGet sugar\nimmediately</string>
+    <string name="lastEnteredString">Last Entered BGL</string>
     <string name="tooHighString">Too high!\nwork on bringing\nit down.</string>
     <string name="veryHighString">Very high!\ndiabetes is\nout of control.</string>
     <string name="callDoctorString">Danger!\nCall your doctor\nimmediately.</string>
@@ -21,44 +22,89 @@
     <string name="varDefaultString">0</string>
     <string name="varianceString">Variance</string>
     <string name="action_save">Save</string>
+    <string name="graphsString">Graphs</string>
     <string name="queryString">Query</string>
     <string name="prescriptionString">Prescription</string>
     <string name="frequencyString">Frequency</string>
     <string name="zero">0</string>
+    <string name="setNewBglString">Set BGL</string>
 
+    <string name="pickDate">Date</string>
+    <string name="pickTime">Time</string>
     <string name="textViewQty">Quantity</string>
     <string name="textViewDuration">Duration</string>
     <string name="textViewTime">Date &amp; Time: </string>
 
     <string name="textViewDiet">Diet</string>
     <string name="textEditDiet">Diet</string>
+    <string name="editTextDietDescription">What did you eat?</string>
     <string name="enterDietDescription">Enter diet description.</string>
+    <string name="editTextDietQty">How much did you eat?</string>
     <string name="enterDietQty">Enter diet quantity.</string>
+    <string name="editTextDietTime">What time did you eat?</string>
+    <string name="enterDietTime">Enter the time of diet.</string>
 
     <string name="textViewExercise">Exercise</string>
     <string name="textEditExercise">Exercise</string>
+    <string name="editTextExerciseDescription">What kind of exercise?</string>
     <string name="enterExerciseDescription">Enter exercise description.</string>
+    <string name="editTextExerciseDuration">How long did you exercise?</string>
     <string name="enterExerciseDuration">Enter exercise duration.</string>
+    <string name="editTextExerciseTime">What time did you exercise?</string>
+    <string name="enterExerciseTime">Enter the time of exercise.</string>
 
     <string name="textViewMedication">Medication</string>
     <string name="textEditMedication">Medication</string>
+    <string name="editTextMedicationDescription">What did you eat?</string>
     <string name="enterMedicationDescription">Enter medication description.</string>
+    <string name="editTextMedicationQty">How much did you eat?</string>
     <string name="enterMedicationQty">Enter medication quantity.</string>
+    <string name="editTextMedicationTime">What time did you eat?</string>
+    <string name="enterMedicationTime">Enter the time of medication.</string>
 
     <!-- SHADE LIST COLOR -->
+    <string name="gold">GOLD</string>
+    <string name="blue">BLUE</string>
+    <string name="plum">PLUM</string>
 
     <!-- SHADE DETAIL INFORMATION -->
+    <string name="plum_is">Plum is a deep purple color. It is used in weddings. </string>
+    <string name="blue_is">Blue is the color of peace and trust.</string>
+    <string name="gold_is">Gold is associated with sunshine and knowledge.</string>
     <string name="enterDietString">Enter Diet</string>
     <string name="enterExerString">Enter Exercise</string>
     <string name="enterMedsString">Enter Medication</string>
+    <string name="textViewValueTitle">ValueTitle</string>
+    <string name="textEditLogEventTitle">LogEventTitle</string>
+    <string name="enterLogEventDescription">LogEventDescription</string>
+    <string name="textViewLogEventDescriptionTitle">LogEventDescriptionTitle</string>
+    <string name="enterLogEventValue">LogEventValue</string>
 
 
     <string name="setEntriesValue">Set Entries</string>
     <string name="addEntryValue">Add Entry</string>
     <string name="mainPageValue">Main Page</string>
-
+    <string name="start_date">Enter Start Date</string>
+    <string name="end_date">Enter End Date</string>
+    <string name="search">Search</string>
 
     <string name="sign_out">Sign Out</string>
     <string name="sign_in">Sign In</string>
 
+    <string name="addPrescEntry">Add New Entry</string>
+    <string name="setPresc">Set Prescription</string>
+    <string name="daily">Daily</string>
+    <string name="weekly">Weekly</string>
+
+    <string name="textEditBloodGL">BGL</string>
+
+    <string-array name="weak_days">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+    </string-array>
 </resources>

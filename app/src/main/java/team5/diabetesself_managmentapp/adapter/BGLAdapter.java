@@ -1,5 +1,7 @@
 package team5.diabetesself_managmentapp.adapter;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -114,7 +116,7 @@ public class BGLAdapter extends RecyclerView.Adapter<BGLAdapter.ViewHolder>{
 
     }
 
-    private void removeAt(int position) {
+    public void removeAt(int position) {
         if(position < 0)
             return;
         list.remove(position);

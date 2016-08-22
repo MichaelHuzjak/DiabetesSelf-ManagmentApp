@@ -35,9 +35,12 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 import team5.diabetesself_managmentapp.adapter.BGLAdapter;
@@ -59,22 +62,16 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
     private AddBGLFragment AddBGLFragment;
     private Fragment ButtonsFragment;
     static ArcProgress arc;
-    static TextView time;
-    static TextView low;
-    static TextView mid;
-    static TextView norm;
-    static TextView high;
-    static TextView extreme;
-    static TextView doc;
-
-    private EditText etDate;
-    private EditText etTime;
+    static EditText meanET, varianceET;
+    static TextView meanTextView, addBGLTextView,time, low, mid, norm, high, extreme, doc;
 
     private ArrayList<BGLEntryModel> bglEntryList;
     private RecyclerView BGLHolderView;
     private BGLAdapter bglAdapter;
 
     //private DatabaseHelper db;
+
+    private int average = 0;
 
     private final String BGL_FRAG_STATE = "BGL_STATE";
 
@@ -146,6 +143,9 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
 
         setSupportActionBar(toolbar);
 
+        //sets the arc latest bgl entry, mean and variance.
+        UpdateMainScreenValues();
+
         Button buttonAddBGLEvent = (Button)findViewById(R.id.ButtonShowBGLFragment);
         buttonAddBGLEvent.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -184,9 +184,59 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
+        for(Category cat:db.GetCategories()){
+            System.out.println("Cat:"+cat.getId());
+        }
     }
 
+    @Override
+    public void onBackPressed(){
+        if(AddBGLFragment.isVisible())
+            ShowHome();
+    }
+    public void UpdateMainScreenValues(){
+        BGL latestBGL = getLatestBGL();
+        int differenceSum = 0;
+        int variance = 0;
+        if(latestBGL!=null){
+            AddBGLHelper.AddNewBGL(latestBGL.get_value());
+            time.setText(latestBGL.GetFormatedDate());
+        }
+        String mean = ""+average+" mg/dL";
 
+        List<BGL> bglList = db.GetAllBGL();
+        int listSize = bglList.size();
+
+        meanET.setText(mean);
+        for(BGL bgl: db.GetAllBGL()){
+            differenceSum += Math.pow(bgl.get_value()-average, 2);
+        }
+        if(listSize-1 != 0)
+            variance = differenceSum/(listSize-1);
+
+        String var = ""+variance;
+        varianceET.setText(var);
+
+    }
+    private BGL getLatestBGL(){
+        int sum = 0;
+
+
+        BGL latestBGL = null;
+        List<BGL> bglList = db.GetAllBGL();
+        int listSize = bglList.size();
+
+        for(BGL bgl: bglList){
+            sum += bgl.get_value();
+            if(latestBGL==null || bgl.get_date().compareTo(latestBGL.get_date())>0) {
+                latestBGL = bgl;
+            }
+        }
+        if(listSize!=0)
+            average = sum/listSize;
+        return latestBGL;
+    }
 
 
     @Override
@@ -217,12 +267,13 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
 
     private void initObjects(){
         AddBGLFragment = (AddBGLFragment) getFragmentManager().findFragmentById(R.id.FragmentBGL);
-        ButtonsFragment = getFragmentManager().findFragmentById(R.id.FragmentButtons);
+        ButtonsFragment = (Fragment) getFragmentManager().findFragmentById(R.id.FragmentButtons);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         time = (TextView) findViewById(R.id.textViewLastEnteredTime);
-        TextView addBGLTextView = (TextView) findViewById(R.id.textViewAddBGL);
-        EditText meanEditText = (EditText) findViewById(R.id.editTextMean);
-        TextView meanTextView = (TextView) findViewById(R.id.textViewMean);
+        addBGLTextView = (TextView) findViewById(R.id.textViewAddBGL);
+        meanEditText = (EditText) findViewById(R.id.editTextMean);
+        varianceET = (EditText) findViewById(R.id.editTextVariant);
+        meanTextView = (TextView) findViewById(R.id.textViewMean);
         arc = (ArcProgress) findViewById(R.id.arc_progress);
         low =(TextView)findViewById(R.id.textViewLowNotice);
         mid = (TextView) findViewById(R.id.textViewMediumNotice);
@@ -327,7 +378,6 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth)
     {
-
         Calendar cal = new GregorianCalendar(year, month, dayOfMonth);
         SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
         etDate.setText(sdf.format(cal.getTime()));
@@ -343,16 +393,18 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         }
 
         AddBGLFragment.bglAdapter.clearList();
+
         ShowHome();
     }
 
     public void ShowHome(){
 
-        Fragment buttons = getFragmentManager().findFragmentById(R.id.FragmentButtons);
-        Fragment addBGL = getFragmentManager().findFragmentById(R.id.FragmentBGL);
-
-        AddBGLHelper.showFragment(getFragmentManager(),buttons);
+        Fragment buttons = (Fragment)getFragmentManager().findFragmentById(R.id.FragmentButtons);
+        Fragment addBGL = (Fragment)getFragmentManager().findFragmentById(R.id.FragmentBGL);
+        Fragment bgl_frag = (Fragment)getFragmentManager().findFragmentByTag("BGL_FRAGMENT");
+//                getFragmentManager().beginTransaction().remove(bgl_frag).commit();
         AddBGLHelper.hideFragment(getFragmentManager(),addBGL);
+        AddBGLHelper.showFragment(getFragmentManager(),buttons);
 
         AddBGLFragment.bglAdapter.clearList();
     }
