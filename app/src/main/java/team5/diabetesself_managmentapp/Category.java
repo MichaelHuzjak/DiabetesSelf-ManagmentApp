@@ -11,10 +11,14 @@ public class Category {
     public String getName(){return _name;}
     public void setName(String name){_name = name;}
 
-    public Category(){
-
+    public Category()
+    {
+        _id = 0;
+        _name = "";
     }
-    public Category(int id, String name){
+
+    public Category(int id, String name)
+    {
         _id = id;
         _name = name;
     }

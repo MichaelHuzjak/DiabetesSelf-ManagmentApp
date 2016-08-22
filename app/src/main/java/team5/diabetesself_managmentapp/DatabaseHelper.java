@@ -595,7 +595,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DELETE FROM " + TABLE_BGL + " WHERE " + BGL_ID + " = " + id + " ;");
         db.close();
     }
-    private List<BGL> GetAllBGL(){
+    public List<BGL> GetAllBGL(){
         List<BGL> bgls = new ArrayList<BGL>();
         SQLiteDatabase db = getWritableDatabase();
         String query = "SELECT * FROM " + TABLE_BGL + " WHERE 1";

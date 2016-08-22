@@ -32,15 +32,15 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 import team5.diabetesself_managmentapp.adapter.BGLAdapter;
@@ -65,11 +65,14 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
     static EditText meanET, varianceET;
     static TextView meanTextView, addBGLTextView,time, low, mid, norm, high, extreme, doc;
 
+    private EditText etDate;
+    private EditText etTime;
+
     private ArrayList<BGLEntryModel> bglEntryList;
     private RecyclerView BGLHolderView;
     private BGLAdapter bglAdapter;
 
-    //private DatabaseHelper db;
+    private DatabaseHelper db;
 
     private int average = 0;
 
@@ -84,6 +87,11 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
     private GoogleApiClient mGoogleApiClient;
     private DatabaseReference mFirebaseDatabaseReference;
     private static final String BGL_CHILD = "bgl";
+
+    private FirebaseDatabase aFirebaseDatabaseReference;
+    private static final String CATEGORY_CHILD = "category";
+    private ArrayList<BGLEntryModel> currentList;
+    private ArrayList<String> listID;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -124,6 +132,15 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
 
         mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference("users/" + mFirebaseUser.getUid());
 
+        aFirebaseDatabaseReference = FirebaseDatabase.getInstance();
+
+        currentList = new ArrayList<>();
+        listID = new ArrayList<>();
+
+        readCategoryData();
+
+        readBglData();
+
         System.out.println("USER ID: " + mFirebaseUser.getUid());
         System.out.println("USER STRING: " + mUsername);
 
@@ -144,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         setSupportActionBar(toolbar);
 
         //sets the arc latest bgl entry, mean and variance.
-        UpdateMainScreenValues();
+        //UpdateMainScreenValues();
 
         Button buttonAddBGLEvent = (Button)findViewById(R.id.ButtonShowBGLFragment);
         buttonAddBGLEvent.setOnClickListener(new View.OnClickListener() {
@@ -185,59 +202,155 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 
-        for(Category cat:db.GetCategories()){
-            System.out.println("Cat:"+cat.getId());
-        }
+//        for(Category cat:db.GetCategories()){
+//            System.out.println("Cat:"+cat.getId());
+//        }
+
+    }
+
+    private void readCategoryData()
+    {
+        System.out.println("MainActivity: readCategoryData()");
+
+        //DatabaseReference ref = aFirebaseDatabaseReference.child(CATEGORY_CHILD);
+        DatabaseReference ref = aFirebaseDatabaseReference.getReference().child(CATEGORY_CHILD);
+
+//        ref.push().setValue(new Category(0,"bgl"));
+//        ref.push().setValue(new Category(1,"diet"));
+//        ref.push().setValue(new Category(2,"exercise"));
+//        ref.push().setValue(new Category(3,"medication"));
+
+        // Add all polls in ref as rows
+        ref.addListenerForSingleValueEvent(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(DataSnapshot snapshot)
+            {
+                for(DataSnapshot child : snapshot.getChildren())
+                {
+                    Category category = child.getValue(Category.class);
+                    System.out.println("MainActivity: ID: " + category.getId() + " Category: " + category.getName());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        System.out.println("MainActivity: readCategoryData() returned.");
+    }
+
+    private void readBglData()
+    {
+        System.out.println("MainActivity: readBglData()");
+
+        DatabaseReference ref = mFirebaseDatabaseReference.child(BGL_CHILD);
+
+        // Add all polls in ref as rows
+        ref.addListenerForSingleValueEvent(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(DataSnapshot snapshot)
+            {
+                for(DataSnapshot child : snapshot.getChildren())
+                {
+                    BGLEntryModel bglModel = child.getValue(BGLEntryModel.class);
+                    System.out.println("MainActivity: Key: " + child.getKey() + " BGL: " + bglModel.getProgress() + " Date: " + bglModel.getDate() + " Time: " +  bglModel.getTime());
+
+                    currentList.add(bglModel);
+                    listID.add(child.getKey());
+                }
+
+                //sets the arc latest bgl entry, mean and variance.
+                UpdateMainScreenValues();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        System.out.println("MainActivity: readBglData() returned.");
     }
 
     @Override
-    public void onBackPressed(){
+    public void onBackPressed()
+    {
         if(AddBGLFragment.isVisible())
             ShowHome();
     }
-    public void UpdateMainScreenValues(){
-        BGL latestBGL = getLatestBGL();
+
+    public void UpdateMainScreenValues()
+    {
+        BGLEntryModel latestBGL = getLatestBGL();
+
         int differenceSum = 0;
         int variance = 0;
-        if(latestBGL!=null){
-            AddBGLHelper.AddNewBGL(latestBGL.get_value());
-            time.setText(latestBGL.GetFormatedDate());
+
+        if(latestBGL!=null)
+        {
+            AddBGLHelper.AddNewBGL(latestBGL.getProgress());
+            time.setText(latestBGL.getDate() + " " + latestBGL.getTime());
+            System.out.println("latestBGL time: " + latestBGL.getTime());
         }
+
         String mean = ""+average+" mg/dL";
 
-        List<BGL> bglList = db.GetAllBGL();
-        int listSize = bglList.size();
+        System.out.println("average: " + average + " mg/dL");
+
+        //List<BGLEntryModel> bglList = db.GetAllBGL();
+
+        int listSize = currentList.size();
+        System.out.println("currentList.size(): " + listSize);
 
         meanET.setText(mean);
-        for(BGL bgl: db.GetAllBGL()){
-            differenceSum += Math.pow(bgl.get_value()-average, 2);
+
+        for(BGLEntryModel bglModel: currentList/*db.GetAllBGL()*/)
+        {
+            differenceSum += Math.pow(latestBGL.getProgress() - average, 2);
         }
+
         if(listSize-1 != 0)
             variance = differenceSum/(listSize-1);
 
-        String var = ""+variance;
-        varianceET.setText(var);
+        System.out.println("variance: " + variance);
 
+        String var = ""+variance;
+
+        varianceET.setText(var);
     }
-    private BGL getLatestBGL(){
+
+    private BGLEntryModel getLatestBGL()
+    {
         int sum = 0;
 
+        BGLEntryModel latestBGL = null;
 
-        BGL latestBGL = null;
-        List<BGL> bglList = db.GetAllBGL();
-        int listSize = bglList.size();
+        //List<BGL> bglList = db.GetAllBGL();
 
-        for(BGL bgl: bglList){
-            sum += bgl.get_value();
-            if(latestBGL==null || bgl.get_date().compareTo(latestBGL.get_date())>0) {
-                latestBGL = bgl;
+        int listSize = currentList.size();
+
+        for(BGLEntryModel bglModel: currentList)
+        {
+            sum += bglModel.getProgress();
+            System.out.println("sum: " + sum);
+
+            if(latestBGL==null || bglModel.getDate().compareTo(latestBGL.getDate())>0)
+            {
+                latestBGL = bglModel;
             }
         }
+
         if(listSize!=0)
             average = sum/listSize;
+
+        System.out.println("average: " + average);
+
         return latestBGL;
     }
-
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
@@ -271,7 +384,7 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         time = (TextView) findViewById(R.id.textViewLastEnteredTime);
         addBGLTextView = (TextView) findViewById(R.id.textViewAddBGL);
-        meanEditText = (EditText) findViewById(R.id.editTextMean);
+        meanET = (EditText) findViewById(R.id.editTextMean);
         varianceET = (EditText) findViewById(R.id.editTextVariant);
         meanTextView = (TextView) findViewById(R.id.textViewMean);
         arc = (ArcProgress) findViewById(R.id.arc_progress);
@@ -383,7 +496,7 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         etDate.setText(sdf.format(cal.getTime()));
     }
 
-    public void saveBglData()
+    public void AddBGLtoDatabase()
     {
         for(BGLEntryModel entry: AddBGLFragment.bglAdapter.getList())
         {
@@ -407,6 +520,10 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         AddBGLHelper.showFragment(getFragmentManager(),buttons);
 
         AddBGLFragment.bglAdapter.clearList();
+
+        //sets the arc latest bgl entry, mean and variance.
+        readBglData();
+        //UpdateMainScreenValues();
     }
 
     @Override
@@ -416,4 +533,20 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         System.out.println("onConnectionFailed:" + connectionResult);
         Toast.makeText(this, "Google Play Services error.", Toast.LENGTH_SHORT).show();
     }
+
+//    private Date ConvertToDate(String dateString, String timeString)
+//    {
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy hh:mm:aa");
+//        Date convertedDate = new Date();
+//
+//        try
+//        {
+//            convertedDate = dateFormat.parse(dateString + " " + timeString);
+//        } catch (ParseException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
+//        System.out.println("convertedDate: "  + convertedDate);
+//        return convertedDate;
+//    }
 }

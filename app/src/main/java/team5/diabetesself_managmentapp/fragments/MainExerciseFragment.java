@@ -140,7 +140,7 @@ public class MainExerciseFragment extends Fragment {
     }
     private void onKeyword(){
         String keyword = "" + etKeyword.getText();
-        if(keyword != "") {
+        if(keyword.equals("")) {
             ((ExerciseQueryActivity) getActivity()).ShowKeyword(keyword);
         }
     }

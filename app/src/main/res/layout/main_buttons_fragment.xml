@@ -126,7 +126,7 @@
                     android:focusable="false"
                     android:text="@string/varDefaultString"
                     android:gravity="center_horizontal"
-                    />
+                    android:id="@+id/editTextVariant" />
 
                 <TextView
                     android:layout_width="100dp"
@@ -136,6 +136,7 @@
                     android:paddingTop="35dp"
                     android:gravity="center_horizontal"
                     android:textColor="#ff0000"
+                    android:id="@+id/textViewVariant"
                     android:visibility="visible"
                     android:layout_gravity="right|top" />
 

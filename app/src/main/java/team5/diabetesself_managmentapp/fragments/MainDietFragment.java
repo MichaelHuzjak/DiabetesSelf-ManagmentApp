@@ -143,7 +143,7 @@ public class MainDietFragment extends Fragment {
     }
     private void onKeyword(){
         String keyword = "" + etKeyword.getText();
-        if(keyword != "") {
+        if(keyword.equals("")) {
             ((DietQueryActivity) getActivity()).ShowKeyword(keyword);
         }
     }

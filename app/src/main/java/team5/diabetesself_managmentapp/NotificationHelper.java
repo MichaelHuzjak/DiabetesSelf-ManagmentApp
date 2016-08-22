@@ -2,17 +2,11 @@ package team5.diabetesself_managmentapp;
 
 import android.app.AlarmManager;
 import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -43,7 +37,7 @@ public class NotificationHelper {
                 .setTicker(ticker)
                 .setContentTitle(title)
                 .setContentText(msgText)
-                .setSmallIcon(R.drawable.ic_launcher);;
+                .setSmallIcon(R.drawable.ic_launcher);
 
         builder.setContentIntent(notificationIntent);
         builder.setDefaults(NotificationCompat.DEFAULT_VIBRATE);

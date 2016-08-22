@@ -1,7 +1,5 @@
 package team5.diabetesself_managmentapp.adapter;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -166,9 +164,12 @@ public class BGLAdapter extends RecyclerView.Adapter<BGLAdapter.ViewHolder>{
     public ArrayList<BGLEntryModel> getList(){
         return list;
     }
+
     //For Debugging purposes
-    public void printList(){
-        for(BGLEntryModel l: list){
+    public void printList()
+    {
+        for(BGLEntryModel l: list)
+        {
             System.out.println("Progress: "+l.getProgress()+" || Date: "+l.getDate()+" || Time: "+l.getTime());
 
         }

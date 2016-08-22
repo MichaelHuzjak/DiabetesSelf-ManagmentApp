@@ -12,10 +12,7 @@ import android.widget.ImageButton;
 import java.util.ArrayList;
 
 
-
-import team5.diabetesself_managmentapp.Medication;
 import team5.diabetesself_managmentapp.MedicationQueryActivity;
-import team5.diabetesself_managmentapp.QueryActivity;
 import team5.diabetesself_managmentapp.R;
 import team5.diabetesself_managmentapp.model.LogEventModel;
 

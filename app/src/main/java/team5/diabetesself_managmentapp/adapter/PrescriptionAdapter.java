@@ -1,9 +1,6 @@
 package team5.diabetesself_managmentapp.adapter;
 
-import android.app.Activity;
 import android.content.Context;
-import android.provider.ContactsContract;
-import android.provider.MediaStore;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,9 +12,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.SeekBar;
 import android.widget.Spinner;
 
 
@@ -26,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import team5.diabetesself_managmentapp.AddBGLHelper;
 import team5.diabetesself_managmentapp.Prescription;
 import team5.diabetesself_managmentapp.R;
 

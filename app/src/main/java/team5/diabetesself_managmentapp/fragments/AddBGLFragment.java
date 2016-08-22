@@ -1,15 +1,9 @@
 package team5.diabetesself_managmentapp.fragments;
 
-import android.app.Activity;
-import android.app.DatePickerDialog;
 import android.app.Fragment;
-import android.app.TimePickerDialog;
 import android.os.Bundle;
 
-import android.os.Parcelable;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,9 +12,7 @@ import android.widget.ImageButton;
 
 
 import java.util.ArrayList;
-import java.util.List;
 
-import team5.diabetesself_managmentapp.AddBGLHelper;
 import team5.diabetesself_managmentapp.MainActivity;
 import team5.diabetesself_managmentapp.R;
 import team5.diabetesself_managmentapp.adapter.BGLAdapter;

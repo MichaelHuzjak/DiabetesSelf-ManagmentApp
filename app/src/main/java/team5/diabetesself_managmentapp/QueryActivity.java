@@ -1,7 +1,6 @@
 package team5.diabetesself_managmentapp;
 
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -15,10 +14,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -30,20 +27,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.series.BarGraphSeries;
-import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.LineGraphSeries;
-import com.jjoe64.graphview.series.PointsGraphSeries;
-
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.List;
 
-import team5.diabetesself_managmentapp.fragments.BGLGraphFragment;
 import team5.diabetesself_managmentapp.fragments.BGLListFragment;
 import team5.diabetesself_managmentapp.fragments.DatePickerFragment;
 import team5.diabetesself_managmentapp.fragments.MainQueryFragment;
@@ -182,17 +169,6 @@ public class QueryActivity extends AppCompatActivity implements TimePickerDialog
         SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
         etDate.setText(sdf.format(cal.getTime()));
     }
-    public void UpdateBGL(BGL bgl){
-        db.UpdateBGL(bgl);
-    }
-
-
-    public void ShowMain(){
-        ShowFragment(getFragmentManager(),MainFragment,true);
-        ShowFragment(getFragmentManager(),CurrentFragment,false);
-    }
-
-
 
     @Override
     public void onBackPressed() {

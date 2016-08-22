@@ -142,7 +142,7 @@ public class MainMedicationFragment extends Fragment {
     }
     private void onKeyword(){
         String keyword = "" + etKeyword.getText();
-        if(keyword != "") {
+        if(keyword.equals("")) {
             ((MedicationQueryActivity) getActivity()).ShowKeyword(keyword);
         }
     }

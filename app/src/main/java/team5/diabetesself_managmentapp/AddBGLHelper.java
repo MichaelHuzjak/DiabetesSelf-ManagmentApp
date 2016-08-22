@@ -5,8 +5,6 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.view.View;
 import android.widget.TextView;
-import java.text.DateFormat;
-import java.util.Calendar;
 
 
 public class AddBGLHelper extends MainActivity{

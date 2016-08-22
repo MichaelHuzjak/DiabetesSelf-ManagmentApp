@@ -12,11 +12,7 @@ import android.widget.ImageButton;
 import java.util.ArrayList;
 
 
-import team5.diabetesself_managmentapp.Exercise;
 import team5.diabetesself_managmentapp.ExerciseQueryActivity;
-import team5.diabetesself_managmentapp.Medication;
-import team5.diabetesself_managmentapp.MedicationQueryActivity;
-import team5.diabetesself_managmentapp.QueryActivity;
 import team5.diabetesself_managmentapp.model.LogEventModel;
 import team5.diabetesself_managmentapp.R;
 
@@ -27,10 +23,10 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
     private final Context Context;
     private final ArrayList<String> exerciseID;
 
-    public ExerciseAdapter(ArrayList<Exercise> list,Context context){
+    public ExerciseAdapter(ArrayList<LogEventModel> list, ArrayList<String> exerciseID, Context context){
         this.list = list;
         this.exerciseID = exerciseID;
-        vh = new ArrayList<ViewHolder>();
+        vh = new ArrayList<>();
         Context = context;
     }
 
@@ -186,10 +182,13 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
     }
 
 
-    public void clearList(){
-        while(list.size() > 0){
+    public void clearList()
+    {
+        while(list.size() > 0)
+        {
             removeAt(0);
         }
+
         vh.removeAll(vh);
     }
 
